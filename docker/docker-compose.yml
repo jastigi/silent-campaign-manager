@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17
+
+    container_name: scm-postgres
+
+    restart: always
+
+    environment:
+      POSTGRES_DB: silent_campaign_db
+      POSTGRES_USER: scm_user
+      POSTGRES_PASSWORD: scm_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
