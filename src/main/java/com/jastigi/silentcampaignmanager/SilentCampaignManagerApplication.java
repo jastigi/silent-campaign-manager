@@ -1,4 +1,4 @@
-package com.jastigi.silent_campaign_manager;
+package com.jastigi.silentcampaignmanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
