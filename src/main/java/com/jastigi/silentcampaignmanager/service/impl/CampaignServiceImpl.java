@@ -2,6 +2,9 @@ package com.jastigi.silentcampaignmanager.service.impl;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
@@ -33,11 +36,14 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public List<CampaignResponseDTO> getAllCampaigns() {
-        return campaignRepository.findAll()
-                .stream()
-                .map(CampaignMapper::toDTO)
-                .toList();
+    public Page<CampaignResponseDTO> getAllCampaigns(
+            int page,
+            int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return campaignRepository.findAll(pageable)
+                .map(CampaignMapper::toDTO);
     }
 
     @Override
