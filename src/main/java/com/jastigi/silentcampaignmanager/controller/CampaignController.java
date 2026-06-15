@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
+import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.Campaign;
 import com.jastigi.silentcampaignmanager.service.CampaignService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/campaigns")
@@ -23,8 +27,10 @@ public class CampaignController {
     }
 
     @PostMapping
-    public Campaign createCampaign(@RequestBody Campaign campaign) {
-        return campaignService.createCampaign(campaign);
+    public CampaignResponseDTO createCampaign(
+            @Valid @RequestBody CampaignRequestDTO request) {
+
+        return campaignService.createCampaign(request);
     }
 
     @GetMapping

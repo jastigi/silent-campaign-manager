@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
+import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.Campaign;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
+import com.jastigi.silentcampaignmanager.mapper.CampaignMapper;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.service.CampaignService;
 
@@ -19,8 +22,13 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public Campaign createCampaign(Campaign campaign) {
-        return campaignRepository.save(campaign);
+    public CampaignResponseDTO createCampaign(CampaignRequestDTO request) {
+
+        Campaign campaign = CampaignMapper.toEntity(request);
+
+        Campaign savedCampaign = campaignRepository.save(campaign);
+
+        return CampaignMapper.toDTO(savedCampaign);
     }
 
     @Override
