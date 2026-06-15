@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.jastigi.silentcampaignmanager.entity.Campaign;
+import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.service.CampaignService;
 
@@ -29,8 +30,10 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     public Campaign getCampaignById(Long id) {
+
         return campaignRepository.findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new CampaignNotFoundException(id));
+
     }
 
 }
