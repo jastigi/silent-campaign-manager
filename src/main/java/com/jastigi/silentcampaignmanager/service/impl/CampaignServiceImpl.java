@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.Campaign;
+import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.mapper.CampaignMapper;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
@@ -32,16 +33,29 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public List<Campaign> getAllCampaigns() {
-        return campaignRepository.findAll();
+    public List<CampaignResponseDTO> getAllCampaigns() {
+        return campaignRepository.findAll()
+                .stream()
+                .map(CampaignMapper::toDTO)
+                .toList();
     }
 
     @Override
-    public Campaign getCampaignById(Long id) {
+    public CampaignResponseDTO getCampaignById(Long id) {
 
-        return campaignRepository.findById(id)
+        Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new CampaignNotFoundException(id));
 
+        return CampaignMapper.toDTO(campaign);
+    }
+
+    @Override
+    public List<CampaignResponseDTO> getCampaignsByStatus(CampaignStatus status) {
+
+        return campaignRepository.findByStatus(status)
+                .stream()
+                .map(CampaignMapper::toDTO)
+                .toList();
     }
 
 }

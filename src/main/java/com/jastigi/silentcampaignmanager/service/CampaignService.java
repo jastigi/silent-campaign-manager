@@ -4,14 +4,16 @@ import java.util.List;
 
 import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
-import com.jastigi.silentcampaignmanager.entity.Campaign;
+import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
 
 public interface CampaignService {
 
     CampaignResponseDTO createCampaign(CampaignRequestDTO request);
 
-    List<Campaign> getAllCampaigns();
+    List<CampaignResponseDTO> getAllCampaigns();
 
-    Campaign getCampaignById(Long id);
+    List<CampaignResponseDTO> getCampaignsByStatus(CampaignStatus status);
+
+    CampaignResponseDTO getCampaignById(Long id);
 
 }

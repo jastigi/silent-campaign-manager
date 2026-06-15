@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.Campaign;
+import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
 import com.jastigi.silentcampaignmanager.service.CampaignService;
 
 import jakarta.validation.Valid;
@@ -34,13 +35,22 @@ public class CampaignController {
     }
 
     @GetMapping
-    public List<Campaign> getAllCampaigns() {
+    public List<CampaignResponseDTO> getAllCampaigns() {
         return campaignService.getAllCampaigns();
     }
 
     @GetMapping("/{id}")
-    public Campaign getCampaignById(@PathVariable Long id) {
+    public CampaignResponseDTO getCampaignById(
+            @PathVariable Long id) {
+
         return campaignService.getCampaignById(id);
+    }
+
+    @GetMapping("/status/{status}")
+    public List<CampaignResponseDTO> getCampaignsByStatus(
+            @PathVariable CampaignStatus status) {
+
+        return campaignService.getCampaignsByStatus(status);
     }
 
 }
