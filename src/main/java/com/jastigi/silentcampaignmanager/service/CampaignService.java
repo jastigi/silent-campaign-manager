@@ -12,7 +12,9 @@ public interface CampaignService {
 
     CampaignResponseDTO createCampaign(CampaignRequestDTO request);
 
-    Page<CampaignResponseDTO> getAllCampaigns(int page, int size);
+    Page<CampaignResponseDTO> getAllCampaigns(int page, int size,
+            String sortBy,
+            String direction);
 
     List<CampaignResponseDTO> getCampaignsByStatus(CampaignStatus status);
 

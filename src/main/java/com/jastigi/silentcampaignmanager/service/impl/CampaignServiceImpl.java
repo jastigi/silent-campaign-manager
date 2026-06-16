@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
@@ -38,9 +39,15 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public Page<CampaignResponseDTO> getAllCampaigns(
             int page,
-            int size) {
+            int size,
+            String sortBy,
+            String direction) {
 
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
 
         return campaignRepository.findAll(pageable)
                 .map(CampaignMapper::toDTO);

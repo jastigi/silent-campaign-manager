@@ -35,13 +35,19 @@ public class CampaignController {
         return campaignService.createCampaign(request);
     }
 
-    @GetMapping(value = {"", "/paged"})
+    @GetMapping(value = { "", "/paged" })
     public Page<CampaignResponseDTO> getAllCampaigns(
 
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
 
-        return campaignService.getAllCampaigns(page, size);
+        return campaignService.getAllCampaigns(
+                page,
+                size,
+                sortBy,
+                direction);
     }
 
     @GetMapping("/{id}")
