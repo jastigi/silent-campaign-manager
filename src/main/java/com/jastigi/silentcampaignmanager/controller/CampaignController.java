@@ -35,7 +35,7 @@ public class CampaignController {
         return campaignService.createCampaign(request);
     }
 
-    @GetMapping
+    @GetMapping(value = {"", "/paged"})
     public Page<CampaignResponseDTO> getAllCampaigns(
 
             @RequestParam(defaultValue = "0") int page,
