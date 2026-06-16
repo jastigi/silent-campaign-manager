@@ -1,6 +1,6 @@
 package com.jastigi.silentcampaignmanager.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,10 +15,12 @@ import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.Campaign;
 import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
+import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.service.impl.CampaignServiceImpl;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class CampaignServiceImplTest {
@@ -55,6 +57,23 @@ class CampaignServiceImplTest {
         assertEquals(CampaignStatus.ACTIVE, result.getStatus());
 
         verify(campaignRepository).save(any(Campaign.class));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCampaignNotFound() {
+
+        Long campaignId = 999L;
+
+        when(campaignRepository.findById(campaignId))
+                .thenReturn(Optional.empty());
+
+        CampaignNotFoundException exception = assertThrows(
+                CampaignNotFoundException.class,
+                () -> campaignService.getCampaignById(campaignId));
+
+        assertEquals(
+                "Campaign not found with id: 999",
+                exception.getMessage());
     }
 
 }
