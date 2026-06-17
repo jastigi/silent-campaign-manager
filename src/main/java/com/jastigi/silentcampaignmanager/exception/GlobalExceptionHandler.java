@@ -65,4 +65,21 @@ public class GlobalExceptionHandler {
                 .body(error);
     }
 
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCredentials(
+            InvalidCredentialsException ex,
+            HttpServletRequest request) {
+
+        ErrorResponse error = new ErrorResponse();
+
+        error.setTimestamp(LocalDateTime.now());
+        error.setStatus(HttpStatus.UNAUTHORIZED.value());
+        error.setError("Unauthorized");
+        error.setMessage(ex.getMessage());
+        error.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(error);
+    }
+
 }

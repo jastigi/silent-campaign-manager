@@ -13,33 +13,34 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    SecurityFilterChain securityFilterChain(
-            HttpSecurity http) throws Exception {
+        @Bean
+        SecurityFilterChain securityFilterChain(
+                        HttpSecurity http) throws Exception {
 
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
-                .httpBasic(Customizer.withDefaults());
+                http
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers(
+                                                                "/swagger-ui/**",
+                                                                "/v3/api-docs/**",
+                                                                "/api/v1/auth/**")
+                                                .permitAll()
+                                                .anyRequest()
+                                                .authenticated())
+                                .httpBasic(Customizer.withDefaults());
 
-        return http.build();
-    }
+                return http.build();
+        }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
+        @Bean
+        public UserDetailsService userDetailsService() {
 
-        UserDetails admin = User.withUsername("admin")
-                .password("{noop}admin123")
-                .roles("ADMIN")
-                .build();
+                UserDetails admin = User.withUsername("admin")
+                                .password("{noop}admin123")
+                                .roles("ADMIN")
+                                .build();
 
-        return new InMemoryUserDetailsManager(admin);
-    }
+                return new InMemoryUserDetailsManager(admin);
+        }
 
 }

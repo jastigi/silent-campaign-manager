@@ -13,7 +13,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "mySuperSecretKeyForSilentCampaignManager2026";
+    private static final String SECRET_KEY = "mySuperSecretKeyForSilentCampaignManager2026!!SCM";
 
     public String generateToken(String username) {
 
