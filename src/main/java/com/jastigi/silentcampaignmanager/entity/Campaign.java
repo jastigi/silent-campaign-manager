@@ -10,9 +10,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "campaigns")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Campaign {
 
     @Id
@@ -31,48 +39,5 @@ public class Campaign {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CampaignStatus status;
-
-    public Campaign() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public CampaignStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(CampaignStatus status) {
-        this.status = status;
-    }
 
 }
