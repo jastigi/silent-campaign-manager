@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
 import com.jastigi.silentcampaignmanager.service.CampaignService;
 
-@WebMvcTest(CampaignController.class)
+@WebMvcTest(controllers = CampaignController.class, excludeAutoConfiguration = org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class)
 class CampaignControllerTest {
 
     @Autowired
