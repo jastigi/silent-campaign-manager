@@ -20,60 +20,96 @@ import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.service.impl.CampaignServiceImpl;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class CampaignServiceImplTest {
 
-    @Mock
-    private CampaignRepository campaignRepository;
+        @Mock
+        private CampaignRepository campaignRepository;
 
-    @InjectMocks
-    private CampaignServiceImpl campaignService;
+        @InjectMocks
+        private CampaignServiceImpl campaignService;
 
-    @Test
-    void shouldCreateCampaignSuccessfully() {
+        @Test
+        void shouldCreateCampaignSuccessfully() {
 
-        CampaignRequestDTO request = new CampaignRequestDTO();
-        request.setName("North Atlantic Patrols");
-        request.setDescription("SSBN Operations 1984");
-        request.setStartDate(LocalDate.of(2026, 6, 12));
-        request.setStatus(CampaignStatus.ACTIVE);
+                CampaignRequestDTO request = new CampaignRequestDTO();
+                request.setName("North Atlantic Patrols");
+                request.setDescription("SSBN Operations 1984");
+                request.setStartDate(LocalDate.of(2026, 6, 12));
+                request.setStatus(CampaignStatus.ACTIVE);
 
-        Campaign savedCampaign = new Campaign();
-        savedCampaign.setId(1L);
-        savedCampaign.setName(request.getName());
-        savedCampaign.setDescription(request.getDescription());
-        savedCampaign.setStartDate(request.getStartDate());
-        savedCampaign.setStatus(request.getStatus());
+                Campaign savedCampaign = new Campaign();
+                savedCampaign.setId(1L);
+                savedCampaign.setName(request.getName());
+                savedCampaign.setDescription(request.getDescription());
+                savedCampaign.setStartDate(request.getStartDate());
+                savedCampaign.setStatus(request.getStatus());
 
-        when(campaignRepository.save(any(Campaign.class)))
-                .thenReturn(savedCampaign);
+                when(campaignRepository.save(any(Campaign.class)))
+                                .thenReturn(savedCampaign);
 
-        CampaignResponseDTO result = campaignService.createCampaign(request);
+                CampaignResponseDTO result = campaignService.createCampaign(request);
 
-        assertEquals(1L, result.getId());
-        assertEquals("North Atlantic Patrols", result.getName());
-        assertEquals(CampaignStatus.ACTIVE, result.getStatus());
+                assertEquals(1L, result.getId());
+                assertEquals("North Atlantic Patrols", result.getName());
+                assertEquals(CampaignStatus.ACTIVE, result.getStatus());
 
-        verify(campaignRepository).save(any(Campaign.class));
-    }
+                verify(campaignRepository).save(any(Campaign.class));
+        }
 
-    @Test
-    void shouldThrowExceptionWhenCampaignNotFound() {
+        @Test
+        void shouldReturnCampaignById() {
 
-        Long campaignId = 999L;
+                Campaign campaign = new Campaign();
+                campaign.setId(1L);
+                campaign.setName("North Atlantic Patrols");
+                campaign.setStatus(CampaignStatus.ACTIVE);
 
-        when(campaignRepository.findById(campaignId))
-                .thenReturn(Optional.empty());
+                when(campaignRepository.findById(1L))
+                                .thenReturn(Optional.of(campaign));
 
-        CampaignNotFoundException exception = assertThrows(
-                CampaignNotFoundException.class,
-                () -> campaignService.getCampaignById(campaignId));
+                CampaignResponseDTO result = campaignService.getCampaignById(1L);
 
-        assertEquals(
-                "Campaign not found with id: 999",
-                exception.getMessage());
-    }
+                assertEquals(1L, result.getId());
+                assertEquals("North Atlantic Patrols", result.getName());
+
+                verify(campaignRepository).findById(1L);
+        }
+
+        @Test
+        void shouldThrowExceptionWhenCampaignNotFound() {
+
+                when(campaignRepository.findById(999L))
+                                .thenReturn(Optional.empty());
+
+                assertThrows(
+                                CampaignNotFoundException.class,
+                                () -> campaignService.getCampaignById(999L));
+        }
+
+        @Test
+        void shouldReturnCampaignsByStatus() {
+
+                Campaign campaign = new Campaign();
+                campaign.setId(1L);
+                campaign.setName("North Atlantic Patrols");
+                campaign.setStatus(CampaignStatus.ACTIVE);
+
+                when(campaignRepository.findByStatus(CampaignStatus.ACTIVE))
+                                .thenReturn(List.of(campaign));
+
+                List<CampaignResponseDTO> result = campaignService.getCampaignsByStatus(
+                                CampaignStatus.ACTIVE);
+
+                assertEquals(1, result.size());
+                assertEquals("North Atlantic Patrols",
+                                result.getFirst().getName());
+
+                verify(campaignRepository)
+                                .findByStatus(CampaignStatus.ACTIVE);
+        }
 
 }
