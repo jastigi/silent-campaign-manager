@@ -21,6 +21,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
+import com.jastigi.silentcampaignmanager.security.JwtService;
 import com.jastigi.silentcampaignmanager.service.CampaignService;
 
 @WebMvcTest(controllers = CampaignController.class, excludeAutoConfiguration = org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class)
@@ -31,6 +32,9 @@ class CampaignControllerTest {
 
     @MockitoBean
     private CampaignService campaignService;
+
+    @MockitoBean
+    private JwtService jwtService;
 
     @Test
     void shouldReturnPagedCampaignsOnRootPath() throws Exception {
