@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
@@ -13,12 +14,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "mySuperSecretKeyForSilentCampaignManager2026!!SCM";
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    @Value("${jwt.expiration}")
+    private long expiration;
 
     public String generateToken(String username) {
 
         Key key = new SecretKeySpec(
-                SECRET_KEY.getBytes(),
+                secretKey.getBytes(),
                 SignatureAlgorithm.HS256.getJcaName());
 
         return Jwts.builder()
@@ -35,7 +40,7 @@ public class JwtService {
     public String extractUsername(String token) {
 
         Key key = new SecretKeySpec(
-                SECRET_KEY.getBytes(),
+                secretKey.getBytes(),
                 SignatureAlgorithm.HS256.getJcaName());
 
         return Jwts.parser()
