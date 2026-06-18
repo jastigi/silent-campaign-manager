@@ -32,4 +32,26 @@ public class JwtService {
                 .compact();
     }
 
+    public String extractUsername(String token) {
+
+        Key key = new SecretKeySpec(
+                SECRET_KEY.getBytes(),
+                SignatureAlgorithm.HS256.getJcaName());
+
+        return Jwts.parser()
+                .verifyWith((javax.crypto.SecretKey) key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+
+    public boolean isTokenValid(
+            String token,
+            String username) {
+
+        return username.equals(
+                extractUsername(token));
+    }
+
 }

@@ -19,4 +19,14 @@ class JwtServiceTest {
         System.out.println(token);
     }
 
+    @Test
+    void shouldExtractUsernameFromToken() {
+
+        String token = jwtService.generateToken("admin");
+
+        String username = jwtService.extractUsername(token);
+
+        assertEquals("admin", username);
+    }
+
 }
