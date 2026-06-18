@@ -38,17 +38,6 @@ public class SecurityConfig {
                 return http.build();
         }
 
-        @Bean
-        public UserDetailsService userDetailsService() {
-
-                UserDetails admin = User.withUsername("admin")
-                                .password("{noop}admin123")
-                                .roles("ADMIN")
-                                .build();
-
-                return new InMemoryUserDetailsManager(admin);
-        }
-
         private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
         public SecurityConfig(
