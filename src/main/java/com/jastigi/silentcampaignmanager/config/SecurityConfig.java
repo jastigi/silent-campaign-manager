@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.jastigi.silentcampaignmanager.security.JwtAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
@@ -27,6 +30,9 @@ public class SecurityConfig {
                                                 .permitAll()
                                                 .anyRequest()
                                                 .authenticated())
+                                .addFilterBefore(
+                                                jwtAuthenticationFilter,
+                                                UsernamePasswordAuthenticationFilter.class)
                                 .httpBasic(Customizer.withDefaults());
 
                 return http.build();
@@ -41,6 +47,14 @@ public class SecurityConfig {
                                 .build();
 
                 return new InMemoryUserDetailsManager(admin);
+        }
+
+        private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+        public SecurityConfig(
+                        JwtAuthenticationFilter jwtAuthenticationFilter) {
+
+                this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         }
 
 }
