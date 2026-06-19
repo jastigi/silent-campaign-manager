@@ -24,9 +24,13 @@ public class AuthController {
     public LoginResponse login(
             @RequestBody LoginRequest request) {
 
-        if (!"admin".equals(request.getUsername())
-                || !"admin123".equals(request.getPassword())) {
+        boolean validAdmin = "admin".equals(request.getUsername())
+                && "admin123".equals(request.getPassword());
 
+        boolean validUser = "user".equals(request.getUsername())
+                && "user123".equals(request.getPassword());
+
+        if (!validAdmin && !validUser) {
             throw new InvalidCredentialsException();
         }
 
