@@ -16,12 +16,12 @@ public class UserConfig {
     public UserDetailsService userDetailsService() {
 
         UserDetails admin = User.withUsername("admin")
-                .password("{noop}admin123")
+                .password("$2a$10$NaEngq3poo3uqaI6OfcmCufL3b7PckwJ4y2CV8Gu0Ice.cCZFv.oS")
                 .roles("ADMIN")
                 .build();
 
         UserDetails user = User.withUsername("user")
-                .password("{noop}user123")
+                .password("$2a$10$GbQreTc7X5NRh0u0YWfiC.3EpgwRKXBUMssJ73NW2Gd2vJUFy1PWO")
                 .roles("USER")
                 .build();
 
