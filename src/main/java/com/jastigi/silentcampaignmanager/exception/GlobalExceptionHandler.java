@@ -100,4 +100,22 @@ public class GlobalExceptionHandler {
                                 .body(error);
         }
 
+        @ExceptionHandler(SubmarineNotFoundException.class)
+        public ResponseEntity<ErrorResponse> handleSubmarineNotFound(
+                        SubmarineNotFoundException ex,
+                        HttpServletRequest request) {
+
+                ErrorResponse error = new ErrorResponse();
+
+                error.setTimestamp(LocalDateTime.now());
+                error.setStatus(HttpStatus.NOT_FOUND.value());
+                error.setError("Not Found");
+                error.setMessage(ex.getMessage());
+                error.setPath(request.getRequestURI());
+
+                return ResponseEntity
+                                .status(HttpStatus.NOT_FOUND)
+                                .body(error);
+        }
+
 }
