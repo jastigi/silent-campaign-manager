@@ -16,70 +16,88 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(CampaignNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleCampaignNotFound(
-            CampaignNotFoundException ex,
-            HttpServletRequest request) {
+        @ExceptionHandler(CampaignNotFoundException.class)
+        public ResponseEntity<ErrorResponse> handleCampaignNotFound(
+                        CampaignNotFoundException ex,
+                        HttpServletRequest request) {
 
-        ErrorResponse error = new ErrorResponse();
+                ErrorResponse error = new ErrorResponse();
 
-        error.setTimestamp(LocalDateTime.now());
-        error.setStatus(HttpStatus.NOT_FOUND.value());
-        error.setError("Not Found");
-        error.setMessage(ex.getMessage());
-        error.setPath(request.getRequestURI());
+                error.setTimestamp(LocalDateTime.now());
+                error.setStatus(HttpStatus.NOT_FOUND.value());
+                error.setError("Not Found");
+                error.setMessage(ex.getMessage());
+                error.setPath(request.getRequestURI());
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(error);
-    }
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body(error);
+        }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationErrors(
-            MethodArgumentNotValidException ex) {
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<Map<String, String>> handleValidationErrors(
+                        MethodArgumentNotValidException ex) {
 
-        Map<String, String> errors = new HashMap<>();
+                Map<String, String> errors = new HashMap<>();
 
-        ex.getBindingResult()
-                .getFieldErrors()
-                .forEach(error -> errors.put(error.getField(),
-                        error.getDefaultMessage()));
+                ex.getBindingResult()
+                                .getFieldErrors()
+                                .forEach(error -> errors.put(error.getField(),
+                                                error.getDefaultMessage()));
 
-        return ResponseEntity.badRequest()
-                .body(errors);
-    }
+                return ResponseEntity.badRequest()
+                                .body(errors);
+        }
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(
-            MethodArgumentTypeMismatchException ex,
-            HttpServletRequest request) {
+        @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+        public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(
+                        MethodArgumentTypeMismatchException ex,
+                        HttpServletRequest request) {
 
-        ErrorResponse error = new ErrorResponse();
+                ErrorResponse error = new ErrorResponse();
 
-        error.setTimestamp(LocalDateTime.now());
-        error.setStatus(HttpStatus.BAD_REQUEST.value());
-        error.setError("Bad Request");
-        error.setMessage(ex.getMessage());
-        error.setPath(request.getRequestURI());
+                error.setTimestamp(LocalDateTime.now());
+                error.setStatus(HttpStatus.BAD_REQUEST.value());
+                error.setError("Bad Request");
+                error.setMessage(ex.getMessage());
+                error.setPath(request.getRequestURI());
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(error);
-    }
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                .body(error);
+        }
 
-    @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidCredentials(
-            InvalidCredentialsException ex,
-            HttpServletRequest request) {
+        @ExceptionHandler(InvalidCredentialsException.class)
+        public ResponseEntity<ErrorResponse> handleInvalidCredentials(
+                        InvalidCredentialsException ex,
+                        HttpServletRequest request) {
 
-        ErrorResponse error = new ErrorResponse();
+                ErrorResponse error = new ErrorResponse();
 
-        error.setTimestamp(LocalDateTime.now());
-        error.setStatus(HttpStatus.UNAUTHORIZED.value());
-        error.setError("Unauthorized");
-        error.setMessage(ex.getMessage());
-        error.setPath(request.getRequestURI());
+                error.setTimestamp(LocalDateTime.now());
+                error.setStatus(HttpStatus.UNAUTHORIZED.value());
+                error.setError("Unauthorized");
+                error.setMessage(ex.getMessage());
+                error.setPath(request.getRequestURI());
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(error);
-    }
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                .body(error);
+        }
+
+        @ExceptionHandler(PatrolNotFoundException.class)
+        public ResponseEntity<ErrorResponse> handlePatrolNotFound(
+                        PatrolNotFoundException ex,
+                        HttpServletRequest request) {
+
+                ErrorResponse error = new ErrorResponse();
+
+                error.setTimestamp(LocalDateTime.now());
+                error.setStatus(HttpStatus.NOT_FOUND.value());
+                error.setError("Not Found");
+                error.setMessage(ex.getMessage());
+                error.setPath(request.getRequestURI());
+
+                return ResponseEntity
+                                .status(HttpStatus.NOT_FOUND)
+                                .body(error);
+        }
 
 }

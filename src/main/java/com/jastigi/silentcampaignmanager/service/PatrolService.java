@@ -7,11 +7,20 @@ import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
 
 public interface PatrolService {
 
-    PatrolResponseDTO createPatrol(
-            Long campaignId,
-            PatrolRequestDTO request);
+        PatrolResponseDTO createPatrol(
+                        Long campaignId,
+                        PatrolRequestDTO request);
 
-    List<PatrolResponseDTO> getPatrolsByCampaign(
-            Long campaignId);
+        List<PatrolResponseDTO> getPatrolsByCampaign(
+                        Long campaignId);
+
+        PatrolResponseDTO getPatrolById(
+                        Long id);
+
+        PatrolResponseDTO updatePatrol(
+                        Long id,
+                        PatrolRequestDTO request);
+
+        void deletePatrol(Long id);
 
 }
