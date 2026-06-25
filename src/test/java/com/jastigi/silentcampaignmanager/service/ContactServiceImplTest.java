@@ -15,6 +15,7 @@ import com.jastigi.silentcampaignmanager.dto.ContactRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.ContactResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.Contact;
 import com.jastigi.silentcampaignmanager.entity.ContactType;
+import com.jastigi.silentcampaignmanager.entity.Nation;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
@@ -50,6 +51,9 @@ class ContactServiceImplTest {
         request.setContactType(ContactType.SUBMARINE);
         request.setThreatLevel(ThreatLevel.HIGH);
         request.setDetectionDate(LocalDate.of(2026, 6, 12));
+        request.setNation(Nation.USSR);
+        request.setConfidenceLevel(85);
+        request.setNotes("Possible Victor-III class");
 
         Patrol patrol = new Patrol();
         patrol.setId(patrolId);
@@ -62,6 +66,9 @@ class ContactServiceImplTest {
         savedContact.setContactType(request.getContactType());
         savedContact.setThreatLevel(request.getThreatLevel());
         savedContact.setDetectionDate(request.getDetectionDate());
+        savedContact.setNation(request.getNation());
+        savedContact.setConfidenceLevel(request.getConfidenceLevel());
+        savedContact.setNotes(request.getNotes());
         savedContact.setPatrol(patrol);
 
         when(patrolRepository.findById(patrolId))
@@ -76,6 +83,8 @@ class ContactServiceImplTest {
         assertEquals("Sierra-01", result.getContactName());
         assertEquals(ContactType.SUBMARINE, result.getContactType());
         assertEquals(ThreatLevel.HIGH, result.getThreatLevel());
+        assertEquals(Nation.USSR, result.getNation());
+        assertEquals(85, result.getConfidenceLevel());
         assertEquals(patrolId, result.getPatrolId());
 
         verify(patrolRepository).findById(patrolId);
@@ -107,6 +116,8 @@ class ContactServiceImplTest {
         contact.setContactName("Sierra-01");
         contact.setContactType(ContactType.SUBMARINE);
         contact.setThreatLevel(ThreatLevel.HIGH);
+        contact.setNation(Nation.USSR);
+        contact.setConfidenceLevel(85);
 
         when(contactRepository.findByPatrolId(patrolId))
                 .thenReturn(List.of(contact));
@@ -132,6 +143,8 @@ class ContactServiceImplTest {
         contact.setContactType(ContactType.SUBMARINE);
         contact.setThreatLevel(ThreatLevel.HIGH);
         contact.setDetectionDate(LocalDate.of(2026, 6, 12));
+        contact.setNation(Nation.USSR);
+        contact.setConfidenceLevel(85);
 
         when(contactRepository.findById(1L))
                 .thenReturn(Optional.of(contact));
@@ -165,12 +178,17 @@ class ContactServiceImplTest {
         existingContact.setContactType(ContactType.UNKNOWN);
         existingContact.setThreatLevel(ThreatLevel.LOW);
         existingContact.setDetectionDate(LocalDate.of(2026, 1, 1));
+        existingContact.setNation(Nation.UNKNOWN);
+        existingContact.setConfidenceLevel(0);
 
         ContactRequestDTO request = new ContactRequestDTO();
         request.setContactName("Sierra-01");
         request.setContactType(ContactType.SUBMARINE);
         request.setThreatLevel(ThreatLevel.HIGH);
         request.setDetectionDate(LocalDate.of(2026, 6, 12));
+        request.setNation(Nation.USSR);
+        request.setConfidenceLevel(85);
+        request.setNotes("Updated notes");
 
         Contact updatedContact = new Contact();
         updatedContact.setId(1L);
@@ -178,6 +196,9 @@ class ContactServiceImplTest {
         updatedContact.setContactType(request.getContactType());
         updatedContact.setThreatLevel(request.getThreatLevel());
         updatedContact.setDetectionDate(request.getDetectionDate());
+        updatedContact.setNation(request.getNation());
+        updatedContact.setConfidenceLevel(request.getConfidenceLevel());
+        updatedContact.setNotes(request.getNotes());
 
         when(contactRepository.findById(1L))
                 .thenReturn(Optional.of(existingContact));
@@ -190,6 +211,8 @@ class ContactServiceImplTest {
         assertEquals("Sierra-01", result.getContactName());
         assertEquals(ContactType.SUBMARINE, result.getContactType());
         assertEquals(ThreatLevel.HIGH, result.getThreatLevel());
+        assertEquals(Nation.USSR, result.getNation());
+        assertEquals(85, result.getConfidenceLevel());
         assertEquals(
                 LocalDate.of(2026, 6, 12),
                 result.getDetectionDate());
