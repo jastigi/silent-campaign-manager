@@ -1,0 +1,25 @@
+package com.jastigi.silentcampaignmanager.entity;
+
+public enum PatrolEventType {
+
+    SOSUS_DETECTION,
+
+    ENEMY_SUBMARINE_CONTACT,
+
+    ENEMY_SURFACE_CONTACT,
+
+    AIRCRAFT_OVERFLIGHT,
+
+    SATELLITE_DETECTION,
+
+    COMMUNICATION_FAILURE,
+
+    WEAPON_MALFUNCTION,
+
+    STORM_CONDITIONS,
+
+    SUCCESSFUL_TRACKING,
+
+    MISSILE_LAUNCH
+
+}
