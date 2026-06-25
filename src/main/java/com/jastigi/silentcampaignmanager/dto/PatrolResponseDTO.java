@@ -21,4 +21,8 @@ public class PatrolResponseDTO {
 
     private Long campaignId;
 
+    private Long submarineId;
+
+    private String submarineName;
+
 }

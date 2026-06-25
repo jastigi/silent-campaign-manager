@@ -35,6 +35,15 @@ public class PatrolMapper {
                     patrol.getCampaign().getId());
         }
 
+        if (patrol.getSubmarine() != null) {
+
+            dto.setSubmarineId(
+                    patrol.getSubmarine().getId());
+
+            dto.setSubmarineName(
+                    patrol.getSubmarine().getName());
+        }
+
         return dto;
     }
 

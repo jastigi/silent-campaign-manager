@@ -1,5 +1,10 @@
 package com.jastigi.silentcampaignmanager.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -29,5 +34,9 @@ public class Submarine {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SubmarineStatus status;
+
+    @OneToMany(mappedBy = "submarine")
+    @JsonIgnore
+    private List<Patrol> patrols = new ArrayList<>();
 
 }

@@ -8,91 +8,104 @@ import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.Campaign;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
+import com.jastigi.silentcampaignmanager.entity.Submarine;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.exception.PatrolNotFoundException;
+import com.jastigi.silentcampaignmanager.exception.SubmarineNotFoundException;
 import com.jastigi.silentcampaignmanager.mapper.PatrolMapper;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
+import com.jastigi.silentcampaignmanager.repository.SubmarineRepository;
 import com.jastigi.silentcampaignmanager.service.PatrolService;
 
 @Service
 public class PatrolServiceImpl implements PatrolService {
 
-    private final PatrolRepository patrolRepository;
-    private final CampaignRepository campaignRepository;
+        private final PatrolRepository patrolRepository;
+        private final CampaignRepository campaignRepository;
+        private final SubmarineRepository submarineRepository;
 
-    public PatrolServiceImpl(
-            PatrolRepository patrolRepository,
-            CampaignRepository campaignRepository) {
+        public PatrolServiceImpl(
+                        PatrolRepository patrolRepository,
+                        CampaignRepository campaignRepository,
+                        SubmarineRepository submarineRepository) {
 
-        this.patrolRepository = patrolRepository;
-        this.campaignRepository = campaignRepository;
-    }
+                this.patrolRepository = patrolRepository;
+                this.campaignRepository = campaignRepository;
+                this.submarineRepository = submarineRepository;
+        }
 
-    @Override
-    public PatrolResponseDTO createPatrol(
-            Long campaignId,
-            PatrolRequestDTO request) {
+        @Override
+        public PatrolResponseDTO createPatrol(
+                        Long campaignId,
+                        PatrolRequestDTO request) {
 
-        Campaign campaign = campaignRepository.findById(campaignId)
-                .orElseThrow(() -> new CampaignNotFoundException(
-                        campaignId));
+                Campaign campaign = campaignRepository.findById(campaignId)
+                                .orElseThrow(() -> new CampaignNotFoundException(
+                                                campaignId));
 
-        Patrol patrol = PatrolMapper.toEntity(request);
+                Patrol patrol = PatrolMapper.toEntity(request);
 
-        patrol.setCampaign(campaign);
+                Submarine submarine = submarineRepository.findById(
+                                request.getSubmarineId())
+                                .orElseThrow(() -> new SubmarineNotFoundException(
+                                                request.getSubmarineId()));
 
-        Patrol savedPatrol = patrolRepository.save(patrol);
+                patrol.setCampaign(campaign);
 
-        return PatrolMapper.toDTO(savedPatrol);
-    }
+                patrol.setSubmarine(submarine);
 
-    @Override
-    public List<PatrolResponseDTO> getPatrolsByCampaign(
-            Long campaignId) {
+                Patrol savedPatrol = patrolRepository.save(patrol);
 
-        return patrolRepository
-                .findByCampaignId(campaignId)
-                .stream()
-                .map(PatrolMapper::toDTO)
-                .toList();
-    }
+                return PatrolMapper.toDTO(savedPatrol);
+        }
 
-    @Override
-    public PatrolResponseDTO getPatrolById(
-            Long id) {
+        @Override
+        public List<PatrolResponseDTO> getPatrolsByCampaign(
+                        Long campaignId) {
 
-        Patrol patrol = patrolRepository.findById(id)
-                .orElseThrow(() -> new PatrolNotFoundException(id));
+                return patrolRepository
+                                .findByCampaignId(campaignId)
+                                .stream()
+                                .map(PatrolMapper::toDTO)
+                                .toList();
+        }
 
-        return PatrolMapper.toDTO(patrol);
-    }
+        @Override
+        public PatrolResponseDTO getPatrolById(
+                        Long id) {
 
-    @Override
-    public PatrolResponseDTO updatePatrol(
-            Long id,
-            PatrolRequestDTO request) {
+                Patrol patrol = patrolRepository.findById(id)
+                                .orElseThrow(() -> new PatrolNotFoundException(id));
 
-        Patrol patrol = patrolRepository.findById(id)
-                .orElseThrow(() -> new PatrolNotFoundException(id));
+                return PatrolMapper.toDTO(patrol);
+        }
 
-        patrol.setPatrolName(request.getPatrolName());
-        patrol.setPatrolDate(request.getPatrolDate());
-        patrol.setArea(request.getArea());
-        patrol.setResult(request.getResult());
+        @Override
+        public PatrolResponseDTO updatePatrol(
+                        Long id,
+                        PatrolRequestDTO request) {
 
-        Patrol updatedPatrol = patrolRepository.save(patrol);
+                Patrol patrol = patrolRepository.findById(id)
+                                .orElseThrow(() -> new PatrolNotFoundException(id));
 
-        return PatrolMapper.toDTO(updatedPatrol);
-    }
+                patrol.setPatrolName(request.getPatrolName());
+                patrol.setPatrolDate(request.getPatrolDate());
+                patrol.setArea(request.getArea());
+                patrol.setResult(request.getResult());
 
-    @Override
-    public void deletePatrol(Long id) {
+                Patrol updatedPatrol = patrolRepository.save(patrol);
 
-        Patrol patrol = patrolRepository.findById(id)
-                .orElseThrow(() -> new PatrolNotFoundException(id));
+                return PatrolMapper.toDTO(updatedPatrol);
+        }
 
-        patrolRepository.delete(patrol);
-    }
+        @Override
+        public void deletePatrol(Long id) {
+
+                Patrol patrol = patrolRepository.findById(id)
+                                .orElseThrow(() -> new PatrolNotFoundException(id));
+
+                patrolRepository.delete(patrol);
+        }
 
 }

@@ -38,4 +38,8 @@ public class Patrol {
     @JoinColumn(name = "campaign_id")
     private Campaign campaign;
 
+    @ManyToOne
+    @JoinColumn(name = "submarine_id")
+    private Submarine submarine;
+
 }

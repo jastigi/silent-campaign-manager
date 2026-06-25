@@ -22,4 +22,7 @@ public class PatrolRequestDTO {
     @NotNull
     private PatrolResult result;
 
+    @NotNull(message = "Submarine is required")
+    private Long submarineId;
+
 }
