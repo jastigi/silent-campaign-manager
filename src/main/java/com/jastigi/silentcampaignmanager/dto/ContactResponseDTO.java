@@ -3,6 +3,7 @@ package com.jastigi.silentcampaignmanager.dto;
 import java.time.LocalDate;
 
 import com.jastigi.silentcampaignmanager.entity.ContactType;
+import com.jastigi.silentcampaignmanager.entity.Nation;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 
 import lombok.Data;
@@ -21,5 +22,11 @@ public class ContactResponseDTO {
     private LocalDate detectionDate;
 
     private Long patrolId;
+
+    private Nation nation;
+
+    private Integer confidenceLevel;
+
+    private String notes;
 
 }

@@ -18,89 +18,98 @@ import com.jastigi.silentcampaignmanager.service.ContactService;
 @Service
 public class ContactServiceImpl implements ContactService {
 
-    private final ContactRepository contactRepository;
-    private final PatrolRepository patrolRepository;
+        private final ContactRepository contactRepository;
+        private final PatrolRepository patrolRepository;
 
-    public ContactServiceImpl(ContactRepository contactRepository, PatrolRepository patrolRepository) {
-        this.contactRepository = contactRepository;
-        this.patrolRepository = patrolRepository;
-    }
+        public ContactServiceImpl(ContactRepository contactRepository, PatrolRepository patrolRepository) {
+                this.contactRepository = contactRepository;
+                this.patrolRepository = patrolRepository;
+        }
 
-    @Override
-    public ContactResponseDTO createContact(
-            Long patrolId,
-            ContactRequestDTO request) {
+        @Override
+        public ContactResponseDTO createContact(
+                        Long patrolId,
+                        ContactRequestDTO request) {
 
-        Patrol patrol = patrolRepository.findById(patrolId)
-                .orElseThrow(() -> new PatrolNotFoundException(
-                        patrolId));
+                Patrol patrol = patrolRepository.findById(patrolId)
+                                .orElseThrow(() -> new PatrolNotFoundException(
+                                                patrolId));
 
-        Contact contact = ContactMapper.toEntity(request);
+                Contact contact = ContactMapper.toEntity(request);
 
-        contact.setPatrol(patrol);
+                contact.setPatrol(patrol);
 
-        Contact saved = contactRepository.save(contact);
+                Contact saved = contactRepository.save(contact);
 
-        return ContactMapper.toDTO(saved);
-    }
+                return ContactMapper.toDTO(saved);
+        }
 
-    @Override
-    public List<ContactResponseDTO> getContactsByPatrol(
-            Long patrolId) {
-        return contactRepository
-                .findByPatrolId(patrolId)
-                .stream()
-                .map(ContactMapper::toDTO)
-                .toList();
+        @Override
+        public List<ContactResponseDTO> getContactsByPatrol(
+                        Long patrolId) {
+                return contactRepository
+                                .findByPatrolId(patrolId)
+                                .stream()
+                                .map(ContactMapper::toDTO)
+                                .toList();
 
-    }
+        }
 
-    @Override
-    public ContactResponseDTO getContactById(
-            Long id) {
+        @Override
+        public ContactResponseDTO getContactById(
+                        Long id) {
 
-        Contact contact = contactRepository.findById(id)
-                .orElseThrow(() -> new ContactNotFoundException(id));
+                Contact contact = contactRepository.findById(id)
+                                .orElseThrow(() -> new ContactNotFoundException(id));
 
-        return ContactMapper.toDTO(contact);
+                return ContactMapper.toDTO(contact);
 
-    }
+        }
 
-    @Override
-    public ContactResponseDTO updateContact(
-            Long id,
-            ContactRequestDTO request) {
+        @Override
+        public ContactResponseDTO updateContact(
+                        Long id,
+                        ContactRequestDTO request) {
 
-        Contact contact = contactRepository.findById(id)
-                .orElseThrow(() -> new ContactNotFoundException(id));
+                Contact contact = contactRepository.findById(id)
+                                .orElseThrow(() -> new ContactNotFoundException(id));
 
-        contact.setContactName(
-                request.getContactName());
+                contact.setContactName(
+                                request.getContactName());
 
-        contact.setContactType(
-                request.getContactType());
+                contact.setContactType(
+                                request.getContactType());
 
-        contact.setThreatLevel(
-                request.getThreatLevel());
+                contact.setThreatLevel(
+                                request.getThreatLevel());
 
-        contact.setDetectionDate(
-                request.getDetectionDate());
+                contact.setDetectionDate(
+                                request.getDetectionDate());
 
-        Contact updated = contactRepository.save(contact);
+                contact.setNation(
+                                request.getNation());
 
-        return ContactMapper.toDTO(updated);
+                contact.setConfidenceLevel(
+                                request.getConfidenceLevel());
 
-    }
+                contact.setNotes(
+                                request.getNotes());
 
-    @Override
-    public void deleteContact(
-            Long id) {
+                Contact updated = contactRepository.save(contact);
 
-        Contact contact = contactRepository.findById(id)
-                .orElseThrow(() -> new ContactNotFoundException(id));
+                return ContactMapper.toDTO(updated);
 
-        contactRepository.delete(contact);
+        }
 
-    }
+        @Override
+        public void deleteContact(
+                        Long id) {
+
+                Contact contact = contactRepository.findById(id)
+                                .orElseThrow(() -> new ContactNotFoundException(id));
+
+                contactRepository.delete(contact);
+
+        }
 
 }

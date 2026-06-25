@@ -32,4 +32,14 @@ public class Contact {
     @JoinColumn(name = "patrol_id")
     private Patrol patrol;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Nation nation;
+
+    @Column(nullable = false)
+    private Integer confidenceLevel;
+
+    @Column(length = 1000)
+    private String notes;
+
 }

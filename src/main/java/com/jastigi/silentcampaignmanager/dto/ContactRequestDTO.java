@@ -3,6 +3,7 @@ package com.jastigi.silentcampaignmanager.dto;
 import java.time.LocalDate;
 
 import com.jastigi.silentcampaignmanager.entity.ContactType;
+import com.jastigi.silentcampaignmanager.entity.Nation;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 
 import jakarta.validation.constraints.NotBlank;
@@ -23,5 +24,13 @@ public class ContactRequestDTO {
 
     @NotNull
     private LocalDate detectionDate;
+
+    @NotNull
+    private Nation nation;
+
+    @NotNull
+    private Integer confidenceLevel;
+
+    private String notes;
 
 }
