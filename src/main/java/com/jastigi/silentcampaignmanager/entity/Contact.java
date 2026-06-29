@@ -42,4 +42,7 @@ public class Contact {
     @Column(length = 1000)
     private String notes;
 
+    @Enumerated(EnumType.STRING)
+    private SubmarineClass submarineClass;
+
 }

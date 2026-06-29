@@ -19,208 +19,217 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class PatrolReportGenerator {
 
-    private final RiskScoreCalculator riskScoreCalculator;
+        private final RiskScoreCalculator riskScoreCalculator;
 
-    public PatrolReportDTO generate(
-            Patrol patrol,
-            List<Contact> contacts,
-            List<PatrolEvent> events) {
+        public PatrolReportDTO generate(
+                        Patrol patrol,
+                        List<Contact> contacts,
+                        List<PatrolEvent> events) {
 
-        PatrolReportDTO report = new PatrolReportDTO();
+                PatrolReportDTO report = new PatrolReportDTO();
 
-        fillPatrolInformation(
-                report,
-                patrol);
+                fillPatrolInformation(
+                                report,
+                                patrol);
 
-        fillContactStatistics(
-                report,
-                contacts);
+                fillContactStatistics(
+                                report,
+                                contacts);
 
-        fillThreatAssessment(
-                report,
-                contacts);
+                fillThreatAssessment(
+                                report,
+                                contacts);
 
-        fillIntelligenceAssessment(
-                report,
-                contacts);
+                fillIntelligenceAssessment(
+                                report,
+                                contacts);
 
-        fillEventStatistics(
-                report,
-                events);
+                fillEventStatistics(
+                                report,
+                                events);
 
-        calculateRiskScore(
-                report);
+                calculateRiskScore(
+                                report, contacts, events);
 
-        calculateMissionStatus(
-                report);
+                calculateMissionStatus(
+                                report);
 
-        return report;
-    }
+                return report;
+        }
 
-    private void fillPatrolInformation(
-            PatrolReportDTO report,
-            Patrol patrol) {
+        private void fillPatrolInformation(
+                        PatrolReportDTO report,
+                        Patrol patrol) {
 
-        report.setPatrolId(
-                patrol.getId());
+                report.setPatrolId(
+                                patrol.getId());
 
-        report.setPatrolName(
-                patrol.getPatrolName());
+                report.setPatrolName(
+                                patrol.getPatrolName());
 
-        report.setCampaignId(
-                patrol.getCampaign().getId());
+                report.setCampaignId(
+                                patrol.getCampaign().getId());
 
-        report.setCampaignName(
-                patrol.getCampaign().getName());
+                report.setCampaignName(
+                                patrol.getCampaign().getName());
 
-        report.setSubmarineId(
-                patrol.getSubmarine().getId());
+                report.setSubmarineId(
+                                patrol.getSubmarine().getId());
 
-        report.setSubmarineName(
-                patrol.getSubmarine().getName());
+                report.setSubmarineName(
+                                patrol.getSubmarine().getName());
 
-        report.setSubmarineClass(
-                patrol.getSubmarine()
-                        .getSubmarineClass()
-                        .name());
+                report.setSubmarineClass(
+                                patrol.getSubmarine()
+                                                .getSubmarineClass()
+                                                .name());
 
-        report.setMissionStatus(
-                MissionStatus.SUCCESS);
-
-    }
-
-    private void fillContactStatistics(
-            PatrolReportDTO report,
-            List<Contact> contacts) {
-
-        report.setContactsDetected(
-                contacts.size());
-
-        report.setSubmarineContacts(
-
-                (int) contacts.stream()
-
-                        .filter(contact -> contact.getContactType() == ContactType.SUBMARINE)
-
-                        .count());
-
-        report.setSurfaceContacts(
-
-                (int) contacts.stream()
-
-                        .filter(contact -> contact.getContactType() == ContactType.SURFACE_SHIP)
-
-                        .count());
-
-        report.setAircraftContacts(
-
-                (int) contacts.stream()
-
-                        .filter(contact -> contact.getContactType() == ContactType.AIRCRAFT)
-
-                        .count());
-
-        report.setUnknownContacts(
-
-                (int) contacts.stream()
-
-                        .filter(contact -> contact.getContactType() == ContactType.UNKNOWN)
-
-                        .count());
-
-    }
-
-    private void fillThreatAssessment(
-            PatrolReportDTO report,
-            List<Contact> contacts) {
-
-        report.setHighThreatContacts(
-
-                (int) contacts.stream()
-
-                        .filter(contact -> contact.getThreatLevel() == ThreatLevel.HIGH)
-
-                        .count());
-
-        report.setCriticalContacts(
-
-                (int) contacts.stream()
-
-                        .filter(contact -> contact.getThreatLevel() == ThreatLevel.CRITICAL)
-
-                        .count());
-
-    }
-
-    private void fillIntelligenceAssessment(
-            PatrolReportDTO report,
-            List<Contact> contacts) {
-
-        int averageConfidence =
-
-                (int) contacts.stream()
-
-                        .mapToInt(Contact::getConfidenceLevel)
-
-                        .average()
-
-                        .orElse(0);
-
-        report.setAverageConfidence(
-                averageConfidence);
-
-    }
-
-    private void fillEventStatistics(
-            PatrolReportDTO report,
-            List<PatrolEvent> events) {
-
-        report.setEventsRecorded(
-                events.size());
-
-        report.setCriticalEvents(
-
-                (int) events.stream()
-
-                        .filter(event -> event.getSeverity() >= 4)
-
-                        .count());
-
-    }
-
-    private void calculateRiskScore(
-            PatrolReportDTO report) {
-
-        report.setRiskScore(
-
-                riskScoreCalculator.calculate(
-                        report));
-    }
-
-    private void calculateMissionStatus(
-            PatrolReportDTO report) {
-
-        if (report.getRiskScore() >= 40) {
-
-            report.setMissionStatus(
-                    MissionStatus.FAILED);
+                report.setMissionStatus(
+                                MissionStatus.SUCCESS);
 
         }
 
-        else if (report.getRiskScore() >= 20) {
+        private void fillContactStatistics(
+                        PatrolReportDTO report,
+                        List<Contact> contacts) {
 
-            report.setMissionStatus(
-                    MissionStatus.PARTIAL_SUCCESS);
+                report.setContactsDetected(
+                                contacts.size());
+
+                report.setSubmarineContacts(
+
+                                (int) contacts.stream()
+
+                                                .filter(contact -> contact.getContactType() == ContactType.SUBMARINE)
+
+                                                .count());
+
+                report.setSurfaceContacts(
+
+                                (int) contacts.stream()
+
+                                                .filter(contact -> contact.getContactType() == ContactType.SURFACE_SHIP)
+
+                                                .count());
+
+                report.setAircraftContacts(
+
+                                (int) contacts.stream()
+
+                                                .filter(contact -> contact.getContactType() == ContactType.AIRCRAFT)
+
+                                                .count());
+
+                report.setUnknownContacts(
+
+                                (int) contacts.stream()
+
+                                                .filter(contact -> contact.getContactType() == ContactType.UNKNOWN)
+
+                                                .count());
 
         }
 
-        else {
+        private void fillThreatAssessment(
+                        PatrolReportDTO report,
+                        List<Contact> contacts) {
 
-            report.setMissionStatus(
-                    MissionStatus.SUCCESS);
+                report.setHighThreatContacts(
+
+                                (int) contacts.stream()
+
+                                                .filter(contact -> contact.getThreatLevel() == ThreatLevel.HIGH)
+
+                                                .count());
+
+                report.setCriticalContacts(
+
+                                (int) contacts.stream()
+
+                                                .filter(contact -> contact.getThreatLevel() == ThreatLevel.CRITICAL)
+
+                                                .count());
 
         }
 
-    }
+        private void fillIntelligenceAssessment(
+                        PatrolReportDTO report,
+                        List<Contact> contacts) {
+
+                int averageConfidence =
+
+                                (int) contacts.stream()
+
+                                                .mapToInt(Contact::getConfidenceLevel)
+
+                                                .average()
+
+                                                .orElse(0);
+
+                report.setAverageConfidence(
+                                averageConfidence);
+
+        }
+
+        private void fillEventStatistics(
+                        PatrolReportDTO report,
+                        List<PatrolEvent> events) {
+
+                report.setEventsRecorded(
+                                events.size());
+
+                report.setCriticalEvents(
+
+                                (int) events.stream()
+
+                                                .filter(event -> event.getSeverity() >= 4)
+
+                                                .count());
+
+        }
+
+        private void calculateRiskScore(
+
+                        PatrolReportDTO report,
+
+                        List<Contact> contacts,
+
+                        List<PatrolEvent> events) {
+
+                report.setRiskScore(
+
+                                riskScoreCalculator.calculate(
+
+                                                contacts,
+
+                                                events));
+
+        }
+
+        private void calculateMissionStatus(
+                        PatrolReportDTO report) {
+
+                if (report.getRiskScore() >= 40) {
+
+                        report.setMissionStatus(
+                                        MissionStatus.FAILED);
+
+                }
+
+                else if (report.getRiskScore() >= 20) {
+
+                        report.setMissionStatus(
+                                        MissionStatus.PARTIAL_SUCCESS);
+
+                }
+
+                else {
+
+                        report.setMissionStatus(
+                                        MissionStatus.SUCCESS);
+
+                }
+
+        }
 
 }

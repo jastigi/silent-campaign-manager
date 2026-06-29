@@ -1,23 +1,29 @@
 package com.jastigi.silentcampaignmanager.service.scoring;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
-import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
+import com.jastigi.silentcampaignmanager.entity.Contact;
+import com.jastigi.silentcampaignmanager.entity.PatrolEvent;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Component
 public class RiskScoreCalculator {
 
-    public int calculate(PatrolReportDTO report) {
+    private final ContactRiskCalculator contactRiskCalculator;
 
-        int score = 0;
+    public int calculate(List<Contact> contacts, List<PatrolEvent> events) {
 
-        score += report.getCriticalContacts() * 10;
+        int contactRisk = contactRiskCalculator.calculate(contacts);
 
-        score += report.getHighThreatContacts() * 5;
+        int eventRisk = (int) events.stream()
+                .mapToInt(PatrolEvent::getSeverity)
+                .sum();
 
-        score += report.getCriticalEvents() * 5;
-
-        return score;
+        return contactRisk + eventRisk;
     }
 
 }

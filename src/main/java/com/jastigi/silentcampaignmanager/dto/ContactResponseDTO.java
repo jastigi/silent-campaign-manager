@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import com.jastigi.silentcampaignmanager.entity.ContactType;
 import com.jastigi.silentcampaignmanager.entity.Nation;
+import com.jastigi.silentcampaignmanager.entity.NationAlignment;
+import com.jastigi.silentcampaignmanager.entity.SubmarineClass;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 
 import lombok.Data;
@@ -25,8 +27,12 @@ public class ContactResponseDTO {
 
     private Nation nation;
 
+    private NationAlignment nationAlignment;
+
     private Integer confidenceLevel;
 
     private String notes;
+
+    private SubmarineClass submarineClass;
 
 }

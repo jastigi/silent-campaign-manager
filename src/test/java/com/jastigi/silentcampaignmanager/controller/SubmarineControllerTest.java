@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.jastigi.silentcampaignmanager.dto.SubmarineRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.SubmarineResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.SubmarineClass;
+import com.jastigi.silentcampaignmanager.entity.SubmarineRole;
 import com.jastigi.silentcampaignmanager.entity.SubmarineStatus;
 import com.jastigi.silentcampaignmanager.entity.SubmarineType;
 import com.jastigi.silentcampaignmanager.security.JwtService;
@@ -48,6 +49,7 @@ class SubmarineControllerTest {
         response.setName("USS Dallas");
         response.setType(SubmarineType.SSN);
         response.setSubmarineClass(SubmarineClass.LOS_ANGELES);
+        response.setSubmarineRole(SubmarineRole.SSN);
         response.setNation("USA");
         response.setStatus(SubmarineStatus.ACTIVE);
 
@@ -60,6 +62,7 @@ class SubmarineControllerTest {
                     "name": "USS Dallas",
                     "type": "SSN",
                     "submarineClass": "LOS_ANGELES",
+                    "submarineRole": "SSN",
                     "nation": "USA",
                     "status": "ACTIVE"
                 }
@@ -86,6 +89,7 @@ class SubmarineControllerTest {
         submarine.setName("USS Dallas");
         submarine.setType(SubmarineType.SSN);
         submarine.setSubmarineClass(SubmarineClass.LOS_ANGELES);
+        submarine.setSubmarineRole(SubmarineRole.SSN);
         submarine.setNation("USA");
         submarine.setStatus(SubmarineStatus.ACTIVE);
 
@@ -128,6 +132,7 @@ class SubmarineControllerTest {
         response.setName("USS Dallas");
         response.setType(SubmarineType.SSN);
         response.setSubmarineClass(SubmarineClass.LOS_ANGELES);
+        response.setSubmarineRole(SubmarineRole.SSN);
         response.setNation("USA");
         response.setStatus(SubmarineStatus.ACTIVE);
 
@@ -162,6 +167,7 @@ class SubmarineControllerTest {
         response.setName("USS Dallas Updated");
         response.setType(SubmarineType.SSN);
         response.setSubmarineClass(SubmarineClass.LOS_ANGELES);
+        response.setSubmarineRole(SubmarineRole.SSN);
         response.setNation("USA");
         response.setStatus(SubmarineStatus.REFIT);
 
@@ -174,6 +180,7 @@ class SubmarineControllerTest {
                     "name": "USS Dallas Updated",
                     "type": "SSN",
                     "submarineClass": "LOS_ANGELES",
+                    "submarineRole": "SSN",
                     "nation": "USA",
                     "status": "REFIT"
                 }

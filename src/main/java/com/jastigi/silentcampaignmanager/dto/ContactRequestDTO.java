@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import com.jastigi.silentcampaignmanager.entity.ContactType;
 import com.jastigi.silentcampaignmanager.entity.Nation;
+import com.jastigi.silentcampaignmanager.entity.NationAlignment;
+import com.jastigi.silentcampaignmanager.entity.SubmarineClass;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 
 import jakarta.validation.constraints.NotBlank;
@@ -32,5 +34,7 @@ public class ContactRequestDTO {
     private Integer confidenceLevel;
 
     private String notes;
+
+    private SubmarineClass submarineClass;
 
 }

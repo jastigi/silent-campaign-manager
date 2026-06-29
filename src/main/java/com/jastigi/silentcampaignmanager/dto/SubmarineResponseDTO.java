@@ -1,6 +1,7 @@
 package com.jastigi.silentcampaignmanager.dto;
 
 import com.jastigi.silentcampaignmanager.entity.SubmarineClass;
+import com.jastigi.silentcampaignmanager.entity.SubmarineRole;
 import com.jastigi.silentcampaignmanager.entity.SubmarineStatus;
 import com.jastigi.silentcampaignmanager.entity.SubmarineType;
 
@@ -20,5 +21,7 @@ public class SubmarineResponseDTO {
     private String nation;
 
     private SubmarineStatus status;
+
+    private SubmarineRole submarineRole;
 
 }

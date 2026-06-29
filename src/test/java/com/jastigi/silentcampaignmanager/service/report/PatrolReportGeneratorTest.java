@@ -1,5 +1,6 @@
 package com.jastigi.silentcampaignmanager.service.report;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -96,7 +97,8 @@ class PatrolReportGeneratorTest {
 
         List<PatrolEvent> events = List.of(criticalEvent, minorEvent);
 
-        when(riskScoreCalculator.calculate(anyReport()))
+        when(riskScoreCalculator.calculate(
+                any(), any()))
                 .thenReturn(15);
 
         PatrolReportDTO report = generator.generate(
@@ -138,7 +140,8 @@ class PatrolReportGeneratorTest {
 
         Patrol patrol = createBasicPatrol();
 
-        when(riskScoreCalculator.calculate(anyReport()))
+        when(riskScoreCalculator.calculate(
+                any(), any()))
                 .thenReturn(45);
 
         PatrolReportDTO report = generator.generate(
@@ -153,7 +156,8 @@ class PatrolReportGeneratorTest {
 
         Patrol patrol = createBasicPatrol();
 
-        when(riskScoreCalculator.calculate(anyReport()))
+        when(riskScoreCalculator.calculate(
+                any(), any()))
                 .thenReturn(25);
 
         PatrolReportDTO report = generator.generate(
@@ -168,7 +172,8 @@ class PatrolReportGeneratorTest {
 
         Patrol patrol = createBasicPatrol();
 
-        when(riskScoreCalculator.calculate(anyReport()))
+        when(riskScoreCalculator.calculate(
+                any(), any()))
                 .thenReturn(0);
 
         PatrolReportDTO report = generator.generate(
@@ -204,11 +209,6 @@ class PatrolReportGeneratorTest {
         patrol.setSubmarine(submarine);
 
         return patrol;
-    }
-
-    private PatrolReportDTO anyReport() {
-        return org.mockito.ArgumentMatchers.any(
-                PatrolReportDTO.class);
     }
 
 }

@@ -21,6 +21,8 @@ public class ContactMapper {
                 contact.setNation(dto.getNation());
                 contact.setConfidenceLevel(dto.getConfidenceLevel());
                 contact.setNotes(dto.getNotes());
+                contact.setSubmarineClass(
+                                dto.getSubmarineClass());
 
                 return contact;
         }
@@ -40,6 +42,8 @@ public class ContactMapper {
                 dto.setDetectionDate(
                                 contact.getDetectionDate());
                 dto.setNation(contact.getNation());
+                dto.setNationAlignment(
+                                contact.getNation().getAlignment());
                 dto.setConfidenceLevel(contact.getConfidenceLevel());
                 dto.setNotes(contact.getNotes());
 
@@ -47,6 +51,9 @@ public class ContactMapper {
                         dto.setPatrolId(
                                         contact.getPatrol().getId());
                 }
+
+                dto.setSubmarineClass(
+                                contact.getSubmarineClass());
 
                 return dto;
         }

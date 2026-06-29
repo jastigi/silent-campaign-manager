@@ -39,4 +39,7 @@ public class Submarine {
     @JsonIgnore
     private List<Patrol> patrols = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private SubmarineRole submarineRole;
+
 }

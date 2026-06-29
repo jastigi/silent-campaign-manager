@@ -2,18 +2,36 @@ package com.jastigi.silentcampaignmanager.entity;
 
 public enum SubmarineClass {
 
-    OHIO,
-    LOS_ANGELES,
-    STURGEON,
-    SEAWOLF,
+    OHIO(SubmarineRole.SSBN),
 
-    RESOLUTION,
-    SWIFTSURE,
-    TRAFALGAR,
+    LOS_ANGELES(SubmarineRole.SSN),
 
-    DELTA_IV,
-    TYPHOON,
-    VICTOR_III,
-    AKULA
+    STURGEON(SubmarineRole.SSN),
+
+    SEAWOLF(SubmarineRole.SSN),
+
+    RESOLUTION(SubmarineRole.SSBN),
+
+    SWIFTSURE(SubmarineRole.SSN),
+
+    TRAFALGAR(SubmarineRole.SSN),
+
+    DELTA_IV(SubmarineRole.SSBN),
+
+    TYPHOON(SubmarineRole.SSBN),
+
+    VICTOR_III(SubmarineRole.SSN),
+
+    AKULA(SubmarineRole.SSN);
+
+    private final SubmarineRole role;
+
+    SubmarineClass(SubmarineRole role) {
+        this.role = role;
+    }
+
+    public SubmarineRole getRole() {
+        return role;
+    }
 
 }

@@ -7,6 +7,25 @@ public enum Nation {
     UK,
     FRANCE,
     NATO,
-    UNKNOWN
+    UNKNOWN;
+
+    public NationAlignment getAlignment() {
+
+        return switch (this) {
+
+            case USA, UK, NATO ->
+                    NationAlignment.FRIENDLY;
+
+            case USSR ->
+                    NationAlignment.HOSTILE;
+
+            case FRANCE ->
+                    NationAlignment.NEUTRAL;
+
+            default ->
+                    NationAlignment.UNKNOWN;
+
+        };
+    }
 
 }

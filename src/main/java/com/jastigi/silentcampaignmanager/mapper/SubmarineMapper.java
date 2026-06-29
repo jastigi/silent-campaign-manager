@@ -20,6 +20,7 @@ public class SubmarineMapper {
                 dto.getSubmarineClass());
         submarine.setNation(dto.getNation());
         submarine.setStatus(dto.getStatus());
+        submarine.setSubmarineRole(dto.getSubmarineRole());
 
         return submarine;
     }
@@ -35,6 +36,7 @@ public class SubmarineMapper {
         dto.setSubmarineClass(submarine.getSubmarineClass());
         dto.setNation(submarine.getNation());
         dto.setStatus(submarine.getStatus());
+        dto.setSubmarineRole(submarine.getSubmarineRole());
 
         return dto;
     }
