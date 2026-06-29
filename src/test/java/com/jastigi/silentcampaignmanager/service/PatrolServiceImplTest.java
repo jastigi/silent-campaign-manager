@@ -11,10 +11,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.Campaign;
 import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
+import com.jastigi.silentcampaignmanager.entity.MissionStatus;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.entity.Submarine;
@@ -25,9 +27,12 @@ import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.exception.PatrolNotFoundException;
 import com.jastigi.silentcampaignmanager.exception.SubmarineNotFoundException;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
+import com.jastigi.silentcampaignmanager.repository.ContactRepository;
+import com.jastigi.silentcampaignmanager.repository.PatrolEventRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
 import com.jastigi.silentcampaignmanager.repository.SubmarineRepository;
 import com.jastigi.silentcampaignmanager.service.impl.PatrolServiceImpl;
+import com.jastigi.silentcampaignmanager.service.report.PatrolReportGenerator;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -44,6 +49,15 @@ class PatrolServiceImplTest {
 
     @Mock
     private SubmarineRepository submarineRepository;
+
+    @Mock
+    private ContactRepository contactRepository;
+
+    @Mock
+    private PatrolEventRepository patrolEventRepository;
+
+    @Mock
+    private PatrolReportGenerator patrolReportGenerator;
 
     @InjectMocks
     private PatrolServiceImpl patrolService;
@@ -275,6 +289,54 @@ class PatrolServiceImplTest {
         assertThrows(
                 PatrolNotFoundException.class,
                 () -> patrolService.deletePatrol(999L));
+    }
+
+    @Test
+    void shouldGeneratePatrolReportSuccessfully() {
+
+        Patrol patrol = new Patrol();
+        patrol.setId(1L);
+        patrol.setPatrolName("North Atlantic Transit");
+
+        PatrolReportDTO expectedReport = new PatrolReportDTO();
+        expectedReport.setPatrolId(1L);
+        expectedReport.setPatrolName("North Atlantic Transit");
+        expectedReport.setMissionStatus(MissionStatus.SUCCESS);
+
+        when(patrolRepository.findById(1L))
+                .thenReturn(Optional.of(patrol));
+        when(contactRepository.findByPatrolId(1L))
+                .thenReturn(List.of());
+        when(patrolEventRepository.findByPatrolId(1L))
+                .thenReturn(List.of());
+        when(patrolReportGenerator.generate(
+                patrol, List.of(), List.of()))
+                .thenReturn(expectedReport);
+
+        PatrolReportDTO result = patrolService
+                .generatePatrolReport(1L);
+
+        assertEquals(1L, result.getPatrolId());
+        assertEquals(MissionStatus.SUCCESS,
+                result.getMissionStatus());
+
+        verify(patrolRepository).findById(1L);
+        verify(contactRepository).findByPatrolId(1L);
+        verify(patrolEventRepository).findByPatrolId(1L);
+        verify(patrolReportGenerator).generate(
+                patrol, List.of(), List.of());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenGeneratingReportForNonExistentPatrol() {
+
+        when(patrolRepository.findById(999L))
+                .thenReturn(Optional.empty());
+
+        assertThrows(
+                PatrolNotFoundException.class,
+                () -> patrolService
+                        .generatePatrolReport(999L));
     }
 
 }

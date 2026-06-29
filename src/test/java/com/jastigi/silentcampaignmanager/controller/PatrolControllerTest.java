@@ -17,8 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
+import com.jastigi.silentcampaignmanager.entity.MissionStatus;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.security.JwtService;
 import com.jastigi.silentcampaignmanager.service.PatrolService;
@@ -119,6 +121,28 @@ class PatrolControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    void shouldGetPatrolReport() throws Exception {
+
+        PatrolReportDTO report = new PatrolReportDTO();
+        report.setPatrolId(1L);
+        report.setPatrolName("North Atlantic Transit");
+        report.setMissionStatus(MissionStatus.SUCCESS);
+
+        when(patrolService.generatePatrolReport(1L))
+                .thenReturn(report);
+
+        mockMvc.perform(
+                get("/api/v1/campaigns/1/patrols/1/report")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.patrolId").value(1L))
+                .andExpect(jsonPath("$.patrolName")
+                        .value("North Atlantic Transit"))
+                .andExpect(jsonPath("$.missionStatus")
+                        .value("SUCCESS"));
     }
 
 }
