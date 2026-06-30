@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.jastigi.silentcampaignmanager.entity.Contact;
@@ -11,10 +12,26 @@ import com.jastigi.silentcampaignmanager.entity.ContactType;
 import com.jastigi.silentcampaignmanager.entity.Nation;
 import com.jastigi.silentcampaignmanager.entity.SubmarineClass;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
+import com.jastigi.silentcampaignmanager.service.scoring.ContactRiskCalculator;
+import com.jastigi.silentcampaignmanager.service.scoring.strategy.AircraftRiskStrategy;
+import com.jastigi.silentcampaignmanager.service.scoring.strategy.ConfidenceModifier;
+import com.jastigi.silentcampaignmanager.service.scoring.strategy.SurfaceShipRiskStrategy;
+import com.jastigi.silentcampaignmanager.service.scoring.strategy.SubmarineRiskStrategy;
+import com.jastigi.silentcampaignmanager.service.scoring.strategy.UnknownRiskStrategy;
 
 class ContactRiskCalculatorTest {
 
-    private final ContactRiskCalculator calculator = new ContactRiskCalculator();
+    private ContactRiskCalculator calculator;
+
+    @BeforeEach
+    void setUp() {
+        ConfidenceModifier confidenceModifier = new ConfidenceModifier();
+        calculator = new ContactRiskCalculator(List.of(
+                new SubmarineRiskStrategy(confidenceModifier),
+                new SurfaceShipRiskStrategy(confidenceModifier),
+                new AircraftRiskStrategy(confidenceModifier),
+                new UnknownRiskStrategy()));
+    }
 
     @Test
     void ssbnHostileReturns40() {

@@ -1,17 +1,39 @@
 package com.jastigi.silentcampaignmanager.service.scoring;
 
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
 import com.jastigi.silentcampaignmanager.entity.Contact;
+import com.jastigi.silentcampaignmanager.entity.ContactType;
 import com.jastigi.silentcampaignmanager.entity.NationAlignment;
-
-import lombok.RequiredArgsConstructor;
+import com.jastigi.silentcampaignmanager.service.scoring.strategy.ContactRiskStrategy;
 
 @Component
-@RequiredArgsConstructor
 public class ContactRiskCalculator {
+
+    private final List<ContactRiskStrategy> strategies;
+
+    private final Map<ContactType, ContactRiskStrategy> strategyMap = new EnumMap<>(ContactType.class);
+
+    public ContactRiskCalculator(List<ContactRiskStrategy> strategies) {
+        this.strategies = strategies;
+        initializeStrategies();
+    }
+
+    private void initializeStrategies() {
+
+        for (ContactRiskStrategy strategy : strategies) {
+
+            strategyMap.put(
+                    strategy.getSupportedType(),
+                    strategy);
+
+        }
+
+    }
 
     public int calculate(List<Contact> contacts) {
 
@@ -32,121 +54,18 @@ public class ContactRiskCalculator {
             return 0;
         }
 
-        return switch (contact.getContactType()) {
+        ContactRiskStrategy strategy = strategyMap.get(contact.getContactType());
 
-            case SUBMARINE ->
-                calculateSubmarineRisk(contact);
+        if (strategy == null) {
 
-            case SURFACE_SHIP ->
-                calculateSurfaceShipRisk(contact);
+            throw new IllegalStateException(
+                    "No strategy found for contact type: "
+                            + contact.getContactType());
 
-            case AIRCRAFT ->
-                calculateAircraftRisk(contact);
-
-            case UNKNOWN ->
-                calculateUnknownRisk(contact);
-        };
-
-    }
-
-    private int calculateSubmarineRisk(Contact contact) {
-
-        if (contact.getSubmarineClass() == null) {
-            return 20;
         }
 
-        return switch (contact.getSubmarineClass().getRole()) {
+        return strategy.calculate(contact);
 
-            case SSBN -> (int) (RiskValues.SSBN *
-                    getConfidenceModifier(contact));
-
-            case SSN -> (int) (RiskValues.SSN *
-                    getConfidenceModifier(contact));
-
-        };
-
-    }
-
-    private int calculateSurfaceShipRisk(Contact contact) {
-
-        return switch (contact.getThreatLevel()) {
-
-            case LOW ->
-
-                (int) (RiskValues.SURFACE_LOW *
-                        getConfidenceModifier(contact));
-
-            case MEDIUM ->
-
-                (int) (RiskValues.SURFACE_MEDIUM *
-                        getConfidenceModifier(contact));
-
-            case HIGH ->
-
-                (int) (RiskValues.SURFACE_HIGH *
-                        getConfidenceModifier(contact));
-
-            case CRITICAL ->
-
-                (int) (RiskValues.SURFACE_CRITICAL *
-                        getConfidenceModifier(contact));
-        };
-
-    }
-
-    private int calculateAircraftRisk(Contact contact) {
-
-        return switch (contact.getThreatLevel()) {
-
-            case LOW ->
-
-                (int) (RiskValues.AIR_LOW *
-                        getConfidenceModifier(contact));
-
-            case MEDIUM ->
-
-                (int) (RiskValues.AIR_MEDIUM *
-                        getConfidenceModifier(contact));
-
-            case HIGH ->
-
-                (int) (RiskValues.AIR_HIGH *
-                        getConfidenceModifier(contact));
-
-            case CRITICAL ->
-
-                (int) (RiskValues.AIR_CRITICAL *
-                        getConfidenceModifier(contact));
-        };
-
-    }
-
-    private int calculateUnknownRisk(Contact contact) {
-
-        return 15;
-    }
-
-    private double getConfidenceModifier(Contact contact) {
-
-        Integer confidence = contact.getConfidenceLevel();
-
-        if (confidence == null) {
-            return 0.5;
-        }
-
-        if (confidence >= 90) {
-            return 1.0;
-        }
-
-        if (confidence >= 75) {
-            return 0.9;
-        }
-
-        if (confidence >= 50) {
-            return 0.75;
-        }
-
-        return 0.5;
     }
 
     private boolean isHostile(Contact contact) {

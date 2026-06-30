@@ -8,38 +8,42 @@ import com.jastigi.silentcampaignmanager.service.scoring.RiskValues;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Component
-public class SubmarineRiskStrategy implements ContactRiskStrategy {
+@RequiredArgsConstructor
+public class AircraftRiskStrategy implements ContactRiskStrategy {
 
     private final ConfidenceModifier confidenceModifier;
 
     @Override
     public ContactType getSupportedType() {
 
-        return ContactType.SUBMARINE;
+        return ContactType.AIRCRAFT;
 
     }
 
     @Override
     public int calculate(Contact contact) {
 
-        if (contact.getSubmarineClass() == null) {
+        return switch (contact.getThreatLevel()) {
 
-            return 20;
+            case LOW ->
 
-        }
-
-        return switch (contact.getSubmarineClass().getRole()) {
-
-            case SSBN ->
-
-                (int) (RiskValues.SSBN
+                (int) (RiskValues.AIR_LOW
                         * confidenceModifier.calculate(contact));
 
-            case SSN ->
+            case MEDIUM ->
 
-                (int) (RiskValues.SSN
+                (int) (RiskValues.AIR_MEDIUM
+                        * confidenceModifier.calculate(contact));
+
+            case HIGH ->
+
+                (int) (RiskValues.AIR_HIGH
+                        * confidenceModifier.calculate(contact));
+
+            case CRITICAL ->
+
+                (int) (RiskValues.AIR_CRITICAL
                         * confidenceModifier.calculate(contact));
 
         };

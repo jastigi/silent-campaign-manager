@@ -1,4 +1,4 @@
-package com.jastigi.silentcampaignmanager.service.scoring;
+package com.jastigi.silentcampaignmanager.service.scoring.strategy;
 
 import org.springframework.stereotype.Component;
 
