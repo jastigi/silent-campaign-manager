@@ -23,6 +23,7 @@ import com.jastigi.silentcampaignmanager.entity.Nation;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolEvent;
 import com.jastigi.silentcampaignmanager.entity.PatrolEventType;
+import com.jastigi.silentcampaignmanager.entity.MissionType;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.entity.Submarine;
 import com.jastigi.silentcampaignmanager.entity.SubmarineClass;
@@ -62,6 +63,7 @@ class PatrolReportGeneratorTest {
         patrol.setPatrolDate(LocalDate.of(2026, 6, 12));
         patrol.setArea("North Atlantic");
         patrol.setResult(PatrolResult.SUCCESS);
+        patrol.setMissionType(MissionType.DETERRENCE_PATROL);
         patrol.setCampaign(campaign);
         patrol.setSubmarine(submarine);
 
@@ -205,6 +207,7 @@ class PatrolReportGeneratorTest {
         Patrol patrol = new Patrol();
         patrol.setId(1L);
         patrol.setPatrolName("Test Patrol");
+        patrol.setMissionType(MissionType.DETERRENCE_PATROL);
         patrol.setCampaign(campaign);
         patrol.setSubmarine(submarine);
 

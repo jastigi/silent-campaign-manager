@@ -15,6 +15,7 @@ public class PatrolMapper {
         patrol.setPatrolDate(dto.getPatrolDate());
         patrol.setArea(dto.getArea());
         patrol.setResult(dto.getResult());
+        patrol.setMissionType(dto.getMissionType());
 
         return patrol;
     }
@@ -43,6 +44,8 @@ public class PatrolMapper {
             dto.setSubmarineName(
                     patrol.getSubmarine().getName());
         }
+
+        dto.setMissionType(patrol.getMissionType());
 
         return dto;
     }

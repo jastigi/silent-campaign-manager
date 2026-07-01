@@ -52,4 +52,8 @@ public class Patrol {
     @JsonIgnore
     private List<PatrolEvent> events = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MissionType missionType;
+
 }

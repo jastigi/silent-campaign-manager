@@ -21,6 +21,7 @@ import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.MissionStatus;
+import com.jastigi.silentcampaignmanager.entity.MissionType;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.security.JwtService;
 import com.jastigi.silentcampaignmanager.service.PatrolService;
@@ -46,6 +47,7 @@ class PatrolControllerTest {
         response.setPatrolDate(java.time.LocalDate.of(2026, 6, 12));
         response.setArea("North Atlantic");
         response.setResult(PatrolResult.SUCCESS);
+        response.setMissionType(MissionType.DETERRENCE_PATROL);
         response.setCampaignId(1L);
         response.setSubmarineId(1L);
         response.setSubmarineName("USS Dallas");
@@ -60,7 +62,8 @@ class PatrolControllerTest {
                     "patrolDate": "2026-06-12",
                     "area": "North Atlantic",
                     "result": "SUCCESS",
-                    "submarineId": 1
+                    "submarineId": 1,
+                    "missionType": "DETERRENCE_PATROL"
                 }
                 """;
 
@@ -82,7 +85,9 @@ class PatrolControllerTest {
                 .andExpect(jsonPath("$.submarineId")
                         .value(1L))
                 .andExpect(jsonPath("$.submarineName")
-                        .value("USS Dallas"));
+                        .value("USS Dallas"))
+                .andExpect(jsonPath("$.missionType")
+                        .value("DETERRENCE_PATROL"));
     }
 
     @Test
@@ -92,6 +97,7 @@ class PatrolControllerTest {
         patrol.setId(1L);
         patrol.setPatrolName("North Atlantic Transit");
         patrol.setResult(PatrolResult.SUCCESS);
+        patrol.setMissionType(MissionType.DETERRENCE_PATROL);
         patrol.setCampaignId(1L);
 
         when(patrolService.getPatrolsByCampaign(1L))

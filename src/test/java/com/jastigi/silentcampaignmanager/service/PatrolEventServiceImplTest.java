@@ -16,6 +16,7 @@ import com.jastigi.silentcampaignmanager.dto.PatrolEventResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolEvent;
 import com.jastigi.silentcampaignmanager.entity.PatrolEventType;
+import com.jastigi.silentcampaignmanager.entity.MissionType;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.exception.PatrolEventNotFoundException;
 import com.jastigi.silentcampaignmanager.exception.PatrolNotFoundException;
@@ -54,6 +55,7 @@ class PatrolEventServiceImplTest {
         patrol.setId(patrolId);
         patrol.setPatrolName("North Atlantic Transit");
         patrol.setResult(PatrolResult.SUCCESS);
+        patrol.setMissionType(MissionType.DETERRENCE_PATROL);
 
         PatrolEvent savedEvent = new PatrolEvent();
         savedEvent.setId(1L);

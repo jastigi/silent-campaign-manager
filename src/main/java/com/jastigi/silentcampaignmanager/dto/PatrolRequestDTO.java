@@ -2,6 +2,7 @@ package com.jastigi.silentcampaignmanager.dto;
 
 import java.time.LocalDate;
 
+import com.jastigi.silentcampaignmanager.entity.MissionType;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 
 import jakarta.validation.constraints.NotBlank;
@@ -24,5 +25,8 @@ public class PatrolRequestDTO {
 
     @NotNull(message = "Submarine is required")
     private Long submarineId;
+
+    @NotNull
+    private MissionType missionType;
 
 }

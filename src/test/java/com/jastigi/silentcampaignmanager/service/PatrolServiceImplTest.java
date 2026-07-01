@@ -18,6 +18,7 @@ import com.jastigi.silentcampaignmanager.entity.Campaign;
 import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
 import com.jastigi.silentcampaignmanager.entity.MissionStatus;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
+import com.jastigi.silentcampaignmanager.entity.MissionType;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.entity.Submarine;
 import com.jastigi.silentcampaignmanager.entity.SubmarineClass;
@@ -73,6 +74,7 @@ class PatrolServiceImplTest {
         request.setArea("North Atlantic");
         request.setResult(PatrolResult.SUCCESS);
         request.setSubmarineId(1L);
+        request.setMissionType(MissionType.DETERRENCE_PATROL);
 
         Campaign campaign = new Campaign();
         campaign.setId(campaignId);
@@ -93,6 +95,7 @@ class PatrolServiceImplTest {
         savedPatrol.setPatrolDate(request.getPatrolDate());
         savedPatrol.setArea(request.getArea());
         savedPatrol.setResult(request.getResult());
+        savedPatrol.setMissionType(request.getMissionType());
         savedPatrol.setCampaign(campaign);
         savedPatrol.setSubmarine(submarine);
 
@@ -161,6 +164,7 @@ class PatrolServiceImplTest {
         patrol.setId(1L);
         patrol.setPatrolName("North Atlantic Transit");
         patrol.setResult(PatrolResult.SUCCESS);
+        patrol.setMissionType(MissionType.DETERRENCE_PATROL);
 
         when(patrolRepository.findByCampaignId(campaignId))
                 .thenReturn(List.of(patrol));
@@ -184,6 +188,7 @@ class PatrolServiceImplTest {
         patrol.setId(1L);
         patrol.setPatrolName("North Atlantic Transit");
         patrol.setResult(PatrolResult.SUCCESS);
+        patrol.setMissionType(MissionType.DETERRENCE_PATROL);
 
         when(patrolRepository.findById(1L))
                 .thenReturn(Optional.of(patrol));
@@ -219,6 +224,7 @@ class PatrolServiceImplTest {
         existingPatrol.setPatrolDate(LocalDate.of(2026, 1, 1));
         existingPatrol.setArea("Old Area");
         existingPatrol.setResult(PatrolResult.FAILURE);
+        existingPatrol.setMissionType(MissionType.DETERRENCE_PATROL);
 
         PatrolRequestDTO request = new PatrolRequestDTO();
         request.setPatrolName("Updated Name");
@@ -226,6 +232,7 @@ class PatrolServiceImplTest {
         request.setArea("Updated Area");
         request.setResult(PatrolResult.SUCCESS);
         request.setSubmarineId(1L);
+        request.setMissionType(MissionType.DETERRENCE_PATROL);
 
         Patrol updatedPatrol = new Patrol();
         updatedPatrol.setId(1L);
@@ -233,6 +240,7 @@ class PatrolServiceImplTest {
         updatedPatrol.setPatrolDate(request.getPatrolDate());
         updatedPatrol.setArea(request.getArea());
         updatedPatrol.setResult(request.getResult());
+        updatedPatrol.setMissionType(existingPatrol.getMissionType());
 
         when(patrolRepository.findById(1L))
                 .thenReturn(Optional.of(existingPatrol));
@@ -297,6 +305,7 @@ class PatrolServiceImplTest {
         Patrol patrol = new Patrol();
         patrol.setId(1L);
         patrol.setPatrolName("North Atlantic Transit");
+        patrol.setMissionType(MissionType.DETERRENCE_PATROL);
 
         PatrolReportDTO expectedReport = new PatrolReportDTO();
         expectedReport.setPatrolId(1L);

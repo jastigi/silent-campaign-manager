@@ -2,6 +2,7 @@ package com.jastigi.silentcampaignmanager.dto;
 
 import java.time.LocalDate;
 
+import com.jastigi.silentcampaignmanager.entity.MissionType;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 
 import lombok.Data;
@@ -24,5 +25,7 @@ public class PatrolResponseDTO {
     private Long submarineId;
 
     private String submarineName;
+
+    private MissionType missionType;
 
 }
