@@ -62,4 +62,8 @@ public class Patrol {
     @Column(nullable = false)
     private MissionType missionType;
 
+    @OneToMany(mappedBy = "patrol", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Contact> contacts = new ArrayList<>();
+
 }
