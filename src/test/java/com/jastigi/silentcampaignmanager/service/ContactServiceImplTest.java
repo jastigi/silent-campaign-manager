@@ -111,6 +111,9 @@ class ContactServiceImplTest {
 
         Long patrolId = 1L;
 
+        Patrol patrol = new Patrol();
+        patrol.setId(patrolId);
+
         Contact contact = new Contact();
         contact.setId(1L);
         contact.setContactName("Sierra-01");
@@ -119,6 +122,8 @@ class ContactServiceImplTest {
         contact.setNation(Nation.USSR);
         contact.setConfidenceLevel(85);
 
+        when(patrolRepository.findById(patrolId))
+                .thenReturn(Optional.of(patrol));
         when(contactRepository.findByPatrolId(patrolId))
                 .thenReturn(List.of(contact));
 
@@ -129,6 +134,40 @@ class ContactServiceImplTest {
         assertEquals(
                 "Sierra-01",
                 result.getFirst().getContactName());
+
+        verify(patrolRepository).findById(patrolId);
+        verify(contactRepository)
+                .findByPatrolId(patrolId);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenPatrolNotFoundOnGetContacts() {
+
+        Long patrolId = 999L;
+
+        when(patrolRepository.findById(patrolId))
+                .thenReturn(Optional.empty());
+
+        assertThrows(
+                PatrolNotFoundException.class,
+                () -> contactService.getContactsByPatrol(
+                        patrolId));
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoContacts() {
+
+        Long patrolId = 1L;
+
+        when(patrolRepository.findById(patrolId))
+                .thenReturn(Optional.of(new Patrol()));
+        when(contactRepository.findByPatrolId(patrolId))
+                .thenReturn(List.of());
+
+        List<ContactResponseDTO> result = contactService
+                .getContactsByPatrol(patrolId);
+
+        assertTrue(result.isEmpty());
 
         verify(contactRepository)
                 .findByPatrolId(patrolId);

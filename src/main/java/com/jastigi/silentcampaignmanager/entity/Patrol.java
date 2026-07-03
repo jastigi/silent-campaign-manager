@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jastigi.silentcampaignmanager.service.scoring.ContactRiskCalculator;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -56,6 +57,7 @@ public class Patrol {
 
     @OneToMany(mappedBy = "patrol", cascade = CascadeType.ALL)
     @JsonIgnore
+    @Builder.Default
     private List<PatrolEvent> events = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

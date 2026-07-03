@@ -47,6 +47,11 @@ public class ContactServiceImpl implements ContactService {
         @Override
         public List<ContactResponseDTO> getContactsByPatrol(
                         Long patrolId) {
+
+                patrolRepository.findById(patrolId)
+                                .orElseThrow(() -> new PatrolNotFoundException(
+                                                patrolId));
+
                 return contactRepository
                                 .findByPatrolId(patrolId)
                                 .stream()

@@ -64,6 +64,8 @@ The architecture has been designed to be scalable, testable and easy to extend w
 - Patrol event management
 - Patrol contact assignment
 - Patrol contact retrieval endpoint
+- Patrol contact assignment
+- Patrol contact retrieval endpoint
 
 ### Simulation
 
@@ -277,6 +279,8 @@ Skipped: 0
 - Docker Support
 - REST API
 - Swagger Documentation
+- Patrol Contact Assignment
+- Patrol Contact REST endpoint
 - Patrol Contact Assignment
 - Patrol Contact REST endpoint
 

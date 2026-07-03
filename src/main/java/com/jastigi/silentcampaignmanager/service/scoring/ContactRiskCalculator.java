@@ -35,6 +35,11 @@ public class ContactRiskCalculator {
 
     }
 
+    public int calculateRisk(Contact contact) {
+
+        return calculateContactRisk(contact);
+    }
+
     public int calculate(List<Contact> contacts) {
 
         int score = 0;

@@ -25,6 +25,7 @@ import com.jastigi.silentcampaignmanager.dto.ContactResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.ContactType;
 import com.jastigi.silentcampaignmanager.entity.Nation;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
+import com.jastigi.silentcampaignmanager.exception.PatrolNotFoundException;
 import com.jastigi.silentcampaignmanager.security.JwtService;
 import com.jastigi.silentcampaignmanager.service.ContactService;
 
@@ -126,6 +127,24 @@ class ContactControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    void shouldReturn404WhenPatrolNotFound() throws Exception {
+
+        when(contactService.getContactsByPatrol(999L))
+                .thenThrow(new PatrolNotFoundException(999L));
+
+        mockMvc.perform(get("/api/v1/patrols/999/contacts")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.error")
+                        .value("Not Found"))
+                .andExpect(jsonPath("$.message")
+                        .value("Patrol not found with id: 999"))
+                .andExpect(jsonPath("$.path")
+                        .value("/api/v1/patrols/999/contacts"));
     }
 
     @Test
