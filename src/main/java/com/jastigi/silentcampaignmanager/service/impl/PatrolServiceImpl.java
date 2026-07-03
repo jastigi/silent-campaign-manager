@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.jastigi.silentcampaignmanager.dto.ContactResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
@@ -17,7 +18,9 @@ import com.jastigi.silentcampaignmanager.entity.Submarine;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.exception.PatrolNotFoundException;
+import com.jastigi.silentcampaignmanager.exception.ResourceNotFoundException;
 import com.jastigi.silentcampaignmanager.exception.SubmarineNotFoundException;
+import com.jastigi.silentcampaignmanager.mapper.ContactMapper;
 import com.jastigi.silentcampaignmanager.mapper.PatrolMapper;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.repository.ContactRepository;
@@ -147,6 +150,19 @@ public class PatrolServiceImpl implements PatrolService {
                                 contacts,
 
                                 events);
+
+        }
+
+        @Override
+        public List<ContactResponseDTO> getContacts(Long patrolId) {
+
+                Patrol patrol = patrolRepository.findById(patrolId)
+                                .orElseThrow(() -> new ResourceNotFoundException(patrolId));
+
+                return patrol.getContacts()
+                                .stream()
+                                .map(ContactMapper::toDTO)
+                                .toList();
 
         }
 

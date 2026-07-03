@@ -28,7 +28,7 @@ public class Contact {
     @Column(nullable = false)
     private LocalDate detectionDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patrol_id")
     private Patrol patrol;
 

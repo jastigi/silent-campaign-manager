@@ -28,4 +28,6 @@ public class PatrolResponseDTO {
 
     private MissionType missionType;
 
+    private Integer detectedContacts;
+
 }

@@ -62,8 +62,22 @@ public class Patrol {
     @Column(nullable = false)
     private MissionType missionType;
 
-    @OneToMany(mappedBy = "patrol", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(mappedBy = "patrol", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Contact> contacts = new ArrayList<>();
+
+    public void addContact(Contact contact) {
+
+        contacts.add(contact);
+        contact.setPatrol(this);
+
+    }
+
+    public void removeContact(Contact contact) {
+
+        contacts.remove(contact);
+        contact.setPatrol(null);
+
+    }
 
 }

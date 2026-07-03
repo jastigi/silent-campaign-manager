@@ -47,6 +47,8 @@ public class PatrolReportDTO {
 
     private Integer unknownContacts;
 
+    private Integer detectedContacts;
+
     /*
      * Threat Assessment
      */

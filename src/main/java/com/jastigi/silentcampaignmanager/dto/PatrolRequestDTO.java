@@ -29,4 +29,6 @@ public class PatrolRequestDTO {
     @NotNull
     private MissionType missionType;
 
+    private Integer detectedContacts;
+
 }

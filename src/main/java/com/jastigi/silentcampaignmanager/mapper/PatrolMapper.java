@@ -47,6 +47,11 @@ public class PatrolMapper {
 
         dto.setMissionType(patrol.getMissionType());
 
+        dto.setDetectedContacts(
+                patrol.getContacts() == null
+                        ? 0
+                        : patrol.getContacts().size());
+
         return dto;
     }
 

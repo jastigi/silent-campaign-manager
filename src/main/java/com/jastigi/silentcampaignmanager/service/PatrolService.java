@@ -2,6 +2,7 @@ package com.jastigi.silentcampaignmanager.service;
 
 import java.util.List;
 
+import com.jastigi.silentcampaignmanager.dto.ContactResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
@@ -26,5 +27,7 @@ public interface PatrolService {
 
         PatrolReportDTO generatePatrolReport(
                         Long patrolId);
+
+        List<ContactResponseDTO> getContacts(Long patrolId);
 
 }

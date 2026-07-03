@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jastigi.silentcampaignmanager.dto.ContactResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
@@ -53,6 +54,15 @@ public class PatrolController {
 
         return ResponseEntity.ok(
                 patrolService.generatePatrolReport(id));
+    }
+
+    @GetMapping("/{id}/contacts")
+    public ResponseEntity<List<ContactResponseDTO>> getContacts(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                patrolService.getContacts(id));
+
     }
 
 }
