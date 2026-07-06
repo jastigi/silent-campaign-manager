@@ -1,4 +1,4 @@
-package com.jastigi.silentcampaignmanager.service.mission.model;
+package com.jastigi.silentcampaignmanager.service.missions.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

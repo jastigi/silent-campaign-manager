@@ -66,6 +66,7 @@ The architecture has been designed to be scalable, testable and easy to extend w
 - Patrol contact retrieval endpoint
 - Patrol contact assignment
 - Patrol contact retrieval endpoint
+- Mission evaluation engine based on configurable risk thresholds
 
 ### Simulation
 
@@ -100,8 +101,6 @@ The architecture has been designed to be scalable, testable and easy to extend w
 | Mockito           | Unit Testing          |
 
 ---
-
-## Architecture
 
 ## Architecture
 

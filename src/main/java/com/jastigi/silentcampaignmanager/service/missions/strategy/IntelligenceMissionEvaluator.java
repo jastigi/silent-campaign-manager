@@ -1,4 +1,4 @@
-package com.jastigi.silentcampaignmanager.service.mission.strategy;
+package com.jastigi.silentcampaignmanager.service.missions.strategy;
 
 import org.springframework.stereotype.Component;
 
@@ -7,8 +7,8 @@ import com.jastigi.silentcampaignmanager.entity.MissionType;
 import com.jastigi.silentcampaignmanager.entity.NationAlignment;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
-import com.jastigi.silentcampaignmanager.service.mission.MissionValues;
-import com.jastigi.silentcampaignmanager.service.mission.model.MissionEvaluationResult;
+import com.jastigi.silentcampaignmanager.service.missions.MissionValues;
+import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
 
 @Component
 public class IntelligenceMissionEvaluator implements MissionEvaluator {

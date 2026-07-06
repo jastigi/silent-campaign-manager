@@ -12,8 +12,9 @@ import com.jastigi.silentcampaignmanager.entity.MissionType;
 import com.jastigi.silentcampaignmanager.entity.Nation;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
-import com.jastigi.silentcampaignmanager.service.mission.model.MissionEvaluationResult;
-import com.jastigi.silentcampaignmanager.service.mission.strategy.IntelligenceMissionEvaluator;
+import com.jastigi.silentcampaignmanager.service.missions.MissionValues;
+import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
+import com.jastigi.silentcampaignmanager.service.missions.strategy.IntelligenceMissionEvaluator;
 
 class IntelligenceMissionEvaluatorTest {
 
