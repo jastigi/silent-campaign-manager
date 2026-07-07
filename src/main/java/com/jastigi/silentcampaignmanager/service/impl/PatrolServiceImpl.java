@@ -14,6 +14,7 @@ import com.jastigi.silentcampaignmanager.entity.ContactType;
 import com.jastigi.silentcampaignmanager.entity.MissionStatus;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolEvent;
+import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.entity.Submarine;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
@@ -28,6 +29,7 @@ import com.jastigi.silentcampaignmanager.repository.PatrolEventRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
 import com.jastigi.silentcampaignmanager.repository.SubmarineRepository;
 import com.jastigi.silentcampaignmanager.service.PatrolService;
+import com.jastigi.silentcampaignmanager.service.missions.MissionEvaluationService;
 import com.jastigi.silentcampaignmanager.service.report.PatrolReportGenerator;
 
 @Service
@@ -39,6 +41,7 @@ public class PatrolServiceImpl implements PatrolService {
         private final ContactRepository contactRepository;
         private final PatrolEventRepository patrolEventRepository;
         private final PatrolReportGenerator patrolReportGenerator;
+        private final MissionEvaluationService missionEvaluationService;
 
         public PatrolServiceImpl(
                         PatrolRepository patrolRepository,
@@ -46,7 +49,8 @@ public class PatrolServiceImpl implements PatrolService {
                         SubmarineRepository submarineRepository,
                         ContactRepository contactRepository,
                         PatrolEventRepository patrolEventRepository,
-                        PatrolReportGenerator patrolReportGenerator) {
+                        PatrolReportGenerator patrolReportGenerator,
+                        MissionEvaluationService missionEvaluationService) {
 
                 this.patrolRepository = patrolRepository;
                 this.campaignRepository = campaignRepository;
@@ -54,6 +58,7 @@ public class PatrolServiceImpl implements PatrolService {
                 this.contactRepository = contactRepository;
                 this.patrolEventRepository = patrolEventRepository;
                 this.patrolReportGenerator = patrolReportGenerator;
+                this.missionEvaluationService = missionEvaluationService;
         }
 
         @Override
@@ -164,6 +169,21 @@ public class PatrolServiceImpl implements PatrolService {
                                 .map(ContactMapper::toDTO)
                                 .toList();
 
+        }
+
+        @Override
+        public PatrolResponseDTO closePatrol(Long patrolId) {
+
+                Patrol patrol = patrolRepository.findById(patrolId)
+                                .orElseThrow(() -> new PatrolNotFoundException(patrolId));
+
+                PatrolResult result = missionEvaluationService.evaluate(patrol);
+
+                patrol.setResult(result);
+
+                Patrol updatedPatrol = patrolRepository.save(patrol);
+
+                return PatrolMapper.toDTO(updatedPatrol);
         }
 
 }

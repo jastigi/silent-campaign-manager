@@ -30,4 +30,6 @@ public interface PatrolService {
 
         List<ContactResponseDTO> getContacts(Long patrolId);
 
+        PatrolResponseDTO closePatrol(Long patrolId);
+
 }
