@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,47 +23,55 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1/campaigns/{campaignId}/patrols")
 public class PatrolController {
 
-    private final PatrolService patrolService;
+        private final PatrolService patrolService;
 
-    public PatrolController(
-            PatrolService patrolService) {
+        public PatrolController(
+                        PatrolService patrolService) {
 
-        this.patrolService = patrolService;
-    }
+                this.patrolService = patrolService;
+        }
 
-    @PostMapping
-    public PatrolResponseDTO createPatrol(
-            @PathVariable Long campaignId,
-            @Valid @RequestBody PatrolRequestDTO request) {
+        @PostMapping
+        public PatrolResponseDTO createPatrol(
+                        @PathVariable Long campaignId,
+                        @Valid @RequestBody PatrolRequestDTO request) {
 
-        return patrolService.createPatrol(
-                campaignId,
-                request);
-    }
+                return patrolService.createPatrol(
+                                campaignId,
+                                request);
+        }
 
-    @GetMapping
-    public List<PatrolResponseDTO> getPatrolsByCampaign(
-            @PathVariable Long campaignId) {
+        @GetMapping
+        public List<PatrolResponseDTO> getPatrolsByCampaign(
+                        @PathVariable Long campaignId) {
 
-        return patrolService.getPatrolsByCampaign(
-                campaignId);
-    }
+                return patrolService.getPatrolsByCampaign(
+                                campaignId);
+        }
 
-    @GetMapping("/{id}/report")
-    public ResponseEntity<PatrolReportDTO> getPatrolReport(
-            @PathVariable Long id) {
+        @GetMapping("/{id}/report")
+        public ResponseEntity<PatrolReportDTO> getPatrolReport(
+                        @PathVariable Long id) {
 
-        return ResponseEntity.ok(
-                patrolService.generatePatrolReport(id));
-    }
+                return ResponseEntity.ok(
+                                patrolService.generatePatrolReport(id));
+        }
 
-    @GetMapping("/{id}/contacts")
-    public ResponseEntity<List<ContactResponseDTO>> getContacts(
-            @PathVariable Long id) {
+        @GetMapping("/{id}/contacts")
+        public ResponseEntity<List<ContactResponseDTO>> getContacts(
+                        @PathVariable Long id) {
 
-        return ResponseEntity.ok(
-                patrolService.getContacts(id));
+                return ResponseEntity.ok(
+                                patrolService.getContacts(id));
 
-    }
+        }
+
+        @PatchMapping("/{id}/close")
+        public ResponseEntity<PatrolResponseDTO> closePatrol(
+                        @PathVariable Long id) {
+
+                return ResponseEntity.ok(
+                                patrolService.closePatrol(id));
+        }
 
 }

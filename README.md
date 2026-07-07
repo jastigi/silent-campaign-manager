@@ -66,7 +66,8 @@ The architecture has been designed to be scalable, testable and easy to extend w
 - Patrol contact retrieval endpoint
 - Patrol contact assignment
 - Patrol contact retrieval endpoint
-- Modular mission evaluation architecture prepared for automatic patrol assessment.
+- Modular mission evaluation architecture prepared for automatic patrol assessment
+- Automatic patrol closing with mission evaluation.
 
 ### Simulation
 
@@ -283,6 +284,7 @@ Skipped: 0
 - Patrol Contact Assignment
 - Patrol Contact REST endpoint
 - Strategy Pattern for mission evaluation
+- Mission evaluation is executed through a dedicated business service when a patrol is closed
 
 ### Under Development
 
