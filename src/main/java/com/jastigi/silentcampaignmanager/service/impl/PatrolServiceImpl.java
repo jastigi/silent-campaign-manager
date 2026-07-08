@@ -30,6 +30,7 @@ import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
 import com.jastigi.silentcampaignmanager.repository.SubmarineRepository;
 import com.jastigi.silentcampaignmanager.service.PatrolService;
 import com.jastigi.silentcampaignmanager.service.missions.MissionEvaluationService;
+import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
 import com.jastigi.silentcampaignmanager.service.report.PatrolReportGenerator;
 
 @Service
@@ -184,6 +185,15 @@ public class PatrolServiceImpl implements PatrolService {
                 Patrol updatedPatrol = patrolRepository.save(patrol);
 
                 return PatrolMapper.toDTO(updatedPatrol);
+        }
+
+        @Override
+        public MissionEvaluationResult getMissionEvaluation(Long patrolId) {
+
+                Patrol patrol = patrolRepository.findById(patrolId)
+                                .orElseThrow(() -> new PatrolNotFoundException(patrolId));
+
+                return missionEvaluationService.evaluateDetailed(patrol);
         }
 
 }

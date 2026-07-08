@@ -6,6 +6,7 @@ import com.jastigi.silentcampaignmanager.dto.ContactResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
+import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
 
 public interface PatrolService {
 
@@ -31,5 +32,7 @@ public interface PatrolService {
         List<ContactResponseDTO> getContacts(Long patrolId);
 
         PatrolResponseDTO closePatrol(Long patrolId);
+
+        MissionEvaluationResult getMissionEvaluation(Long patrolId);
 
 }

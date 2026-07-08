@@ -16,6 +16,7 @@ import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
 import com.jastigi.silentcampaignmanager.service.PatrolService;
+import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
 
 import jakarta.validation.Valid;
 
@@ -72,6 +73,15 @@ public class PatrolController {
 
                 return ResponseEntity.ok(
                                 patrolService.closePatrol(id));
+        }
+
+        @GetMapping("/{id}/evaluation")
+        public ResponseEntity<MissionEvaluationResult> getMissionEvaluation(
+                        @PathVariable Long campaignId,
+                        @PathVariable Long id) {
+
+                return ResponseEntity.ok(
+                                patrolService.getMissionEvaluation(id));
         }
 
 }
