@@ -242,6 +242,11 @@ class PatrolServiceImplTest {
         updatedPatrol.setResult(request.getResult());
         updatedPatrol.setMissionType(existingPatrol.getMissionType());
 
+        Submarine submarine = new Submarine();
+        submarine.setId(1L);
+
+        when(submarineRepository.findById(1L))
+                .thenReturn(Optional.of(submarine));
         when(patrolRepository.findById(1L))
                 .thenReturn(Optional.of(existingPatrol));
         when(patrolRepository.save(any(Patrol.class)))

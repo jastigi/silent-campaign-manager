@@ -1,15 +1,14 @@
 package com.jastigi.silentcampaignmanager.security;
 
-import java.security.Key;
 import java.util.Date;
 
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 public class JwtService {
@@ -22,9 +21,9 @@ public class JwtService {
 
     public String generateToken(String username) {
 
-        Key key = new SecretKeySpec(
+        SecretKey key = new SecretKeySpec(
                 secretKey.getBytes(),
-                SignatureAlgorithm.HS256.getJcaName());
+                Jwts.SIG.HS256.key().build().getAlgorithm());
 
         return Jwts.builder()
                 .subject(username)
@@ -33,18 +32,18 @@ public class JwtService {
                         new Date(
                                 System.currentTimeMillis()
                                         + 86400000))
-                .signWith(key)
+                .signWith(key, Jwts.SIG.HS256)
                 .compact();
     }
 
     public String extractUsername(String token) {
 
-        Key key = new SecretKeySpec(
+        SecretKey key = new SecretKeySpec(
                 secretKey.getBytes(),
-                SignatureAlgorithm.HS256.getJcaName());
+                Jwts.SIG.HS256.key().build().getAlgorithm());
 
         return Jwts.parser()
-                .verifyWith((javax.crypto.SecretKey) key)
+                .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()

@@ -12,7 +12,6 @@ import com.jastigi.silentcampaignmanager.entity.ContactType;
 import com.jastigi.silentcampaignmanager.entity.Nation;
 import com.jastigi.silentcampaignmanager.entity.SubmarineClass;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
-import com.jastigi.silentcampaignmanager.service.scoring.ContactRiskCalculator;
 import com.jastigi.silentcampaignmanager.service.scoring.strategy.AircraftRiskStrategy;
 import com.jastigi.silentcampaignmanager.service.scoring.strategy.ConfidenceModifier;
 import com.jastigi.silentcampaignmanager.service.scoring.strategy.SurfaceShipRiskStrategy;

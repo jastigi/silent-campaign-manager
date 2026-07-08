@@ -10,16 +10,12 @@ import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.Campaign;
 import com.jastigi.silentcampaignmanager.entity.Contact;
-import com.jastigi.silentcampaignmanager.entity.ContactType;
-import com.jastigi.silentcampaignmanager.entity.MissionStatus;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolEvent;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.entity.Submarine;
-import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.exception.PatrolNotFoundException;
-import com.jastigi.silentcampaignmanager.exception.ResourceNotFoundException;
 import com.jastigi.silentcampaignmanager.exception.SubmarineNotFoundException;
 import com.jastigi.silentcampaignmanager.mapper.ContactMapper;
 import com.jastigi.silentcampaignmanager.mapper.PatrolMapper;
@@ -120,6 +116,15 @@ public class PatrolServiceImpl implements PatrolService {
                 patrol.setPatrolDate(request.getPatrolDate());
                 patrol.setArea(request.getArea());
                 patrol.setResult(request.getResult());
+                patrol.setMissionType(request.getMissionType());
+
+                if (request.getSubmarineId() != null) {
+                        Submarine submarine = submarineRepository.findById(
+                                        request.getSubmarineId())
+                                        .orElseThrow(() -> new SubmarineNotFoundException(
+                                                        request.getSubmarineId()));
+                        patrol.setSubmarine(submarine);
+                }
 
                 Patrol updatedPatrol = patrolRepository.save(patrol);
 
@@ -163,7 +168,7 @@ public class PatrolServiceImpl implements PatrolService {
         public List<ContactResponseDTO> getContacts(Long patrolId) {
 
                 Patrol patrol = patrolRepository.findById(patrolId)
-                                .orElseThrow(() -> new ResourceNotFoundException(patrolId));
+                                .orElseThrow(() -> new PatrolNotFoundException(patrolId));
 
                 return patrol.getContacts()
                                 .stream()
