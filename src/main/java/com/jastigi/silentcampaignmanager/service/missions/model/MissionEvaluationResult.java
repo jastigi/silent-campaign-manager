@@ -1,5 +1,7 @@
 package com.jastigi.silentcampaignmanager.service.missions.model;
 
+import com.jastigi.silentcampaignmanager.entity.PatrolResult;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +12,8 @@ import lombok.Getter;
 public class MissionEvaluationResult {
 
     private final boolean success;
+
+    private final PatrolResult patrolResult;
 
     private final int score;
 
