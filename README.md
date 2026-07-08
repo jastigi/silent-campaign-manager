@@ -69,6 +69,7 @@ The architecture has been designed to be scalable, testable and easy to extend w
 - Modular mission evaluation architecture prepared for automatic patrol assessment
 - Automatic patrol closing with mission evaluation
 - Mission evaluation report endpoint available through REST API
+- Campaign statistics endpoint providing operational summary for each campaign
 
 ### Simulation
 

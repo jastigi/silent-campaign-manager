@@ -8,25 +8,28 @@ import com.jastigi.silentcampaignmanager.dto.CampaignDetailsResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
+import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatistics;
 
 public interface CampaignService {
 
-    CampaignResponseDTO createCampaign(CampaignRequestDTO request);
+        CampaignResponseDTO createCampaign(CampaignRequestDTO request);
 
-    Page<CampaignResponseDTO> getAllCampaigns(int page, int size,
-            String sortBy,
-            String direction);
+        Page<CampaignResponseDTO> getAllCampaigns(int page, int size,
+                        String sortBy,
+                        String direction);
 
-    List<CampaignResponseDTO> getCampaignsByStatus(CampaignStatus status);
+        List<CampaignResponseDTO> getCampaignsByStatus(CampaignStatus status);
 
-    CampaignResponseDTO getCampaignById(Long id);
+        CampaignResponseDTO getCampaignById(Long id);
 
-    CampaignDetailsResponseDTO getCampaignDetails(Long id);
+        CampaignDetailsResponseDTO getCampaignDetails(Long id);
 
-    CampaignResponseDTO updateCampaign(
-            Long id,
-            CampaignRequestDTO request);
+        CampaignResponseDTO updateCampaign(
+                        Long id,
+                        CampaignRequestDTO request);
 
-    void deleteCampaign(Long id);
+        void deleteCampaign(Long id);
+
+        CampaignStatistics getStatistics(Long campaignId);
 
 }

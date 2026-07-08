@@ -3,6 +3,7 @@ package com.jastigi.silentcampaignmanager.controller;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
 import com.jastigi.silentcampaignmanager.service.CampaignService;
+import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatistics;
 
 import jakarta.validation.Valid;
 
@@ -91,6 +93,14 @@ public class CampaignController {
             @PathVariable Long id) {
 
         campaignService.deleteCampaign(id);
+    }
+
+    @GetMapping("/{id}/statistics")
+    public ResponseEntity<CampaignStatistics> getStatistics(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                campaignService.getStatistics(id));
     }
 
 }
