@@ -3,35 +3,28 @@
 Silent Campaign Manager follows a layered architecture that separates presentation, business logic and persistence.
 
 ```
-                REST API
-
-                    │
-
-             Controllers
-
-                    │
-
-              Service Layer
-
-        ┌─────────────────────┐
-
-        ▼                     ▼
-
-Risk Evaluation Engine   Mission Evaluation Engine
-
-        ▼                     ▼
-
-     Strategy Pattern    Strategy Pattern
-
-        └─────────┬───────────┘
-
-                  ▼
-
-            Repository Layer
-
-                  ▼
-
-              PostgreSQL
+                  REST API
+                               │
+                     Spring MVC Controllers
+                               │
+                  ┌────────────┴────────────┐
+                  ▼                         ▼
+          Application Services     Statistics Services
+                  │                         │
+                  ▼                         ▼
+        Mission Evaluation         Campaign Analytics
+                  │                         │
+        ┌─────────┴─────────┐               │
+        ▼                   ▼               │
+ Contact Risk Engine   Mission Engine       │
+        ▼                   ▼               ▼
+             Strategy Pattern Components
+                       │
+                       ▼
+                Repository Layer
+                       │
+                       ▼
+                 PostgreSQL Database
 ```
 
 ## Layers
@@ -51,3 +44,24 @@ Persistence using Spring Data JPA.
 ### Engines
 
 Specialized business rule engines using the Strategy Pattern.
+
+## Design Principles
+
+The application follows several architectural principles:
+
+- Layered Architecture
+- Separation of Concerns
+- Dependency Injection
+- Strategy Pattern
+- Repository Pattern
+- DTO-based REST API
+- Service-oriented business logic
+
+## Current Modules
+
+- Campaign Management
+- Patrol Management
+- Contact Management
+- Patrol Events
+- Mission Evaluation
+- Campaign Statistics

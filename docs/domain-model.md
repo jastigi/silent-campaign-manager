@@ -2,17 +2,26 @@
 
 ```
 Campaign
-    │
-    ├──────── Patrol
-    │              │
-    │              ├── MissionType
-    │              ├── PatrolEvent
-    │              ├── Contact
-    │              └── Assigned Submarine
-    │
-    └──────── Fleet
+│
+├── Patrol
+│     │
+│     ├── Submarine
+│     ├── MissionType
+│     ├── PatrolResult
+│     ├── PatrolEvent
+│     └── Contact
+│
+└── Campaign Statistics
 ```
 
-The Patrol entity represents the central element of the simulation.
+## Domain Overview
 
-Each patrol belongs to a campaign and generates contacts and events that are later evaluated by the simulation engines.
+The Campaign entity represents the highest-level operational unit.
+
+Each Campaign contains multiple Patrols.
+
+A Patrol is assigned to one Submarine, generates PatrolEvents and detects Contacts during its execution.
+
+Mission evaluation services analyze patrol outcomes using specialized business rule engines.
+
+Campaign statistics aggregate operational information across all patrols.

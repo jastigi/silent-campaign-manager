@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jastigi.silentcampaignmanager.dto.ContactResponseDTO;
+import com.jastigi.silentcampaignmanager.dto.MissionEvaluationResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
 import com.jastigi.silentcampaignmanager.service.PatrolService;
+import com.jastigi.silentcampaignmanager.mapper.MissionEvaluationMapper;
 import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
 
 import jakarta.validation.Valid;
@@ -76,12 +78,13 @@ public class PatrolController {
         }
 
         @GetMapping("/{id}/evaluation")
-        public ResponseEntity<MissionEvaluationResult> getMissionEvaluation(
+        public ResponseEntity<MissionEvaluationResponseDTO> getMissionEvaluation(
                         @PathVariable Long campaignId,
                         @PathVariable Long id) {
 
+                MissionEvaluationResult result = patrolService.getMissionEvaluation(id);
                 return ResponseEntity.ok(
-                                patrolService.getMissionEvaluation(id));
+                                MissionEvaluationMapper.toDTO(result));
         }
 
 }

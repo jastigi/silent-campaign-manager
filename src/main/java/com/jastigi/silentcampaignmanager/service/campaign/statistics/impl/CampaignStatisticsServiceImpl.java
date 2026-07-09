@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
+import com.jastigi.silentcampaignmanager.repository.ContactRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
 import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatistics;
 import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatisticsService;
@@ -15,11 +16,14 @@ public class CampaignStatisticsServiceImpl
                 implements CampaignStatisticsService {
 
         private final PatrolRepository patrolRepository;
+        private final ContactRepository contactRepository;
 
         public CampaignStatisticsServiceImpl(
-                        PatrolRepository patrolRepository) {
+                        PatrolRepository patrolRepository,
+                        ContactRepository contactRepository) {
 
                 this.patrolRepository = patrolRepository;
+                this.contactRepository = contactRepository;
         }
 
         @Override
@@ -38,8 +42,8 @@ public class CampaignStatisticsServiceImpl
                                 .failedPatrols(countPatrols(
                                                 patrols,
                                                 PatrolResult.FAILURE))
-                                .totalContacts(0)
-                                .averageRisk(0)
+                                .totalContacts(contactRepository.countByPatrolCampaignId(campaignId))
+                                .averageRisk(0.0)
                                 .build();
         }
 

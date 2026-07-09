@@ -10,4 +10,6 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
 
     List<Contact> findByPatrolId(Long patrolId);
 
+    long countByPatrolCampaignId(Long campaignId);
+
 }

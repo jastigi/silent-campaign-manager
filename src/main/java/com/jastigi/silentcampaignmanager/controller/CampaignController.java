@@ -18,7 +18,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import com.jastigi.silentcampaignmanager.dto.CampaignDetailsResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
+import com.jastigi.silentcampaignmanager.dto.CampaignStatisticsResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
+import com.jastigi.silentcampaignmanager.mapper.CampaignStatisticsMapper;
 import com.jastigi.silentcampaignmanager.service.CampaignService;
 import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatistics;
 
@@ -96,11 +98,13 @@ public class CampaignController {
     }
 
     @GetMapping("/{id}/statistics")
-    public ResponseEntity<CampaignStatistics> getStatistics(
+    public ResponseEntity<CampaignStatisticsResponseDTO> getStatistics(
             @PathVariable Long id) {
 
+        CampaignStatistics statistics = campaignService.getStatistics(id);
+
         return ResponseEntity.ok(
-                campaignService.getStatistics(id));
+                CampaignStatisticsMapper.toDTO(statistics));
     }
 
 }

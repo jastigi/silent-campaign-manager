@@ -38,6 +38,7 @@ The project combines a modern REST API with extensible simulation engines capabl
 - [Simulation Engines](#simulation-engines)
 - [Getting Started](#getting-started)
 - [API Documentation](#api-documentation)
+- [REST API Overview](#rest-api-overview)
 - [Testing](#testing)
 - [Roadmap](#roadmap)
 - [Screenshots](#screenshots)
@@ -64,12 +65,10 @@ The architecture has been designed to be scalable, testable and easy to extend w
 - Patrol event management
 - Patrol contact assignment
 - Patrol contact retrieval endpoint
-- Patrol contact assignment
-- Patrol contact retrieval endpoint
 - Modular mission evaluation architecture prepared for automatic patrol assessment
 - Automatic patrol closing with mission evaluation
 - Mission evaluation report endpoint available through REST API
-- Campaign statistics endpoint providing operational summary for each campaign
+- Campaign statistics endpoint with patrol and contact operational metric
 
 ### Simulation
 
@@ -141,30 +140,60 @@ Both engines have been designed to be easily extensible without modifying existi
 
 ## Project Structure
 
+````text
+## Project Structure
+
 ```text
 src
-├── config
-├── controller
-├── dto
-├── entity
-├── exception
-├── mapper
-├── repository
-├── service
-│   ├── mission
-│   │   ├── engine
-│   │   └── strategy
-│   ├── scoring
-│   │   └── strategy
-│   └── ...
-└── resources
-
+├── main
+│   ├── java
+│   │   └── com
+│   │       └── jastigi
+│   │           └── silentcampaignmanager
+│   │               ├── config
+│   │               ├── controller
+│   │               ├── dto
+│   │               ├── entity
+│   │               ├── exception
+│   │               ├── mapper
+│   │               ├── repository
+│   │               ├── security
+│   │               ├── service
+│   │               │   ├── auth
+│   │               │   ├── campaign
+│   │               │   │   └── statistics
+│   │               │   │       └── impl
+│   │               │   ├── contact
+│   │               │   ├── missions
+│   │               │   │   ├── constants
+│   │               │   │   ├── impl
+│   │               │   │   ├── model
+│   │               │   │   └── strategy
+│   │               │   ├── patrol
+│   │               │   ├── submarine
+│   │               │   └── simulation
+│   │               └── SilentCampaignManagerApplication.java
+│   └── resources
+│       ├── application.properties
+│       └── ...
+│
+└── test
+    └── java
+        └── com
+            └── jastigi
+                └── silentcampaignmanager
+                    ├── controller
+                    ├── repository
+                    ├── service
+                    └── ...
+│
 docs
 ├── architecture.md
 ├── domain-model.md
+├── decisions
 ├── images
-└── decisions
-```
+└── LICENSE
+````
 
 The project is organized following a layered architecture that clearly separates presentation, business logic, persistence and simulation engines.
 
@@ -234,6 +263,50 @@ The OpenAPI documentation is generated automatically.
 
 ![Swagger](docs/images/swagger.png)
 
+---
+
+# REST API Overview
+
+The following endpoints are currently available.
+
+## Campaigns
+
+| Method | Endpoint                            | Description                                    |
+| ------ | ----------------------------------- | ---------------------------------------------- |
+| GET    | `/api/v1/campaigns`                 | Retrieve all campaigns                         |
+| GET    | `/api/v1/campaigns/{id}`            | Retrieve a campaign by ID                      |
+| POST   | `/api/v1/campaigns`                 | Create a new campaign                          |
+| PUT    | `/api/v1/campaigns/{id}`            | Update an existing campaign                    |
+| DELETE | `/api/v1/campaigns/{id}`            | Delete a campaign                              |
+| GET    | `/api/v1/campaigns/{id}/statistics` | Retrieve operational statistics for a campaign |
+
+---
+
+## Patrols
+
+| Method | Endpoint                                                 | Description                                   |
+| ------ | -------------------------------------------------------- | --------------------------------------------- |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols`                 | Retrieve campaign patrols                     |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/{id}`            | Retrieve patrol details                       |
+| POST   | `/api/v1/campaigns/{campaignId}/patrols`                 | Create a patrol                               |
+| PUT    | `/api/v1/campaigns/{campaignId}/patrols/{id}`            | Update a patrol                               |
+| DELETE | `/api/v1/campaigns/{campaignId}/patrols/{id}`            | Delete a patrol                               |
+| PATCH  | `/api/v1/campaigns/{campaignId}/patrols/{id}/close`      | Close a patrol and execute mission evaluation |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/{id}/evaluation` | Retrieve mission evaluation report            |
+
+---
+
+## Contacts
+
+| Method | Endpoint                              | Description                            |
+| ------ | ------------------------------------- | -------------------------------------- |
+| GET    | `/api/v1/patrols/{patrolId}/contacts` | Retrieve contacts assigned to a patrol |
+| POST   | `/api/v1/patrols/{patrolId}/contacts` | Assign a contact to a patrol           |
+
+---
+
+The API is fully documented using OpenAPI and can be explored interactively through Swagger UI.
+
 ## Testing
 
 The project includes automated tests covering the most important business components.
@@ -281,8 +354,6 @@ Skipped: 0
 - Docker Support
 - REST API
 - Swagger Documentation
-- Patrol Contact Assignment
-- Patrol Contact REST endpoint
 - Patrol Contact Assignment
 - Patrol Contact REST endpoint
 - Strategy Pattern for mission evaluation

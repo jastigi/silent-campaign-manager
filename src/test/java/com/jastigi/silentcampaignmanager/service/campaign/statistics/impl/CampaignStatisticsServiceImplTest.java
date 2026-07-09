@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
+import com.jastigi.silentcampaignmanager.repository.ContactRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
 import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatistics;
 
@@ -21,6 +22,9 @@ class CampaignStatisticsServiceImplTest {
 
     @Mock
     private PatrolRepository patrolRepository;
+
+    @Mock
+    private ContactRepository contactRepository;
 
     @InjectMocks
     private CampaignStatisticsServiceImpl campaignStatisticsService;
@@ -47,11 +51,15 @@ class CampaignStatisticsServiceImplTest {
                         patrol3,
                         patrol4));
 
+        when(contactRepository.countByPatrolCampaignId(1L))
+                .thenReturn(12L);
+
         CampaignStatistics statistics = campaignStatisticsService.calculate(1L);
 
         assertEquals(4, statistics.getTotalPatrols());
         assertEquals(2, statistics.getSuccessfulPatrols());
         assertEquals(1, statistics.getPartialSuccessfulPatrols());
         assertEquals(1, statistics.getFailedPatrols());
+        assertEquals(12, statistics.getTotalContacts());
     }
 }
