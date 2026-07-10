@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -111,7 +112,7 @@ public class CampaignController {
 
     @GetMapping("/paged")
     public ResponseEntity<Page<CampaignResponseDTO>> getCampaignsPaged(
-            @PageableDefault(size = 10) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
 
         return ResponseEntity.ok(
                 campaignService.getCampaigns(pageable));
