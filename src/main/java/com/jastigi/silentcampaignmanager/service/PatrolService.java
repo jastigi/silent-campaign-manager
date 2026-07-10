@@ -2,6 +2,9 @@ package com.jastigi.silentcampaignmanager.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.jastigi.silentcampaignmanager.dto.ContactResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
@@ -34,5 +37,9 @@ public interface PatrolService {
         PatrolResponseDTO closePatrol(Long patrolId);
 
         MissionEvaluationResult getMissionEvaluation(Long patrolId);
+
+        Page<PatrolResponseDTO> getPatrols(
+                        Long campaignId,
+                        Pageable pageable);
 
 }

@@ -359,6 +359,8 @@ Skipped: 0
 - Patrol Contact REST endpoint
 - Strategy Pattern for mission evaluation
 - Mission evaluation is executed through a dedicated business service when a patrol is closed
+- Campaign pagination endpoint
+- Patrol pagination endpoint
 
 ### Under Development
 

@@ -2,6 +2,8 @@ package com.jastigi.silentcampaignmanager.service.impl;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.jastigi.silentcampaignmanager.dto.ContactResponseDTO;
@@ -199,6 +201,17 @@ public class PatrolServiceImpl implements PatrolService {
                                 .orElseThrow(() -> new PatrolNotFoundException(patrolId));
 
                 return missionEvaluationService.evaluateDetailed(patrol);
+        }
+
+        @Override
+        public Page<PatrolResponseDTO> getPatrols(
+                        Long campaignId,
+                        Pageable pageable) {
+
+                return patrolRepository
+                                .findByCampaignId(campaignId, pageable)
+                                .map(PatrolMapper::toDTO);
+
         }
 
 }
