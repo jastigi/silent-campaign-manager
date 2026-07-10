@@ -156,4 +156,12 @@ public class CampaignServiceImpl implements CampaignService {
                 return campaignStatisticsService.calculate(campaignId);
         }
 
+        @Override
+        public Page<CampaignResponseDTO> getCampaigns(Pageable pageable) {
+
+                return campaignRepository.findAll(pageable)
+                                .map(CampaignMapper::toDTO);
+
+        }
+
 }

@@ -3,6 +3,8 @@ package com.jastigi.silentcampaignmanager.controller;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +46,7 @@ public class CampaignController {
         return campaignService.createCampaign(request);
     }
 
-    @GetMapping(value = { "", "/paged" })
+    @GetMapping
     public Page<CampaignResponseDTO> getAllCampaigns(
 
             @RequestParam(defaultValue = "0") int page,
@@ -105,6 +107,14 @@ public class CampaignController {
 
         return ResponseEntity.ok(
                 CampaignStatisticsMapper.toDTO(statistics));
+    }
+
+    @GetMapping("/paged")
+    public ResponseEntity<Page<CampaignResponseDTO>> getCampaignsPaged(
+            @PageableDefault(size = 10) Pageable pageable) {
+
+        return ResponseEntity.ok(
+                campaignService.getCampaigns(pageable));
     }
 
 }

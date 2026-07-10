@@ -1,5 +1,6 @@
 package com.jastigi.silentcampaignmanager.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -52,7 +54,7 @@ class CampaignControllerTest {
     @Test
     void shouldReturnPagedCampaignsOnPagedPath() throws Exception {
         Page<CampaignResponseDTO> emptyPage = new PageImpl<>(Collections.emptyList(), PageRequest.of(0, 10), 0);
-        when(campaignService.getAllCampaigns(anyInt(), anyInt(), anyString(), anyString())).thenReturn(emptyPage);
+        when(campaignService.getCampaigns(any(Pageable.class))).thenReturn(emptyPage);
 
         mockMvc.perform(get("/api/v1/campaigns/paged")
                 .contentType(MediaType.APPLICATION_JSON))

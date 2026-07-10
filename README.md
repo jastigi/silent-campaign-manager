@@ -83,6 +83,7 @@ The architecture has been designed to be scalable, testable and easy to extend w
 - Exception handling
 - DTO mapping
 - Swagger documentation
+- Pagination support for REST endpoints
 
 ---
 

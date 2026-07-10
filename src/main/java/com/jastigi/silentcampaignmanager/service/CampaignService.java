@@ -9,6 +9,8 @@ import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
 import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatistics;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CampaignService {
 
@@ -31,5 +33,7 @@ public interface CampaignService {
         void deleteCampaign(Long id);
 
         CampaignStatistics getStatistics(Long campaignId);
+
+        Page<CampaignResponseDTO> getCampaigns(Pageable pageable);
 
 }
