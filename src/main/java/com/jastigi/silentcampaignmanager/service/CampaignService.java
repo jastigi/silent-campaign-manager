@@ -36,4 +36,8 @@ public interface CampaignService {
 
         Page<CampaignResponseDTO> getCampaigns(Pageable pageable);
 
+        Page<CampaignResponseDTO> searchCampaigns(
+                        CampaignStatus status,
+                        Pageable pageable);
+
 }

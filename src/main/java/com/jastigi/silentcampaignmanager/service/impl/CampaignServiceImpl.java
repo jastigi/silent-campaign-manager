@@ -164,4 +164,15 @@ public class CampaignServiceImpl implements CampaignService {
 
         }
 
+        @Override
+        public Page<CampaignResponseDTO> searchCampaigns(
+                        CampaignStatus status,
+                        Pageable pageable) {
+
+                return campaignRepository
+                                .findByStatus(status, pageable)
+                                .map(CampaignMapper::toDTO);
+
+        }
+
 }

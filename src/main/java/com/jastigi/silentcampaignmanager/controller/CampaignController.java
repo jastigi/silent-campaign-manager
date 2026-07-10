@@ -118,4 +118,16 @@ public class CampaignController {
                 campaignService.getCampaigns(pageable));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<CampaignResponseDTO>> searchCampaigns(
+
+            @RequestParam CampaignStatus status,
+
+            @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
+
+        return ResponseEntity.ok(
+                campaignService.searchCampaigns(status, pageable));
+
+    }
+
 }
