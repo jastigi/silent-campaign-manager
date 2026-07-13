@@ -83,7 +83,7 @@ The architecture has been designed to be scalable, testable and easy to extend w
 - Exception handling
 - DTO mapping
 - Swagger documentation
-- Pagination, sorting and filtering support for REST endpoints
+- Dynamic filtering, pagination and sorting support for REST endpoints using Spring Data Specifications
 
 ---
 

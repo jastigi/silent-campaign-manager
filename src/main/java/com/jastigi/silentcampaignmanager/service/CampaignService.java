@@ -40,4 +40,9 @@ public interface CampaignService {
                         CampaignStatus status,
                         Pageable pageable);
 
+        Page<CampaignResponseDTO> searchCampaigns(
+                        CampaignStatus status,
+                        String name,
+                        Pageable pageable);
+
 }

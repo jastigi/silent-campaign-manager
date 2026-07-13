@@ -123,11 +123,15 @@ public class CampaignController {
 
             @RequestParam CampaignStatus status,
 
+            @RequestParam(required = false) String name,
+
             @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
 
         return ResponseEntity.ok(
-                campaignService.searchCampaigns(status, pageable));
-
+                campaignService.searchCampaigns(
+                        status,
+                        name,
+                        pageable));
     }
 
 }

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.jastigi.silentcampaignmanager.dto.CampaignDetailsResponseDTO;
@@ -20,6 +21,7 @@ import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.service.CampaignService;
 import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatistics;
 import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatisticsService;
+import com.jastigi.silentcampaignmanager.specification.CampaignSpecifications;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
@@ -169,8 +171,26 @@ public class CampaignServiceImpl implements CampaignService {
                         CampaignStatus status,
                         Pageable pageable) {
 
+                Specification<Campaign> specification = CampaignSpecifications.hasStatus(status);
+
                 return campaignRepository
-                                .findByStatus(status, pageable)
+                                .findAll(specification, pageable)
+                                .map(CampaignMapper::toDTO);
+
+        }
+
+        @Override
+        public Page<CampaignResponseDTO> searchCampaigns(
+                        CampaignStatus status,
+                        String name,
+                        Pageable pageable) {
+
+                Specification<Campaign> specification = Specification
+                                .where(CampaignSpecifications.hasStatus(status))
+                                .and(CampaignSpecifications.nameContains(name));
+
+                return campaignRepository
+                                .findAll(specification, pageable)
                                 .map(CampaignMapper::toDTO);
 
         }
