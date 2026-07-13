@@ -361,6 +361,7 @@ Skipped: 0
 - Mission evaluation is executed through a dedicated business service when a patrol is closed
 - Campaign pagination endpoint
 - Patrol pagination endpoint
+- Patrol filtering endpoint with pagination and sorting
 
 ### Under Development
 

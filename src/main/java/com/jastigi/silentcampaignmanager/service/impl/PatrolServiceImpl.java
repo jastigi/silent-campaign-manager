@@ -214,4 +214,18 @@ public class PatrolServiceImpl implements PatrolService {
 
         }
 
+        @Override
+        public Page<PatrolResponseDTO> searchPatrols(
+                        Long campaignId,
+                        PatrolResult result,
+                        Pageable pageable) {
+
+                return patrolRepository
+                                .findByCampaignIdAndResult(
+                                                campaignId,
+                                                result,
+                                                pageable)
+                                .map(PatrolMapper::toDTO);
+        }
+
 }

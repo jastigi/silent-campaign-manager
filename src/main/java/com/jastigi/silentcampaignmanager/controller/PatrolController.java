@@ -21,6 +21,7 @@ import com.jastigi.silentcampaignmanager.dto.MissionEvaluationResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
+import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.service.PatrolService;
 import com.jastigi.silentcampaignmanager.mapper.MissionEvaluationMapper;
 import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
@@ -101,6 +102,22 @@ public class PatrolController {
                 return ResponseEntity.ok(
                                 patrolService.getPatrols(
                                                 campaignId,
+                                                pageable));
+        }
+
+        @GetMapping("/search")
+        public ResponseEntity<Page<PatrolResponseDTO>> searchPatrols(
+
+                        @PathVariable Long campaignId,
+
+                        @RequestParam PatrolResult result,
+
+                        @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
+
+                return ResponseEntity.ok(
+                                patrolService.searchPatrols(
+                                                campaignId,
+                                                result,
                                                 pageable));
         }
 
