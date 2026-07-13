@@ -43,7 +43,8 @@ public class CampaignStatisticsServiceImpl
                                                 patrols,
                                                 PatrolResult.FAILURE))
                                 .totalContacts(contactRepository.countByPatrolCampaignId(campaignId))
-                                .averageRisk(0.0)
+                                .averageRisk(0)
+                                .averageMissionScore(calculateAverageMissionScore(patrols))
                                 .build();
         }
 
@@ -54,6 +55,35 @@ public class CampaignStatisticsServiceImpl
                 return patrols.stream()
                                 .filter(p -> p.getResult() == result)
                                 .count();
+        }
+
+        private double calculateAverageMissionScore(
+                        List<Patrol> patrols) {
+
+                if (patrols.isEmpty()) {
+                        return 0;
+                }
+
+                return patrols.stream()
+                                .mapToInt(this::scorePatrol)
+                                .average()
+                                .orElse(0);
+
+        }
+
+        private int scorePatrol(Patrol patrol) {
+
+                return switch (patrol.getResult()) {
+
+                        case SUCCESS -> 100;
+
+                        case PARTIAL_SUCCESS -> 70;
+
+                        case FAILURE -> 30;
+
+                        default -> 0;
+                };
+
         }
 
 }

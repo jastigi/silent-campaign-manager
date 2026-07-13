@@ -28,6 +28,7 @@ import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
 import com.jastigi.silentcampaignmanager.repository.SubmarineRepository;
 import com.jastigi.silentcampaignmanager.service.PatrolService;
 import com.jastigi.silentcampaignmanager.service.missions.MissionEvaluationService;
+import com.jastigi.silentcampaignmanager.service.missions.MissionScoringService;
 import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
 import com.jastigi.silentcampaignmanager.service.report.PatrolReportGenerator;
 
@@ -41,6 +42,7 @@ public class PatrolServiceImpl implements PatrolService {
         private final PatrolEventRepository patrolEventRepository;
         private final PatrolReportGenerator patrolReportGenerator;
         private final MissionEvaluationService missionEvaluationService;
+        private final MissionScoringService missionScoringService;
 
         public PatrolServiceImpl(
                         PatrolRepository patrolRepository,
@@ -49,7 +51,8 @@ public class PatrolServiceImpl implements PatrolService {
                         ContactRepository contactRepository,
                         PatrolEventRepository patrolEventRepository,
                         PatrolReportGenerator patrolReportGenerator,
-                        MissionEvaluationService missionEvaluationService) {
+                        MissionEvaluationService missionEvaluationService,
+                        MissionScoringService missionScoringService) {
 
                 this.patrolRepository = patrolRepository;
                 this.campaignRepository = campaignRepository;
@@ -58,6 +61,7 @@ public class PatrolServiceImpl implements PatrolService {
                 this.patrolEventRepository = patrolEventRepository;
                 this.patrolReportGenerator = patrolReportGenerator;
                 this.missionEvaluationService = missionEvaluationService;
+                this.missionScoringService = missionScoringService;
         }
 
         @Override
@@ -184,6 +188,8 @@ public class PatrolServiceImpl implements PatrolService {
 
                 Patrol patrol = patrolRepository.findById(patrolId)
                                 .orElseThrow(() -> new PatrolNotFoundException(patrolId));
+
+                MissionEvaluationResult evaluation = missionScoringService.scoreMission(patrol);
 
                 PatrolResult result = missionEvaluationService.evaluate(patrol);
 

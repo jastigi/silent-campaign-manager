@@ -19,4 +19,6 @@ public class CampaignStatistics {
 
     private final double averageRisk;
 
+    private final double averageMissionScore;
+
 }

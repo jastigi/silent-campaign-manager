@@ -74,6 +74,7 @@ The architecture has been designed to be scalable, testable and easy to extend w
 
 - Contact Risk Evaluation Engine
 - Mission Evaluation Engine
+- Mission Scoring Engine
 - Strategy-based business rules
 
 ### Backend
@@ -275,6 +276,8 @@ The following endpoints are currently available.
 | Method | Endpoint                            | Description                                    |
 | ------ | ----------------------------------- | ---------------------------------------------- |
 | GET    | `/api/v1/campaigns`                 | Retrieve all campaigns                         |
+| GET    | `/api/v1/campaigns/paged`           | Retrieve campaigns with pagination             |
+| GET    | `/api/v1/campaigns/search`          | Search campaigns using dynamic filters         |
 | GET    | `/api/v1/campaigns/{id}`            | Retrieve a campaign by ID                      |
 | POST   | `/api/v1/campaigns`                 | Create a new campaign                          |
 | PUT    | `/api/v1/campaigns/{id}`            | Update an existing campaign                    |
@@ -288,6 +291,8 @@ The following endpoints are currently available.
 | Method | Endpoint                                                 | Description                                   |
 | ------ | -------------------------------------------------------- | --------------------------------------------- |
 | GET    | `/api/v1/campaigns/{campaignId}/patrols`                 | Retrieve campaign patrols                     |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/paged`           | Retrieve campaign patrols with pagination     |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/search`          | Search patrols by mission result              |
 | GET    | `/api/v1/campaigns/{campaignId}/patrols/{id}`            | Retrieve patrol details                       |
 | POST   | `/api/v1/campaigns/{campaignId}/patrols`                 | Create a patrol                               |
 | PUT    | `/api/v1/campaigns/{campaignId}/patrols/{id}`            | Update a patrol                               |
@@ -351,6 +356,7 @@ Skipped: 0
 - Submarine Management
 - Contact Risk Evaluation Engine
 - Mission Evaluation Engine
+- Mission Scoring Engine
 - PostgreSQL Persistence
 - Docker Support
 - REST API
