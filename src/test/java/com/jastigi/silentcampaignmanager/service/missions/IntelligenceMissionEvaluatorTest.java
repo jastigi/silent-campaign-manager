@@ -1,4 +1,4 @@
-package com.jastigi.silentcampaignmanager.service.mission;
+package com.jastigi.silentcampaignmanager.service.missions;
 
 import static org.junit.jupiter.api.Assertions.*;
 

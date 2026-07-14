@@ -6,12 +6,14 @@ import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 
 @Component
-public class ReconMissionStrategy implements MissionStrategy {
+public class IntelligenceMissionStrategy implements MissionStrategy {
 
     @Override
     public PatrolResult evaluate(Patrol patrol) {
 
-        return patrol.getContacts().isEmpty()
+        int contacts = patrol.getContacts().size();
+
+        return contacts == 0
                 ? PatrolResult.FAILURE
                 : PatrolResult.SUCCESS;
 

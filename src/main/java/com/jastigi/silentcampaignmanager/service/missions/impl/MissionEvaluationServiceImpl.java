@@ -8,30 +8,34 @@ import com.jastigi.silentcampaignmanager.service.missions.MissionEvaluationServi
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.MissionRiskCalculator;
 import com.jastigi.silentcampaignmanager.service.missions.constants.MissionRiskThresholds;
 import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
+import com.jastigi.silentcampaignmanager.service.missions.strategy.MissionStrategy;
+import com.jastigi.silentcampaignmanager.service.missions.strategy.MissionStrategyResolver;
 
 @Service
 public class MissionEvaluationServiceImpl implements MissionEvaluationService {
 
     private final MissionRiskCalculator missionRiskCalculator;
+    private final MissionStrategyResolver missionStrategyResolver;
 
-    public MissionEvaluationServiceImpl(MissionRiskCalculator missionRiskCalculator) {
+    public MissionEvaluationServiceImpl(
+            MissionRiskCalculator missionRiskCalculator,
+            MissionStrategyResolver missionStrategyResolver) {
+
         this.missionRiskCalculator = missionRiskCalculator;
+        this.missionStrategyResolver = missionStrategyResolver;
+
     }
 
     @Override
     public PatrolResult evaluate(Patrol patrol) {
 
-        int risk = missionRiskCalculator.calculateRisk(patrol);
+        MissionStrategy strategy = missionStrategyResolver.resolve(
+                patrol.getMissionType());
 
-        if (risk <= MissionRiskThresholds.LOW) {
-            return PatrolResult.SUCCESS;
-        }
+        PatrolResult result = strategy.evaluate(patrol);
 
-        if (risk <= MissionRiskThresholds.MEDIUM) {
-            return PatrolResult.PARTIAL_SUCCESS;
-        }
+        return result;
 
-        return PatrolResult.FAILURE;
     }
 
     @Override
