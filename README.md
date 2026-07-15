@@ -77,6 +77,7 @@ The architecture has been designed to be scalable, testable and easy to extend w
 - Mission Scoring Engine
 - Strategy-based business rules
 - Mission Doctrine Engine (Strategy Pattern)
+- Strategy-based business rules
 
 ### Backend
 
