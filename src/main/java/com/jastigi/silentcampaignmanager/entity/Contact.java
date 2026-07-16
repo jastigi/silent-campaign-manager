@@ -3,11 +3,15 @@ package com.jastigi.silentcampaignmanager.entity;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "contacts")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Contact {
 
     @Id

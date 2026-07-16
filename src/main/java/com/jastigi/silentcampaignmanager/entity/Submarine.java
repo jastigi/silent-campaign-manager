@@ -6,11 +6,15 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "submarines")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Submarine {
 
     @Id
