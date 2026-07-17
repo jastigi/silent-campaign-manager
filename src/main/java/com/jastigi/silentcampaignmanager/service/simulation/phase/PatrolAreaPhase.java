@@ -12,7 +12,7 @@ public class PatrolAreaPhase implements SimulationPhase {
     @Override
     public void execute(SimulationContext context) {
 
-        // Placeholder.
+        context.addEvent("Patrol reached assigned patrol area.");
 
     }
 

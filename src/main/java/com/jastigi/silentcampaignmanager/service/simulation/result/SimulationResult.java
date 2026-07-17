@@ -1,5 +1,7 @@
 package com.jastigi.silentcampaignmanager.service.simulation.result;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,5 +12,13 @@ public class SimulationResult {
     private final boolean success;
 
     private final String summary;
+
+    private final List<String> eventLog;
+
+    private final int contactsDetected;
+
+    private final int contactsLost;
+
+    private final int incidents;
 
 }

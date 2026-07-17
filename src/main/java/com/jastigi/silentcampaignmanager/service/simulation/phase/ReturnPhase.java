@@ -12,7 +12,7 @@ public class ReturnPhase implements SimulationPhase {
     @Override
     public void execute(SimulationContext context) {
 
-        // Placeholder.
+        context.addEvent("Patrol returned to home port.");
 
     }
 

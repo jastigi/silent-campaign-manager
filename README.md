@@ -40,7 +40,6 @@ The project combines a modern REST API with extensible simulation engines capabl
 - [API Documentation](#api-documentation)
 - [REST API Overview](#rest-api-overview)
 - [Testing](#testing)
-- [Simulation Engine](#simulation-engine)
 - [Roadmap](#roadmap)
 - [Screenshots](#screenshots)
 - [License](#license)
@@ -131,7 +130,20 @@ See:
 
 ## Simulation Engines
 
-Silent Campaign Manager currently includes two independent simulation engines.
+The project now includes the initial architecture of the simulation engine.
+
+The engine will execute patrols through multiple simulation phases:
+
+- Transit
+- Patrol Area
+- Detection
+- Contact
+- Mission Evaluation
+- Return
+
+The architecture follows the Open/Closed Principle, allowing new simulation phases to be added without modifying the engine itself.
+Current implementation executes an ordered simulation pipeline composed of independent phases managed by Spring.
+Simulation phases now generate a chronological event log stored in the simulation context.
 
 ### Contact Risk Evaluation Engine
 
@@ -347,22 +359,6 @@ Skipped: 0
 ```
 
 ![Tests](docs/images/tests.png)
-
-## Simulation Engine (in progress)
-
-The project now includes the initial architecture of the simulation engine.
-
-The engine will execute patrols through multiple simulation phases:
-
-- Transit
-- Patrol Area
-- Detection
-- Contact
-- Mission Evaluation
-- Return
-
-The architecture follows the Open/Closed Principle, allowing new simulation phases to be added without modifying the engine itself.
-Current implementation executes an ordered simulation pipeline composed of independent phases managed by Spring.
 
 ## Current Status
 

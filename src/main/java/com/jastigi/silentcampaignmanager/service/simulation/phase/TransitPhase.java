@@ -12,8 +12,7 @@ public class TransitPhase implements SimulationPhase {
     @Override
     public void execute(SimulationContext context) {
 
-        // Initial implementation.
-        // Transit simulation will be added in future sprints.
+        context.addEvent("Patrol departed from home port.");
 
     }
 

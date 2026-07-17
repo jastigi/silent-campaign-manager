@@ -28,6 +28,10 @@ public class SimulationEngine {
         return SimulationResult.builder()
                 .success(true)
                 .summary("Simulation completed.")
+                .eventLog(context.getEventLog())
+                .contactsDetected(context.getContactsDetected().get())
+                .contactsLost(context.getContactsLost().get())
+                .incidents(context.getIncidents().get())
                 .build();
     }
 
