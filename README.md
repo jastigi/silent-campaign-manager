@@ -40,6 +40,7 @@ The project combines a modern REST API with extensible simulation engines capabl
 - [API Documentation](#api-documentation)
 - [REST API Overview](#rest-api-overview)
 - [Testing](#testing)
+- [Simulation Engine](#simulation-engine)
 - [Roadmap](#roadmap)
 - [Screenshots](#screenshots)
 - [License](#license)
@@ -346,6 +347,21 @@ Skipped: 0
 ```
 
 ![Tests](docs/images/tests.png)
+
+## Simulation Engine (in progress)
+
+The project now includes the initial architecture of the simulation engine.
+
+The engine will execute patrols through multiple simulation phases:
+
+- Transit
+- Patrol Area
+- Detection
+- Contact
+- Mission Evaluation
+- Return
+
+The architecture follows the Open/Closed Principle, allowing new simulation phases to be added without modifying the engine itself.
 
 ## Current Status
 
