@@ -10,15 +10,19 @@ public final class CampaignSpecifications {
     private CampaignSpecifications() {
     }
 
-    public static Specification<Campaign> hasStatus(
-            CampaignStatus status) {
+    /**
+     * Campaign status filter.
+     */
+    public static Specification<Campaign> hasStatus(CampaignStatus status) {
 
         return (root, query, cb) -> cb.equal(root.get("status"), status);
 
     }
 
-    public static Specification<Campaign> nameContains(
-            String name) {
+    /**
+     * Campaign name filter.
+     */
+    public static Specification<Campaign> nameContains(String name) {
 
         return (root, query, cb) -> {
 

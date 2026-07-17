@@ -185,3 +185,69 @@ Entities should avoid:
 - DTO responsibilities
 - REST concerns
 - Automatic equals/hashCode generation
+
+## Configuration Layer
+
+Configuration classes define framework behaviour only.
+
+Responsibilities:
+
+- Bean creation
+- Framework configuration
+- External integrations
+
+Configuration classes must never:
+
+- Contain business logic
+- Access repositories
+- Execute services
+
+## Exception Layer
+
+Exceptions centralize API error handling.
+
+Responsibilities:
+
+- Represent application failures
+- Provide meaningful HTTP responses
+- Keep controllers free from try/catch blocks
+
+Rules:
+
+- Use @ControllerAdvice
+- Prefer specific exceptions
+- Reuse common base exceptions
+- Never expose stack traces
+
+## Specification Layer
+
+Specifications provide dynamic query composition using Spring Data JPA.
+
+Responsibilities:
+
+- Dynamic filtering
+- Search criteria composition
+- Complex query building
+
+Specifications must never:
+
+- Execute business logic
+- Replace repositories
+- Return DTOs
+
+## Security Layer
+
+The security layer is responsible for authentication and authorization.
+
+Responsibilities:
+
+- JWT validation
+- Authentication filters
+- Token generation
+- Security context initialization
+
+Security components must never:
+
+- Contain business logic
+- Access controllers
+- Execute persistence directly
