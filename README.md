@@ -144,6 +144,7 @@ The engine will execute patrols through multiple simulation phases:
 The architecture follows the Open/Closed Principle, allowing new simulation phases to be added without modifying the engine itself.
 Current implementation executes an ordered simulation pipeline composed of independent phases managed by Spring.
 Simulation phases now generate a chronological event log stored in the simulation context.
+The Simulation Engine now tracks the operational state of a patrol throughout its lifecycle.
 
 ### Contact Risk Evaluation Engine
 
