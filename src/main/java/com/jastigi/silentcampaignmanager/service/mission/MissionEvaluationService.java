@@ -1,8 +1,8 @@
-package com.jastigi.silentcampaignmanager.service.missions;
+package com.jastigi.silentcampaignmanager.service.mission;
 
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
-import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
+import com.jastigi.silentcampaignmanager.service.mission.model.MissionEvaluationResult;
 
 public interface MissionEvaluationService {
 

@@ -1,12 +1,12 @@
-package com.jastigi.silentcampaignmanager.service.missions.impl;
+package com.jastigi.silentcampaignmanager.service.mission.impl;
 
 import org.springframework.stereotype.Service;
 
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
-import com.jastigi.silentcampaignmanager.service.missions.MissionEvaluationService;
-import com.jastigi.silentcampaignmanager.service.missions.MissionScoringService;
-import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
+import com.jastigi.silentcampaignmanager.service.mission.MissionEvaluationService;
+import com.jastigi.silentcampaignmanager.service.mission.MissionScoringService;
+import com.jastigi.silentcampaignmanager.service.mission.model.MissionEvaluationResult;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.MissionRiskCalculator;
 
 @Service

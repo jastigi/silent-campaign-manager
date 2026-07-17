@@ -27,9 +27,9 @@ import com.jastigi.silentcampaignmanager.repository.PatrolEventRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
 import com.jastigi.silentcampaignmanager.repository.SubmarineRepository;
 import com.jastigi.silentcampaignmanager.service.PatrolService;
-import com.jastigi.silentcampaignmanager.service.missions.MissionEvaluationService;
-import com.jastigi.silentcampaignmanager.service.missions.MissionScoringService;
-import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
+import com.jastigi.silentcampaignmanager.service.mission.MissionEvaluationService;
+import com.jastigi.silentcampaignmanager.service.mission.MissionScoringService;
+import com.jastigi.silentcampaignmanager.service.mission.model.MissionEvaluationResult;
 import com.jastigi.silentcampaignmanager.service.report.PatrolReportGenerator;
 
 @Service

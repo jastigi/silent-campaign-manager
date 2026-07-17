@@ -10,7 +10,7 @@ import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
-import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
+import com.jastigi.silentcampaignmanager.service.mission.model.MissionEvaluationResult;
 
 public interface PatrolService {
 

@@ -1,4 +1,4 @@
-package com.jastigi.silentcampaignmanager.service.missions.model;
+package com.jastigi.silentcampaignmanager.service.mission.model;
 
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 

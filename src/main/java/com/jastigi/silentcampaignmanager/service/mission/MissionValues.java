@@ -1,4 +1,4 @@
-package com.jastigi.silentcampaignmanager.service.missions;
+package com.jastigi.silentcampaignmanager.service.mission;
 
 public final class MissionValues {
 

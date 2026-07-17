@@ -11,6 +11,7 @@ import com.jastigi.silentcampaignmanager.entity.ContactType;
 import com.jastigi.silentcampaignmanager.entity.MissionType;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
+import com.jastigi.silentcampaignmanager.service.mission.strategy.SpecialOperationMissionStrategy;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.ContactAssessmentCalculator;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.impl.ContactAssessmentCalculatorImpl;
 

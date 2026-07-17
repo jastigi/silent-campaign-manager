@@ -1,4 +1,4 @@
-package com.jastigi.silentcampaignmanager.service.missions.strategy;
+package com.jastigi.silentcampaignmanager.service.mission.strategy;
 
 import org.springframework.stereotype.Component;
 
@@ -7,11 +7,11 @@ import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.ContactAssessmentCalculator;
 
 @Component
-public class IntelligenceMissionStrategy extends AbstractMissionStrategy {
+public class SpecialOperationMissionStrategy extends AbstractMissionStrategy {
 
     private final ContactAssessmentCalculator contactAssessmentCalculator;
 
-    public IntelligenceMissionStrategy(
+    public SpecialOperationMissionStrategy(
             ContactAssessmentCalculator contactAssessmentCalculator) {
 
         this.contactAssessmentCalculator = contactAssessmentCalculator;
@@ -25,9 +25,13 @@ public class IntelligenceMissionStrategy extends AbstractMissionStrategy {
             return PatrolResult.FAILURE;
         }
 
-        int score = contactAssessmentCalculator.calculateTotalScore(patrol);
+        int highest = contactAssessmentCalculator.calculateHighestScore(patrol);
 
-        if (score < 100) {
+        if (highest < 70) {
+            return PatrolResult.PARTIAL_SUCCESS;
+        }
+
+        if (maximumSeverity(patrol) >= 8) {
             return PatrolResult.PARTIAL_SUCCESS;
         }
 

@@ -1,7 +1,7 @@
 package com.jastigi.silentcampaignmanager.mapper;
 
 import com.jastigi.silentcampaignmanager.dto.MissionEvaluationResponseDTO;
-import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
+import com.jastigi.silentcampaignmanager.service.mission.model.MissionEvaluationResult;
 
 public final class MissionEvaluationMapper {
 

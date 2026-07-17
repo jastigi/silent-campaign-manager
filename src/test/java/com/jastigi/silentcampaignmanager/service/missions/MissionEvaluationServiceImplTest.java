@@ -12,8 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
-import com.jastigi.silentcampaignmanager.service.missions.impl.MissionEvaluationServiceImpl;
-import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
+import com.jastigi.silentcampaignmanager.service.mission.impl.MissionEvaluationServiceImpl;
+import com.jastigi.silentcampaignmanager.service.mission.model.MissionEvaluationResult;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.MissionRiskCalculator;
 
 @ExtendWith(MockitoExtension.class)

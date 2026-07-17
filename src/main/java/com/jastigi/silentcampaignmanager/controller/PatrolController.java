@@ -23,8 +23,8 @@ import com.jastigi.silentcampaignmanager.dto.PatrolRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.service.PatrolService;
+import com.jastigi.silentcampaignmanager.service.mission.model.MissionEvaluationResult;
 import com.jastigi.silentcampaignmanager.mapper.MissionEvaluationMapper;
-import com.jastigi.silentcampaignmanager.service.missions.model.MissionEvaluationResult;
 
 import jakarta.validation.Valid;
 

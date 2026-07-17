@@ -10,6 +10,7 @@ import com.jastigi.silentcampaignmanager.entity.Contact;
 import com.jastigi.silentcampaignmanager.entity.MissionType;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
+import com.jastigi.silentcampaignmanager.service.mission.strategy.SurveillanceMissionstrategy;
 
 class SurveillanceMissionStrategyTest {
 

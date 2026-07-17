@@ -1,4 +1,4 @@
-package com.jastigi.silentcampaignmanager.service.missions.constants;
+package com.jastigi.silentcampaignmanager.service.mission.constants;
 
 public final class MissionRiskThresholds {
 
