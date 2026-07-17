@@ -362,6 +362,7 @@ The engine will execute patrols through multiple simulation phases:
 - Return
 
 The architecture follows the Open/Closed Principle, allowing new simulation phases to be added without modifying the engine itself.
+Current implementation executes an ordered simulation pipeline composed of independent phases managed by Spring.
 
 ## Current Status
 

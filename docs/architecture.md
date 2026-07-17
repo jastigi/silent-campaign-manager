@@ -3,39 +3,56 @@
 Silent Campaign Manager follows a layered architecture that separates presentation, business logic and persistence.
 
 ```
-                   REST API
-                       │
-             Spring MVC Controllers
-                       │
-          ┌────────────┴────────────┐
-          ▼                         ▼
- Application Services      Statistics Services
-          │                         │
-          ▼
- Mission Evaluation Service
-          │
-          ▼
- Mission Strategy Resolver
-          │
-   ┌──────┼──────────────────────────────┐
-   ▼      ▼              ▼               ▼
-Surveillance   Hunt SSN   Intelligence   Special Operation
- Strategy        Strategy      Strategy        Strategy
-          │
-          ▼
- AbstractMissionStrategy
-          │
-          ▼
- Contact Assessment Calculator
-          │
-          ▼
- Contact Risk Calculator
-          │
-          ▼
- Repository Layer
-          │
-          ▼
- PostgreSQL
+                              REST API
+                                  │
+                      Spring MVC Controllers
+                                  │
+                     ┌────────────┴────────────┐
+                     ▼                         ▼
+            Application Services     Statistics Services
+                     │
+                     ▼
+          Mission Evaluation Service
+                     │
+                     ▼
+          Mission Strategy Resolver
+                     │
+      ┌──────────────┼──────────────┬─────────────────┐
+      ▼              ▼              ▼                 ▼
+ Surveillance   Hunt SSN    Intelligence   Special Operation
+    Strategy      Strategy       Strategy         Strategy
+                     │
+                     ▼
+        AbstractMissionStrategy
+                     │
+         ┌───────────┴────────────┐
+         ▼                        ▼
+ Contact Assessment        Mission Scoring
+    Calculator               Calculator
+         │                        │
+         └───────────┬────────────┘
+                     ▼
+          Contact Risk Calculator
+                     │
+                     ▼
+          Simulation Engine (NEW)
+                     │
+                     ▼
+        Ordered Simulation Pipeline
+                     │
+    ┌────────┬──────────────┬──────────────┐
+    ▼        ▼              ▼              ▼
+Transit   Patrol Area   Return Phase   (Future Phases)
+ Phase        Phase
+                     │
+                     ▼
+            Simulation Result
+                     │
+                     ▼
+             Repository Layer
+                     │
+                     ▼
+               PostgreSQL Database
 ```
 
 ## Layers
