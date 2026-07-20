@@ -7,7 +7,7 @@ import com.jastigi.silentcampaignmanager.entity.PatrolSimulationState;
 import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationContext;
 
 @Component
-@Order(3)
+@Order(4)
 public class ReturnPhase implements SimulationPhase {
 
     @Override
