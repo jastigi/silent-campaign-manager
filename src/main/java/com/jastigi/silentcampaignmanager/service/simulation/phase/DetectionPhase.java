@@ -25,6 +25,8 @@ public class DetectionPhase implements SimulationPhase {
 
         boolean contactDetected = randomService.probability(40);
 
+        context.advanceDays(2);
+
         if (!contactDetected) {
 
             context.addEvent(

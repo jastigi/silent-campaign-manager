@@ -36,6 +36,7 @@ public class SimulationEngine {
                 .incidents(context.getIncidents().get())
                 .finalState(context.getState())
                 .detectedContacts(context.getDetectedContacts())
+                .completionDate(context.getSimulationDate())
                 .build();
     }
 

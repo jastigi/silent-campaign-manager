@@ -1,5 +1,6 @@
 package com.jastigi.silentcampaignmanager.service.simulation.context;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -35,12 +36,21 @@ public class SimulationContext {
     @Builder.Default
     private final List<DetectedContact> detectedContacts = new ArrayList<>();
 
+    @Builder.Default
+    private LocalDate simulationDate = LocalDate.now();
+
     public void addEvent(String event) {
         eventLog.add(event);
     }
 
     public void addDetectedContact(DetectedContact contact) {
         detectedContacts.add(contact);
+    }
+
+    public void advanceDays(long days) {
+
+        simulationDate = simulationDate.plusDays(days);
+
     }
 
 }

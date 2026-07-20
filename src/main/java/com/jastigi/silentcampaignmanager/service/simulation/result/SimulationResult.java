@@ -1,5 +1,6 @@
 package com.jastigi.silentcampaignmanager.service.simulation.result;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.jastigi.silentcampaignmanager.entity.PatrolSimulationState;
@@ -27,5 +28,7 @@ public class SimulationResult {
     private final PatrolSimulationState finalState;
 
     private final List<DetectedContact> detectedContacts;
+
+    private final LocalDate completionDate;
 
 }

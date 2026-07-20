@@ -15,7 +15,9 @@ public class PatrolAreaPhase implements SimulationPhase {
 
         context.setState(PatrolSimulationState.ON_PATROL);
 
-        context.addEvent("Patrol reached assigned patrol area.");
+        context.advanceDays(14);
+
+        context.addEvent("Patrol area operations completed (+14 days).");
 
     }
 

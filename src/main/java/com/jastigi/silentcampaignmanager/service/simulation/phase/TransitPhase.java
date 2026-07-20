@@ -15,7 +15,9 @@ public class TransitPhase implements SimulationPhase {
 
         context.setState(PatrolSimulationState.TRANSIT);
 
-        context.addEvent("Patrol departed from home port.");
+        context.advanceDays(3);
+
+        context.addEvent("Transit completed (+3 days).");
 
     }
 

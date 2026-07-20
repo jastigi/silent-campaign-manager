@@ -15,6 +15,8 @@ public class ReturnPhase implements SimulationPhase {
 
         context.setState(PatrolSimulationState.RETURNING);
 
+        context.advanceDays(3);
+
         context.addEvent("Patrol is returning to base.");
 
         context.setState(PatrolSimulationState.COMPLETED);
