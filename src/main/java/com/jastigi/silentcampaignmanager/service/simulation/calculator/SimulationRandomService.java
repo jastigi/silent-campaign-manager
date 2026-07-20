@@ -21,4 +21,10 @@ public class SimulationRandomService {
 
     }
 
+    public <T> T pick(T[] values) {
+
+        return values[random.nextInt(values.length)];
+
+    }
+
 }

@@ -3,6 +3,7 @@ package com.jastigi.silentcampaignmanager.service.simulation.result;
 import java.util.List;
 
 import com.jastigi.silentcampaignmanager.entity.PatrolSimulationState;
+import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -24,5 +25,7 @@ public class SimulationResult {
     private final int incidents;
 
     private final PatrolSimulationState finalState;
+
+    private final List<DetectedContact> detectedContacts;
 
 }

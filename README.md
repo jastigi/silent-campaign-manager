@@ -146,6 +146,7 @@ Current implementation executes an ordered simulation pipeline composed of indep
 Simulation phases now generate a chronological event log stored in the simulation context.
 The Simulation engine now tracks the operational state of a patrol throughout its lifecycle.
 The simulation engine now performs its first probabilistic decision by determining whether a patrol detects an enemy contact.
+The simulation engine now creates transient DetectedContact objects representing contacts generated during the simulation. These objects are independent from the persistent Contact entity.
 
 ### Contact Risk Evaluation Engine
 

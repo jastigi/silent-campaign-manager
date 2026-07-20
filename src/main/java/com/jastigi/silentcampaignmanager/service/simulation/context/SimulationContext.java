@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolSimulationState;
+import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -31,8 +32,15 @@ public class SimulationContext {
     @Builder.Default
     private final AtomicInteger incidents = new AtomicInteger();
 
+    @Builder.Default
+    private final List<DetectedContact> detectedContacts = new ArrayList<>();
+
     public void addEvent(String event) {
         eventLog.add(event);
+    }
+
+    public void addDetectedContact(DetectedContact contact) {
+        detectedContacts.add(contact);
     }
 
 }

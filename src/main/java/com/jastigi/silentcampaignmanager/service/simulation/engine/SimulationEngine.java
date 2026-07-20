@@ -35,6 +35,7 @@ public class SimulationEngine {
                 .contactsLost(context.getContactsLost().get())
                 .incidents(context.getIncidents().get())
                 .finalState(context.getState())
+                .detectedContacts(context.getDetectedContacts())
                 .build();
     }
 
