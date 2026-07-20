@@ -130,36 +130,36 @@ See:
 
 ## Simulation Engines
 
-The project now includes the initial architecture of the simulation engine.
+The project includes several independent simulation engines designed following the Strategy Pattern and the Open/Closed Principle.
 
-The engine will execute patrols through multiple simulation phases:
+### Contact Risk Evaluation Engine
+
+Calculates the tactical risk associated with detected contacts.
+
+### Mission Evaluation Engine
+
+Evaluates patrol success according to the assigned mission profile.
+
+### Simulation Engine
+
+Executes submarine patrols through an ordered simulation pipeline.
+
+Current phases include:
 
 - Transit
 - Patrol Area
 - Detection
-- Contact
-- Mission Evaluation
 - Return
 
-The architecture follows the Open/Closed Principle, allowing new simulation phases to be added without modifying the engine itself.
-Current implementation executes an ordered simulation pipeline composed of independent phases managed by Spring.
-Simulation phases now generate a chronological event log stored in the simulation context.
-The Simulation engine now tracks the operational state of a patrol throughout its lifecycle.
-The simulation engine now performs its first probabilistic decision by determining whether a patrol detects an enemy contact.
-The simulation engine now creates transient DetectedContact objects representing contacts generated during the simulation. These objects are independent from the persistent Contact entity.
-The simulation engine now tracks an internal simulation date that advances as patrol phases are executed.
-Simulation events are now represented as structured objects instead of plain strings, enabling richer reporting and future timeline visualization.
-Simulation events are now categorized using SimulationEventType, enabling structured reporting and future timeline filtering.
+The engine is based on:
 
-### Contact Risk Evaluation Engine
+- Ordered simulation phases
+- Shared simulation context
+- Structured simulation events
+- Probabilistic decision making
+- Extensible simulation models
 
-Calculates the tactical risk associated with detected contacts using configurable Strategy Pattern implementations.
-
-### Mission Evaluation Engine
-
-Evaluates patrol success according to the assigned mission and the contacts generated during the patrol.
-
-Both engines have been designed to be easily extensible without modifying existing business logic.
+The architecture has been designed to allow additional phases without modifying the engine.
 
 ## Project Structure
 
