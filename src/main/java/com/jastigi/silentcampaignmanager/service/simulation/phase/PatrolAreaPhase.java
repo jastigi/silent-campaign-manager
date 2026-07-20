@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.jastigi.silentcampaignmanager.entity.PatrolSimulationState;
 import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationContext;
+import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
 
 @Component
 @Order(2)
@@ -17,7 +18,7 @@ public class PatrolAreaPhase implements SimulationPhase {
 
         context.advanceDays(14);
 
-        context.addEvent("Patrol area operations completed (+14 days).");
+        context.addEvent(SimulationEventType.PATROL_AREA, "Patrol area operations completed (+14 days).");
 
     }
 

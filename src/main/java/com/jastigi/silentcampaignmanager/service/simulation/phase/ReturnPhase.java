@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.jastigi.silentcampaignmanager.entity.PatrolSimulationState;
 import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationContext;
+import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
 
 @Component
 @Order(4)
@@ -17,11 +18,11 @@ public class ReturnPhase implements SimulationPhase {
 
         context.advanceDays(3);
 
-        context.addEvent("Patrol is returning to base.");
+        context.addEvent(SimulationEventType.RETURN, "Patrol is returning to base.");
 
         context.setState(PatrolSimulationState.COMPLETED);
 
-        context.addEvent("Patrol completed.");
+        context.addEvent(SimulationEventType.PATROL_COMPLETED, "Patrol completed.");
 
     }
 

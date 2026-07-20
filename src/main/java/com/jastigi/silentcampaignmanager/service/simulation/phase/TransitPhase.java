@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.jastigi.silentcampaignmanager.entity.PatrolSimulationState;
 import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationContext;
+import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
 
 @Component
 @Order(1)
@@ -17,7 +18,9 @@ public class TransitPhase implements SimulationPhase {
 
         context.advanceDays(3);
 
-        context.addEvent("Transit completed (+3 days).");
+        context.addEvent(SimulationEventType.TRANSIT,
+
+                "Transit completed (+3 days).");
 
     }
 

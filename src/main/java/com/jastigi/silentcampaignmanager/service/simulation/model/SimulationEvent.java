@@ -13,4 +13,6 @@ public class SimulationEvent {
 
     private final String description;
 
+    private final SimulationEventType eventType;
+
 }

@@ -9,6 +9,7 @@ import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolSimulationState;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEvent;
+import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -40,13 +41,17 @@ public class SimulationContext {
     @Builder.Default
     private LocalDate simulationDate = LocalDate.now();
 
-    public void addEvent(String description) {
+    public void addEvent(
+            SimulationEventType eventType,
+            String description) {
 
         eventLog.add(
 
                 SimulationEvent.builder()
 
                         .date(simulationDate)
+
+                        .eventType(eventType)
 
                         .description(description)
 

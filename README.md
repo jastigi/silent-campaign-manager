@@ -149,6 +149,7 @@ The simulation engine now performs its first probabilistic decision by determini
 The simulation engine now creates transient DetectedContact objects representing contacts generated during the simulation. These objects are independent from the persistent Contact entity.
 The simulation engine now tracks an internal simulation date that advances as patrol phases are executed.
 Simulation events are now represented as structured objects instead of plain strings, enabling richer reporting and future timeline visualization.
+Simulation events are now categorized using SimulationEventType, enabling structured reporting and future timeline filtering.
 
 ### Contact Risk Evaluation Engine
 

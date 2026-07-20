@@ -9,6 +9,7 @@ import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.SimulationRandomService;
 import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationContext;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
+import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,51 +18,53 @@ import lombok.RequiredArgsConstructor;
 @Order(3)
 public class DetectionPhase implements SimulationPhase {
 
-    private final SimulationRandomService randomService;
+        private final SimulationRandomService randomService;
 
-    @Override
-    public void execute(
-            SimulationContext context) {
+        @Override
+        public void execute(
+                        SimulationContext context) {
 
-        boolean contactDetected = randomService.probability(40);
+                boolean contactDetected = randomService.probability(40);
 
-        context.advanceDays(2);
+                context.advanceDays(2);
 
-        if (!contactDetected) {
+                if (!contactDetected) {
 
-            context.addEvent(
-                    "No contacts detected.");
+                        context.addEvent(
+                                        SimulationEventType.PATROL_AREA,
+                                        "No contacts detected.");
 
-            return;
+                        return;
+
+                }
+
+                DetectedContact contact = DetectedContact.builder()
+                                .contactType(
+                                                randomService.pick(
+                                                                ContactType.values()))
+                                .nation(
+                                                randomService.pick(
+                                                                Nation.values()))
+                                .threatLevel(
+                                                randomService.pick(
+                                                                ThreatLevel.values()))
+                                .confidenceLevel(
+                                                randomService.range(50, 100))
+                                .build();
+
+                context.addDetectedContact(contact);
+
+                context.getContactsDetected()
+                                .incrementAndGet();
+
+                context.addEvent(
+                                SimulationEventType.CONTACT_DETECTED,
+                                "Enemy contact detected: "
+                                                + contact.getContactType()
+                                                + " ("
+                                                + contact.getNation()
+                                                + ")");
 
         }
-
-        DetectedContact contact = DetectedContact.builder()
-                .contactType(
-                        randomService.pick(
-                                ContactType.values()))
-                .nation(
-                        randomService.pick(
-                                Nation.values()))
-                .threatLevel(
-                        randomService.pick(
-                                ThreatLevel.values()))
-                .confidenceLevel(
-                        randomService.range(50, 100))
-                .build();
-
-        context.addDetectedContact(contact);
-
-        context.getContactsDetected()
-                .incrementAndGet();
-
-        context.addEvent(
-                "Enemy contact detected: "
-                        + contact.getContactType()
-                        + " ("
-                        + contact.getNation()
-                        + ")");
-
-    }
 
 }
