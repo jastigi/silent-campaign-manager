@@ -148,6 +148,7 @@ The Simulation engine now tracks the operational state of a patrol throughout it
 The simulation engine now performs its first probabilistic decision by determining whether a patrol detects an enemy contact.
 The simulation engine now creates transient DetectedContact objects representing contacts generated during the simulation. These objects are independent from the persistent Contact entity.
 The simulation engine now tracks an internal simulation date that advances as patrol phases are executed.
+Simulation events are now represented as structured objects instead of plain strings, enabling richer reporting and future timeline visualization.
 
 ### Contact Risk Evaluation Engine
 

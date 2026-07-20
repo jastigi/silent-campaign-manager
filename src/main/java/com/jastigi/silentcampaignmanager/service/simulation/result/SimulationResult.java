@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.jastigi.silentcampaignmanager.entity.PatrolSimulationState;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
+import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEvent;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class SimulationResult {
 
     private final String summary;
 
-    private final List<String> eventLog;
+    private final List<SimulationEvent> eventLog;
 
     private final int contactsDetected;
 
