@@ -68,6 +68,7 @@ The architecture has been designed to be scalable, testable and easy to extend w
 - Modular mission evaluation architecture prepared for automatic patrol assessment
 - Automatic patrol closing with mission evaluation
 - Mission evaluation report endpoint available through REST API
+- Patrol simulation endpoint available through REST API
 - Campaign statistics endpoint with patrol and contact operational metric
 
 ### Simulation
@@ -160,6 +161,7 @@ The engine is based on:
 - Extensible simulation models
 
 The architecture has been designed to allow additional phases without modifying the engine.
+The Simulation Engine can now be executed through a dedicated REST endpoint, allowing complete patrol simulations to be launched directly from the API without persisting simulation results.
 
 ## Project Structure
 
@@ -332,6 +334,14 @@ The following endpoints are currently available.
 
 ---
 
+## Simulation
+
+| Method | Endpoint                        | Description                                |
+| ------ | ------------------------------- | ------------------------------------------ |
+| POST   | `/api/v1/patrols/{id}/simulate` | Execute a complete simulation for a patrol |
+
+---
+
 The API is fully documented using OpenAPI and can be explored interactively through Swagger UI.
 
 ## Testing
@@ -389,6 +399,7 @@ Skipped: 0
 - Campaign pagination endpoint
 - Patrol pagination endpoint
 - Patrol filtering endpoint with pagination and sorting
+- Patrol Simulation REST endpoint
 
 ### Under Development
 
