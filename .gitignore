@@ -35,3 +35,5 @@ build/
 
 ### LOGS ###
 *.log
+opencode.json
+silentservice.md

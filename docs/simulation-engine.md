@@ -119,6 +119,28 @@ Persistence is handled by the application services.
 
 ---
 
+## Probability Model
+
+Simulation phases do not contain hardcoded business probabilities.
+
+Probability calculations are delegated to dedicated calculator components, allowing the simulation model to evolve independently from the execution pipeline.
+
+Current probability calculators:
+
+- DetectionProbabilityCalculator
+
+Future calculators may include:
+
+- SonarDetectionCalculator
+- WeaponHitProbabilityCalculator
+- DamageProbabilityCalculator
+- CrewEfficiencyCalculator
+- WeatherImpactCalculator
+
+This approach keeps simulation phases focused on orchestration while encapsulating tactical rules into reusable, testable components.
+
+---
+
 ## Current Status
 
 Implemented:

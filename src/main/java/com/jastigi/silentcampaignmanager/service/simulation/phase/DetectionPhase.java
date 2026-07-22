@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.jastigi.silentcampaignmanager.entity.ContactType;
 import com.jastigi.silentcampaignmanager.entity.Nation;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
+import com.jastigi.silentcampaignmanager.service.simulation.calculator.DetectionProbabilityCalculator;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.SimulationRandomService;
 import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationContext;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
@@ -19,12 +20,16 @@ import lombok.RequiredArgsConstructor;
 public class DetectionPhase implements SimulationPhase {
 
         private final SimulationRandomService randomService;
+        private final DetectionProbabilityCalculator detectionProbabilityCalculator;
 
         @Override
         public void execute(
                         SimulationContext context) {
 
-                boolean contactDetected = randomService.probability(40);
+                int probability = detectionProbabilityCalculator.calculate(
+                                context.getPatrol());
+
+                boolean contactDetected = randomService.probability(probability);
 
                 context.advanceDays(2);
 
