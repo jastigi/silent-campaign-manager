@@ -181,3 +181,20 @@ Planned:
 - Combat Resolution
 - Campaign Timeline
 - AI Behaviour
+
+## Contact Generation
+
+Once a contact has been detected, dedicated generator components determine its characteristics.
+
+Current generators:
+
+- ContactTypeGenerator
+
+Future generators will also determine:
+
+- Nation
+- Threat Level
+- Confidence Level
+- Submarine Class
+
+This keeps contact creation independent from the detection workflow and allows tactical rules to evolve separately.

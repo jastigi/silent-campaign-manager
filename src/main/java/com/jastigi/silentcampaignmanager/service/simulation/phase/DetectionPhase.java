@@ -9,6 +9,7 @@ import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.DetectionProbabilityCalculator;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.SimulationRandomService;
 import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationContext;
+import com.jastigi.silentcampaignmanager.service.simulation.generator.ContactTypeGenerator;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
 import com.jastigi.silentcampaignmanager.service.simulation.modifier.SubmarineDetectionModifier;
@@ -22,6 +23,7 @@ public class DetectionPhase implements SimulationPhase {
 
         private final SimulationRandomService randomService;
         private final DetectionProbabilityCalculator detectionProbabilityCalculator;
+        private final ContactTypeGenerator contactTypeGenerator;
         private final SubmarineDetectionModifier submarineDetectionModifier;
 
         @Override
@@ -51,8 +53,8 @@ public class DetectionPhase implements SimulationPhase {
 
                 DetectedContact contact = DetectedContact.builder()
                                 .contactType(
-                                                randomService.pick(
-                                                                ContactType.values()))
+                                                contactTypeGenerator.generate(
+                                                                context.getPatrol()))
                                 .nation(
                                                 randomService.pick(
                                                                 Nation.values()))
