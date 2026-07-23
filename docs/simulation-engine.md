@@ -141,6 +141,26 @@ This approach keeps simulation phases focused on orchestration while encapsulati
 
 ---
 
+### Probability Modifiers
+
+After the base probability has been calculated, simulation modifiers may adjust the final value according to the operational context.
+
+Current modifiers:
+
+- SubmarineDetectionModifier
+
+Future modifiers may include:
+
+- WeatherModifier
+- CrewExperienceModifier
+- SonarModifier
+- IntelligenceModifier
+- DamageModifier
+
+Modifiers are applied sequentially, allowing complex probability models to be built from small, independent components.
+
+---
+
 ## Current Status
 
 Implemented:

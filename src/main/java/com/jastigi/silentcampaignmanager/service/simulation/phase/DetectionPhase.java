@@ -11,6 +11,7 @@ import com.jastigi.silentcampaignmanager.service.simulation.calculator.Simulatio
 import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationContext;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
+import com.jastigi.silentcampaignmanager.service.simulation.modifier.SubmarineDetectionModifier;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +22,7 @@ public class DetectionPhase implements SimulationPhase {
 
         private final SimulationRandomService randomService;
         private final DetectionProbabilityCalculator detectionProbabilityCalculator;
+        private final SubmarineDetectionModifier submarineDetectionModifier;
 
         @Override
         public void execute(
@@ -28,6 +30,10 @@ public class DetectionPhase implements SimulationPhase {
 
                 int probability = detectionProbabilityCalculator.calculate(
                                 context.getPatrol());
+
+                probability = submarineDetectionModifier.apply(
+                                context.getPatrol(),
+                                probability);
 
                 boolean contactDetected = randomService.probability(probability);
 
