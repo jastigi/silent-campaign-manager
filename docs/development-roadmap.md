@@ -31,7 +31,7 @@ Unlike the public README, this document is intended for development planning.
 - [x] ContactTypeGenerator
 - [x] NationGenerator
 - [x] ThreatLevelGenerator
-- [ ] ConfidenceLevelGenerator
+- [x] ConfidenceLevelGenerator
 - [ ] DetectedContactFactory
 
 ## Mission Resolution

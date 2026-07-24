@@ -191,9 +191,9 @@ Current generators:
 - ContactTypeGenerator
 - NationGenerator
 - ThreatLevelGenerator
+- ConfidenceLevelGenerator
 
-Threat level generation depends on the detected contact type.
-Each generated contact attribute is delegated to a dedicated component.
+Threat and confidence values are generated according to the detected contact type.
 
 Future generators will also determine:
 
