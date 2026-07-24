@@ -203,3 +203,17 @@ Future generators will also determine:
 - Submarine Class
 
 This keeps contact creation independent from the detection workflow and allows tactical rules to evolve separately.
+
+### Detected Contact Factory
+
+`DetectedContactFactory` coordinates the contact generators and creates the complete transient contact model.
+
+The detection phase no longer knows how individual contact attributes are generated.
+
+Current generation flow:
+
+1. ContactTypeGenerator
+2. NationGenerator
+3. ThreatLevelGenerator
+4. ConfidenceLevelGenerator
+5. DetectedContactFactory

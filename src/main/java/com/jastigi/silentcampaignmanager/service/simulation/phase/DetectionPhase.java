@@ -8,13 +8,10 @@ import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.DetectionProbabilityCalculator;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.SimulationRandomService;
 import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationContext;
-import com.jastigi.silentcampaignmanager.service.simulation.generator.ConfidenceLevelGenerator;
-import com.jastigi.silentcampaignmanager.service.simulation.generator.ContactTypeGenerator;
-import com.jastigi.silentcampaignmanager.service.simulation.generator.NationGenerator;
-import com.jastigi.silentcampaignmanager.service.simulation.generator.ThreatLevelGenerator;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
 import com.jastigi.silentcampaignmanager.service.simulation.modifier.SubmarineDetectionModifier;
+import com.jastigi.silentcampaignmanager.service.simulation.generator.DetectedContactFactory;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,11 +22,8 @@ public class DetectionPhase implements SimulationPhase {
 
         private final SimulationRandomService randomService;
         private final DetectionProbabilityCalculator detectionProbabilityCalculator;
-        private final ContactTypeGenerator contactTypeGenerator;
         private final SubmarineDetectionModifier submarineDetectionModifier;
-        private final NationGenerator nationGenerator;
-        private final ConfidenceLevelGenerator confidenceLevelGenerator;
-        private final ThreatLevelGenerator threatLevelGenerator;
+        private final DetectedContactFactory detectedContactFactory;
 
         @Override
         public void execute(
@@ -56,20 +50,8 @@ public class DetectionPhase implements SimulationPhase {
 
                 }
 
-                ContactType contactType = contactTypeGenerator.generate(context.getPatrol());
-
-                DetectedContact contact = DetectedContact.builder()
-                                .contactType(contactType)
-                                .nation(
-                                                nationGenerator.generate(
-                                                                context.getPatrol()))
-                                .threatLevel(
-                                                threatLevelGenerator.generate(
-                                                                contactType))
-                                .confidenceLevel(
-                                                confidenceLevelGenerator.generate(
-                                                                contactType))
-                                .build();
+                DetectedContact contact = detectedContactFactory.create(
+                                context.getPatrol());
 
                 context.addDetectedContact(contact);
 

@@ -32,7 +32,7 @@ Unlike the public README, this document is intended for development planning.
 - [x] NationGenerator
 - [x] ThreatLevelGenerator
 - [x] ConfidenceLevelGenerator
-- [ ] DetectedContactFactory
+- [x] DetectedContactFactory
 
 ## Mission Resolution
 
