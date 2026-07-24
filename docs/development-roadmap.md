@@ -53,7 +53,8 @@ Unlike the public README, this document is intended for development planning.
 
 ## Mission Resolution
 
-- [ ] Mission Outcome Resolver
+- [ ] Mission Success Strategy
+- [x] Mission Outcome Resolver
 - [ ] Mission Success Calculator
 - [ ] Mission Score Integration
 
