@@ -189,9 +189,11 @@ Once a contact has been detected, dedicated generator components determine its c
 Current generators:
 
 - ContactTypeGenerator
+- NationGenerator
 - ThreatLevelGenerator
 
 Threat level generation depends on the detected contact type.
+Each generated contact attribute is delegated to a dedicated component.
 
 Future generators will also determine:
 
