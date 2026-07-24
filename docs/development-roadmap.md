@@ -19,11 +19,17 @@ Unlike the public README, this document is intended for development planning.
 - [x] Simulation Result
 - [x] Simulation REST Endpoint
 
-## Detection
+---
+
+## Detection Engine
+
+### Detection
 
 - [x] Detection Phase
 - [x] DetectionProbabilityCalculator
 - [x] SubmarineDetectionModifier
+
+---
 
 ## Contact Generation
 
@@ -34,28 +40,49 @@ Unlike the public README, this document is intended for development planning.
 - [x] ConfidenceLevelGenerator
 - [x] DetectedContactFactory
 
+---
+
+## Contact Resolution
+
+- [x] Contact Classification
+- [ ] Contact Tracking
+- [ ] Contact Loss
+- [ ] Intelligence Gathering
+
+---
+
 ## Mission Resolution
 
 - [ ] Mission Outcome Resolver
+- [ ] Mission Success Calculator
 - [ ] Mission Score Integration
+
+---
 
 ## Reporting
 
 - [ ] Simulation Report Builder
 - [ ] Timeline Formatter
-- [ ] Mission Debrief
+- [ ] Mission Debrief Report
+
+---
 
 ## Persistence
 
 - [ ] Optional Simulation Persistence
 - [ ] Simulation History
 
+---
+
 ## Testing
 
 - [ ] Simulation Engine Unit Tests
 - [ ] Detection Tests
 - [ ] Contact Generation Tests
+- [ ] Contact Resolution Tests
 - [ ] REST Simulation Tests
+
+---
 
 ## Documentation
 
@@ -77,23 +104,24 @@ Unlike the public README, this document is intended for development planning.
 - [ ] Sea State
 - [ ] Visibility
 
-## Sonar
+---
+
+## Sonar Engine
 
 - [ ] Passive Detection
 - [ ] Active Sonar
 - [ ] Acoustic Signature
 
-## Contact Behaviour
+---
 
-- [ ] Contact Tracking
-- [ ] Contact Classification
-- [ ] Contact Loss
+## Tactical AI
 
-## Tactical Decisions
-
+- [ ] Contact Behaviour
+- [ ] Contact Classification AI
 - [ ] Shadowing
-- [ ] Intelligence Gathering
-- [ ] Abort Mission
+- [ ] Contact Evasion
+
+---
 
 ## Mission Evaluation
 
@@ -110,17 +138,23 @@ Unlike the public README, this document is intended for development planning.
 - [ ] Dynamic Patrol Generation
 - [ ] AI Opponent
 
+---
+
 ## Combat
 
 - [ ] Weapon Launch
 - [ ] Torpedo Resolution
 - [ ] Damage System
 
+---
+
 ## Logistics
 
-- [ ] Fuel
-- [ ] Supplies
+- [ ] Fuel Consumption
+- [ ] Crew Fatigue
 - [ ] Maintenance
+
+---
 
 ## Statistics
 
@@ -128,9 +162,11 @@ Unlike the public README, this document is intended for development planning.
 - [ ] Fleet Statistics
 - [ ] Historical Reports
 
+---
+
 ## User Experience
 
-- [ ] Advanced Swagger Examples
+- [ ] Swagger Examples
 - [ ] Import / Export
 - [ ] Final Documentation
 
@@ -145,8 +181,12 @@ Every implementation sprint must include:
 - Documentation
 - Commit
 
-No new abstractions should be introduced unless they are immediately used by the current sprint.
+Simulation phases orchestrate the workflow only.
 
-Simulation phases should orchestrate the workflow only.
+Business rules belong to dedicated:
 
-Business rules belong to dedicated calculators, generators, modifiers or resolvers.
+- Calculators
+- Generators
+- Modifiers
+- Factories
+- Resolvers

@@ -217,3 +217,18 @@ Current generation flow:
 3. ThreatLevelGenerator
 4. ConfidenceLevelGenerator
 5. DetectedContactFactory
+
+## Contact Classification
+
+Detected contacts are processed by an independent classification phase.
+
+Classification probability is currently based on the contact confidence level.
+
+A successfully processed contact changes from `UNCLASSIFIED` to `CLASSIFIED`.
+
+Current flow:
+
+1. Contact detection
+2. Contact generation
+3. Contact classification
+4. Return phase

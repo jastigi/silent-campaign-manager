@@ -6,6 +6,7 @@ import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Builder
@@ -18,5 +19,9 @@ public class DetectedContact {
     private final ThreatLevel threatLevel;
 
     private final int confidenceLevel;
+
+    @Setter
+    @Builder.Default
+    private ContactClassificationStatus classificationStatus = ContactClassificationStatus.UNCLASSIFIED;
 
 }

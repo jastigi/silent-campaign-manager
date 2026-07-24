@@ -10,6 +10,10 @@ public enum SimulationEventType {
 
     CONTACT_DETECTED,
 
+    CONTACT_CLASSIFIED,
+
+    CONTACT_UNCLASSIFIED,
+
     INCIDENT,
 
     RETURN,
