@@ -80,6 +80,10 @@ Unlike the public README, this document is intended for development planning.
 - [ ] Detection Tests
 - [ ] Contact Generation Tests
 - [ ] Contact Resolution Tests
+  - [x] Contact Classification Tests
+  - [ ] Contact Tracking Tests
+  - [ ] Contact Loss Tests
+  - [ ] Intelligence Gathering Tests
 - [ ] REST Simulation Tests
 
 ---
