@@ -3,7 +3,6 @@ package com.jastigi.silentcampaignmanager.service.simulation.phase;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.jastigi.silentcampaignmanager.entity.ContactType;
 import com.jastigi.silentcampaignmanager.entity.Nation;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.DetectionProbabilityCalculator;

@@ -189,6 +189,9 @@ Once a contact has been detected, dedicated generator components determine its c
 Current generators:
 
 - ContactTypeGenerator
+- ThreatLevelGenerator
+
+Threat level generation depends on the detected contact type.
 
 Future generators will also determine:
 

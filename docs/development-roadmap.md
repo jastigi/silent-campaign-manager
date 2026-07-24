@@ -30,7 +30,7 @@ Unlike the public README, this document is intended for development planning.
 - [x] DetectedContact
 - [x] ContactTypeGenerator
 - [x] NationGenerator
-- [ ] ThreatLevelGenerator
+- [x] ThreatLevelGenerator
 - [ ] ConfidenceLevelGenerator
 - [ ] DetectedContactFactory
 
