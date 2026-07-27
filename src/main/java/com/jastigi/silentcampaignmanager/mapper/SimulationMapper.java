@@ -3,11 +3,17 @@ package com.jastigi.silentcampaignmanager.mapper;
 import org.springframework.stereotype.Component;
 
 import com.jastigi.silentcampaignmanager.dto.SimulationResultDTO;
+import com.jastigi.silentcampaignmanager.service.report.SimulationTimelineFormatter;
 import com.jastigi.silentcampaignmanager.service.simulation.result.ResolvedSimulationResult;
 import com.jastigi.silentcampaignmanager.service.simulation.result.SimulationResult;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class SimulationMapper {
+
+        private final SimulationTimelineFormatter timelineFormatter;
 
         public SimulationResultDTO toDto(
                         ResolvedSimulationResult resolvedResult) {
@@ -28,14 +34,8 @@ public class SimulationMapper {
                                 .contactsLost(result.getContactsLost())
                                 .incidents(result.getIncidents())
                                 .timeline(
-                                                result.getEventLog()
-                                                                .stream()
-                                                                .map(event -> event.getDate()
-                                                                                + " - "
-                                                                                + event.getEventType()
-                                                                                + " - "
-                                                                                + event.getDescription())
-                                                                .toList())
+                                                timelineFormatter.format(
+                                                                result.getEventLog()))
                                 .build();
         }
 

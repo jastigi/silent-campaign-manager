@@ -308,3 +308,13 @@ The report currently includes:
 - Incidents
 
 Report generation belongs to the application reporting layer and does not modify the internal simulation result.
+
+### Timeline Formatting
+
+`SimulationTimelineFormatter` converts structured simulation events into ordered human-readable timeline entries.
+
+The formatter centralizes presentation formatting and keeps the REST mapper free from reporting rules.
+
+Current timeline format:
+
+`date | event type | description`
