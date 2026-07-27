@@ -271,3 +271,17 @@ Every supported `MissionType` now has its own mission success rules.
 - Integrated mission outcome resolution into the simulation application service.
 - Simulation REST responses now expose the resolved mission outcome.
 - Kept the simulation engine independent from REST DTOs and persistence.
+
+## Mission Scoring
+
+`SimulationMissionScoreCalculator` converts the resolved mission outcome into a numeric score.
+
+Current base scores:
+
+- `SUCCESS`: 100
+- `PARTIAL_SUCCESS`: 70
+- `FAILURE`: 30
+
+The score is reduced by simulation incidents and lost contacts and is always limited to the range from 0 to 100.
+
+This calculator operates on transient simulation results and remains separate from the existing patrol persistence scoring service.

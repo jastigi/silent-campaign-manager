@@ -63,7 +63,7 @@ Unlike the public README, this document is intended for development planning.
   - [x] Escort Strategy
   - [x] Training Strategy
 - [x] Mission Outcome Resolver
-- [ ] Mission Success Calculator
+- [x] Mission Success Calculator
 - [ ] Mission Score Integration
 
 ---
