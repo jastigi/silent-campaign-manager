@@ -10,6 +10,7 @@ import com.jastigi.silentcampaignmanager.entity.PatrolSimulationState;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEvent;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
+import com.jastigi.silentcampaignmanager.service.simulation.model.WeatherReport;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -68,5 +69,7 @@ public class SimulationContext {
         simulationDate = simulationDate.plusDays(days);
 
     }
+
+    private WeatherReport weatherReport;
 
 }

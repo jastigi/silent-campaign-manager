@@ -333,3 +333,36 @@ The formatter centralizes presentation formatting and keeps the REST mapper free
 Current timeline format:
 
 `date | event type | description`
+
+## Environmental Model
+
+The simulation includes an environmental model generated at the beginning of each patrol.
+
+Current environmental components:
+
+- `WeatherCondition`
+- `SeaState`
+- `WeatherReport`
+- `WeatherGenerator`
+- `RandomWeatherGenerator`
+
+The generated `WeatherReport` is stored in `SimulationContext` and remains available to every subsequent simulation phase.
+
+Current weather conditions:
+
+- `CALM`
+- `MODERATE`
+- `ROUGH`
+- `STORM`
+
+Current sea states:
+
+- `SEA_STATE_1`
+- `SEA_STATE_2`
+- `SEA_STATE_3`
+- `SEA_STATE_4`
+- `SEA_STATE_5`
+
+Weather generation is recorded as a structured simulation event.
+
+At this stage, weather is generated and exposed in the simulation timeline but does not yet modify detection, classification or mission scoring.

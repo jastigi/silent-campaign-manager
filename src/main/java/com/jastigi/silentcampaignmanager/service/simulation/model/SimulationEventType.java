@@ -18,6 +18,8 @@ public enum SimulationEventType {
 
     RETURN,
 
-    PATROL_COMPLETED
+    PATROL_COMPLETED,
+
+    WEATHER_GENERATED
 
 }

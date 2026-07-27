@@ -130,8 +130,11 @@ Mission types without a dedicated strategy temporarily use the generic mission o
 
 ## Weather Engine
 
-- [ ] Weather Generator
-- [ ] Sea State
+- [x] Weather Model
+- [x] Weather Generator
+- [x] Weather Context Integration
+- [ ] Sea State Detection Modifier
+- [ ] Weather Classification Modifier
 - [ ] Visibility
 
 ---
