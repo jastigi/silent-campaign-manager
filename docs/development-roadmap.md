@@ -93,8 +93,8 @@ Planned for a later release:
 ## Testing
 
 - [x] Simulation Engine Unit Tests
-- [ ] Detection Tests
-- [ ] Contact Generation Tests
+- [x] Detection Tests
+- [x] Contact Generation Tests
 - [ ] Mission Resolution Tests
 - [ ] Reporting Tests
 - [ ] REST Simulation Tests
