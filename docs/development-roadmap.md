@@ -45,9 +45,12 @@ Unlike the public README, this document is intended for development planning.
 ## Contact Resolution
 
 - [x] Contact Classification
-- [ ] Contact Tracking
-- [ ] Contact Loss
-- [ ] Intelligence Gathering
+
+Further contact-resolution mechanics are planned for Release 0.9:
+
+- Contact Tracking
+- Contact Loss
+- Intelligence Gathering
 
 ---
 
@@ -68,23 +71,6 @@ Unlike the public README, this document is intended for development planning.
 
 ---
 
-## Mission Success Strategies
-
-Mission success criteria are selected according to `MissionType`.
-
-Current strategies:
-
-- `DeterrencePatrolSuccessStrategy`
-- `HuntSsnSuccessStrategy`
-
-A deterrence patrol succeeds when the patrol lifecycle reaches `COMPLETED`.
-
-A hunt-SSN mission succeeds when at least one submarine contact is successfully classified. Detecting an unclassified submarine produces a partial success.
-
-Mission types without a dedicated strategy temporarily use the generic mission outcome rules.
-
----
-
 ## Reporting
 
 - [x] Simulation Report Builder
@@ -95,22 +81,24 @@ Mission types without a dedicated strategy temporarily use the generic mission o
 
 ## Persistence
 
-- [ ] Optional Simulation Persistence
-- [ ] Simulation History
+Simulation persistence is deferred until the transient simulation model is stable.
+
+Planned for a later release:
+
+- Optional Simulation Persistence
+- Simulation History
 
 ---
 
 ## Testing
 
-- [ ] Simulation Engine Unit Tests
+- [x] Simulation Engine Unit Tests
 - [ ] Detection Tests
 - [ ] Contact Generation Tests
-- [ ] Contact Resolution Tests
-  - [x] Contact Classification Tests
-  - [ ] Contact Tracking Tests
-  - [ ] Contact Loss Tests
-  - [ ] Intelligence Gathering Tests
+- [ ] Mission Resolution Tests
+- [ ] Reporting Tests
 - [ ] REST Simulation Tests
+- [ ] Full Regression Test Suite
 
 ---
 
@@ -123,6 +111,7 @@ Mission types without a dedicated strategy temporarily use the generic mission o
 - [x] repository-guidelines.md
 - [x] simulation-engine.md
 - [ ] Simulation Testing Guide
+- [ ] Release 0.8 Final Review
 
 ---
 
@@ -136,6 +125,21 @@ Mission types without a dedicated strategy temporarily use the generic mission o
 - [ ] Sea State Detection Modifier
 - [ ] Weather Classification Modifier
 - [ ] Visibility
+
+---
+
+## Contact Resolution
+
+- [ ] Contact Tracking
+- [ ] Contact Loss
+- [ ] Intelligence Gathering
+
+---
+
+## Simulation Persistence
+
+- [ ] Optional Simulation Persistence
+- [ ] Simulation History
 
 ---
 
