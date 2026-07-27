@@ -16,128 +16,153 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @AutoConfigureMockMvc
 class CampaignSecurityIntegrationTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    private String getAdminToken() throws Exception {
+        private String getAdminToken() throws Exception {
 
-        String loginJson = """
-                {
-                    "username":"admin",
-                    "password":"admin123"
-                }
-                """;
+                String loginJson = """
+                                {
+                                    "username":"admin",
+                                    "password":"admin123"
+                                }
+                                """;
 
-        String response = mockMvc.perform(
-                post("/api/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(loginJson))
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+                String response = mockMvc.perform(
+                                post("/api/v1/auth/login")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(loginJson))
+                                .andReturn()
+                                .getResponse()
+                                .getContentAsString();
 
-        ObjectMapper mapper = new ObjectMapper();
+                ObjectMapper mapper = new ObjectMapper();
 
-        return mapper.readTree(response)
-                .get("token")
-                .asText();
-    }
+                return mapper.readTree(response)
+                                .get("token")
+                                .asText();
+        }
 
-    @Test
-    void shouldAccessProtectedEndpointWithValidToken()
-            throws Exception {
+        @Test
+        void shouldAccessProtectedEndpointWithValidToken()
+                        throws Exception {
 
-        String token = getAdminToken();
+                String token = getAdminToken();
 
-        mockMvc.perform(
-                get("/api/v1/campaigns")
-                        .header(
-                                "Authorization",
-                                "Bearer " + token))
-                .andExpect(status().isOk());
-    }
+                mockMvc.perform(
+                                get("/api/v1/campaigns")
+                                                .header(
+                                                                "Authorization",
+                                                                "Bearer " + token))
+                                .andExpect(status().isOk());
+        }
 
-    @Test
-    void shouldRejectRequestWithoutToken()
-            throws Exception {
+        @Test
+        void shouldRejectRequestWithoutToken()
+                        throws Exception {
 
-        mockMvc.perform(
-                get("/api/v1/campaigns"))
-                .andExpect(status().isUnauthorized());
-    }
+                mockMvc.perform(
+                                get("/api/v1/campaigns"))
+                                .andExpect(status().isUnauthorized());
+        }
 
-    private String getUserToken() throws Exception {
+        private String getUserToken() throws Exception {
 
-        String loginJson = """
-                {
-                    "username":"user",
-                    "password":"user123"
-                }
-                """;
+                String loginJson = """
+                                {
+                                    "username":"user",
+                                    "password":"user123"
+                                }
+                                """;
 
-        String response = mockMvc.perform(
-                post("/api/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(loginJson))
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+                String response = mockMvc.perform(
+                                post("/api/v1/auth/login")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(loginJson))
+                                .andReturn()
+                                .getResponse()
+                                .getContentAsString();
 
-        ObjectMapper mapper = new ObjectMapper();
+                ObjectMapper mapper = new ObjectMapper();
 
-        return mapper.readTree(response)
-                .get("token")
-                .asText();
-    }
+                return mapper.readTree(response)
+                                .get("token")
+                                .asText();
+        }
 
-    @Test
-    void shouldRejectCampaignCreationForUserRole()
-            throws Exception {
+        @Test
+        void shouldRejectCampaignCreationForUserRole()
+                        throws Exception {
 
-        String token = getUserToken();
+                String token = getUserToken();
 
-        String campaignJson = """
-                {
-                    "name":"Test Campaign",
-                    "description":"Security Test",
-                    "startDate":"2026-06-19",
-                    "status":"ACTIVE"
-                }
-                """;
+                String campaignJson = """
+                                {
+                                    "name":"Test Campaign",
+                                    "description":"Security Test",
+                                    "startDate":"2026-06-19",
+                                    "status":"ACTIVE"
+                                }
+                                """;
 
-        mockMvc.perform(
-                post("/api/v1/campaigns")
-                        .header(
-                                "Authorization",
-                                "Bearer " + token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(campaignJson))
-                .andExpect(status().isForbidden());
-    }
+                mockMvc.perform(
+                                post("/api/v1/campaigns")
+                                                .header(
+                                                                "Authorization",
+                                                                "Bearer " + token)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(campaignJson))
+                                .andExpect(status().isForbidden());
+        }
 
-    @Test
-    void shouldAllowCampaignCreationForAdmin()
-            throws Exception {
+        @Test
+        void shouldAllowCampaignCreationForAdmin()
+                        throws Exception {
 
-        String token = getAdminToken();
+                String token = getAdminToken();
 
-        String campaignJson = """
-                {
-                    "name":"Admin Campaign",
-                    "description":"Admin Test",
-                    "startDate":"2026-06-19",
-                    "status":"ACTIVE"
-                }
-                """;
+                String campaignJson = """
+                                {
+                                    "name":"Admin Campaign",
+                                    "description":"Admin Test",
+                                    "startDate":"2026-06-19",
+                                    "status":"ACTIVE"
+                                }
+                                """;
 
-        mockMvc.perform(
-                post("/api/v1/campaigns")
-                        .header(
-                                "Authorization",
-                                "Bearer " + token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(campaignJson))
-                .andExpect(status().isOk());
-    }
+                mockMvc.perform(
+                                post("/api/v1/campaigns")
+                                                .header(
+                                                                "Authorization",
+                                                                "Bearer " + token)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(campaignJson))
+                                .andExpect(status().isOk());
+        }
+
+        @Test
+        void shouldRejectSimulationWithoutToken()
+                        throws Exception {
+
+                mockMvc.perform(
+                                post("/api/v1/patrols/1/simulate"))
+                                .andExpect(
+                                                status().isUnauthorized());
+        }
+
+        @Test
+        void shouldAllowAuthenticatedSimulationRequest()
+                        throws Exception {
+
+                String token = getAdminToken();
+
+                mockMvc.perform(
+                                post("/api/v1/patrols/999/simulate")
+                                                .header(
+                                                                "Authorization",
+                                                                "Bearer " + token))
+                                .andExpect(
+                                                status().isNotFound());
+        }
 
 }

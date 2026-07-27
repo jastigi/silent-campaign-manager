@@ -97,8 +97,8 @@ Planned for a later release:
 - [x] Contact Generation Tests
 - [x] Mission Resolution Tests
 - [x] Reporting Tests
-- [ ] REST Simulation Tests
-- [ ] Full Regression Test Suite
+- [x] REST Simulation Tests
+- [x] Full Regression Test Suite
 
 ---
 
@@ -110,8 +110,8 @@ Planned for a later release:
 - [x] mapper-guidelines.md
 - [x] repository-guidelines.md
 - [x] simulation-engine.md
-- [ ] Simulation Testing Guide
-- [ ] Release 0.8 Final Review
+- [x] Simulation Testing Guide
+- [x] Release 0.8 Final Review
 
 ---
 

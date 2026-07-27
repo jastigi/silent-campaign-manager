@@ -403,6 +403,10 @@ Skipped: 0
 - Patrol pagination endpoint
 - Patrol filtering endpoint with pagination and sorting
 - Patrol Simulation REST endpoint
+- Simulation Engine Foundation (Release 0.8)
+- Mission-specific simulation outcomes
+- Simulation mission scoring
+- Operational simulation reporting and debriefing
 
 ### Under Development
 
