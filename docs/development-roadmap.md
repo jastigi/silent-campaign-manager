@@ -95,8 +95,8 @@ Planned for a later release:
 - [x] Simulation Engine Unit Tests
 - [x] Detection Tests
 - [x] Contact Generation Tests
-- [ ] Mission Resolution Tests
-- [ ] Reporting Tests
+- [x] Mission Resolution Tests
+- [x] Reporting Tests
 - [ ] REST Simulation Tests
 - [ ] Full Regression Test Suite
 
