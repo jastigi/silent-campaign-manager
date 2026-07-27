@@ -15,7 +15,8 @@ public class SimulationMapper {
                 SimulationResult result = resolvedResult.getSimulationResult();
 
                 return SimulationResultDTO.builder()
-                                .summary(result.getSummary())
+                                .summary(
+                                                resolvedResult.getReportSummary())
                                 .missionOutcome(
                                                 resolvedResult.getMissionOutcome()
                                                                 .name())

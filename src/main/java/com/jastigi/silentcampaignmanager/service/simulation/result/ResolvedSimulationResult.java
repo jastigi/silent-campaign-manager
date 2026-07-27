@@ -15,4 +15,6 @@ public class ResolvedSimulationResult {
 
     private final int missionScore;
 
+    private final String reportSummary;
+
 }

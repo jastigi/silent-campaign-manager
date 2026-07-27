@@ -293,3 +293,18 @@ The application service coordinates:
 2. Mission outcome resolution
 3. Mission score calculation
 4. REST DTO mapping
+
+## Simulation Reporting
+
+`SimulationReportBuilder` creates an operational summary after mission outcome resolution and scoring.
+
+The report currently includes:
+
+- Mission type
+- Mission outcome
+- Mission score
+- Detected contacts
+- Classified contacts
+- Incidents
+
+Report generation belongs to the application reporting layer and does not modify the internal simulation result.
