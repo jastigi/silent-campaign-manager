@@ -55,8 +55,13 @@ Unlike the public README, this document is intended for development planning.
 
 - [x] Mission Success Strategy
   - [x] Deterrence Patrol Strategy
+  - [x] Follow SSBN Strategy
   - [x] Hunt SSN Strategy
-  - [ ] Remaining Mission Strategies
+  - [x] Surveillance Strategy
+  - [x] Intelligence Strategy
+  - [x] Special Operation Strategy
+  - [x] Escort Strategy
+  - [x] Training Strategy
 - [x] Mission Outcome Resolver
 - [ ] Mission Success Calculator
 - [ ] Mission Score Integration
