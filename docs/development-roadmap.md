@@ -53,10 +53,30 @@ Unlike the public README, this document is intended for development planning.
 
 ## Mission Resolution
 
-- [ ] Mission Success Strategy
+- [x] Mission Success Strategy
+  - [x] Deterrence Patrol Strategy
+  - [x] Hunt SSN Strategy
+  - [ ] Remaining Mission Strategies
 - [x] Mission Outcome Resolver
 - [ ] Mission Success Calculator
 - [ ] Mission Score Integration
+
+---
+
+## Mission Success Strategies
+
+Mission success criteria are selected according to `MissionType`.
+
+Current strategies:
+
+- `DeterrencePatrolSuccessStrategy`
+- `HuntSsnSuccessStrategy`
+
+A deterrence patrol succeeds when the patrol lifecycle reaches `COMPLETED`.
+
+A hunt-SSN mission succeeds when at least one submarine contact is successfully classified. Detecting an unclassified submarine produces a partial success.
+
+Mission types without a dedicated strategy temporarily use the generic mission outcome rules.
 
 ---
 
