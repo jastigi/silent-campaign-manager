@@ -265,3 +265,9 @@ Current mission success strategies:
 - Training
 
 Every supported `MissionType` now has its own mission success rules.
+
+### Mission Resolution
+
+- Integrated mission outcome resolution into the simulation application service.
+- Simulation REST responses now expose the resolved mission outcome.
+- Kept the simulation engine independent from REST DTOs and persistence.

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jastigi.silentcampaignmanager.dto.SimulationResultDTO;
 import com.jastigi.silentcampaignmanager.mapper.SimulationMapper;
 import com.jastigi.silentcampaignmanager.service.simulation.SimulationService;
+import com.jastigi.silentcampaignmanager.service.simulation.result.ResolvedSimulationResult;
 import com.jastigi.silentcampaignmanager.service.simulation.result.SimulationResult;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class SimulationController {
     public ResponseEntity<SimulationResultDTO> simulatePatrol(
             @PathVariable Long id) {
 
-        SimulationResult result = simulationService.simulate(id);
+        ResolvedSimulationResult result = simulationService.simulate(id);
 
         SimulationResultDTO response = simulationMapper.toDto(result);
 

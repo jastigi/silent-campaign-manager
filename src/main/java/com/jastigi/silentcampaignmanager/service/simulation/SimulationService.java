@@ -1,9 +1,9 @@
 package com.jastigi.silentcampaignmanager.service.simulation;
 
-import com.jastigi.silentcampaignmanager.service.simulation.result.SimulationResult;
+import com.jastigi.silentcampaignmanager.service.simulation.result.ResolvedSimulationResult;
 
 public interface SimulationService {
 
-    SimulationResult simulate(Long patrolId);
+    ResolvedSimulationResult simulate(Long patrolId);
 
 }

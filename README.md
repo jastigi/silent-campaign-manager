@@ -162,6 +162,7 @@ The engine is based on:
 
 The architecture has been designed to allow additional phases without modifying the engine.
 The Simulation Engine can now be executed through a dedicated REST endpoint, allowing complete patrol simulations to be launched directly from the API without persisting simulation results.
+Simulation responses now include a mission-specific outcome based on the patrol doctrine and generated simulation events.
 
 ## Project Structure
 

@@ -24,4 +24,6 @@ public class SimulationResultDTO {
 
     private List<String> timeline;
 
+    private String missionOutcome;
+
 }

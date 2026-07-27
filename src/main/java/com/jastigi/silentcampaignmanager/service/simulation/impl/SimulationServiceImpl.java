@@ -7,6 +7,9 @@ import com.jastigi.silentcampaignmanager.exception.PatrolNotFoundException;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
 import com.jastigi.silentcampaignmanager.service.simulation.SimulationService;
 import com.jastigi.silentcampaignmanager.service.simulation.engine.SimulationEngine;
+import com.jastigi.silentcampaignmanager.service.simulation.resolver.MissionOutcome;
+import com.jastigi.silentcampaignmanager.service.simulation.resolver.MissionOutcomeResolver;
+import com.jastigi.silentcampaignmanager.service.simulation.result.ResolvedSimulationResult;
 import com.jastigi.silentcampaignmanager.service.simulation.result.SimulationResult;
 
 import lombok.RequiredArgsConstructor;
@@ -17,15 +20,24 @@ public class SimulationServiceImpl implements SimulationService {
 
     private final SimulationEngine simulationEngine;
     private final PatrolRepository patrolRepository;
+    private final MissionOutcomeResolver missionOutcomeResolver;
 
     @Override
-    public SimulationResult simulate(Long patrolId) {
+    public ResolvedSimulationResult simulate(Long patrolId) {
 
         Patrol patrol = patrolRepository.findById(patrolId)
                 .orElseThrow(() -> new PatrolNotFoundException(patrolId));
 
-        return simulationEngine.simulate(patrol);
+        SimulationResult simulationResult = simulationEngine.simulate(patrol);
 
+        MissionOutcome missionOutcome = missionOutcomeResolver.resolve(
+                patrol,
+                simulationResult);
+
+        return ResolvedSimulationResult.builder()
+                .simulationResult(simulationResult)
+                .missionOutcome(missionOutcome)
+                .build();
     }
 
 }
