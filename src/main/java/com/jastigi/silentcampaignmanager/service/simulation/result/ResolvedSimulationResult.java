@@ -13,4 +13,6 @@ public class ResolvedSimulationResult {
 
     private final MissionOutcome missionOutcome;
 
+    private final int missionScore;
+
 }

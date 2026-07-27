@@ -6,6 +6,7 @@ import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.exception.PatrolNotFoundException;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
 import com.jastigi.silentcampaignmanager.service.simulation.SimulationService;
+import com.jastigi.silentcampaignmanager.service.simulation.calculator.SimulationMissionScoreCalculator;
 import com.jastigi.silentcampaignmanager.service.simulation.engine.SimulationEngine;
 import com.jastigi.silentcampaignmanager.service.simulation.resolver.MissionOutcome;
 import com.jastigi.silentcampaignmanager.service.simulation.resolver.MissionOutcomeResolver;
@@ -18,26 +19,32 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SimulationServiceImpl implements SimulationService {
 
-    private final SimulationEngine simulationEngine;
-    private final PatrolRepository patrolRepository;
-    private final MissionOutcomeResolver missionOutcomeResolver;
+        private final SimulationEngine simulationEngine;
+        private final PatrolRepository patrolRepository;
+        private final MissionOutcomeResolver missionOutcomeResolver;
+        private final SimulationMissionScoreCalculator missionScoreCalculator;
 
-    @Override
-    public ResolvedSimulationResult simulate(Long patrolId) {
+        @Override
+        public ResolvedSimulationResult simulate(Long patrolId) {
 
-        Patrol patrol = patrolRepository.findById(patrolId)
-                .orElseThrow(() -> new PatrolNotFoundException(patrolId));
+                Patrol patrol = patrolRepository.findById(patrolId)
+                                .orElseThrow(() -> new PatrolNotFoundException(patrolId));
 
-        SimulationResult simulationResult = simulationEngine.simulate(patrol);
+                SimulationResult simulationResult = simulationEngine.simulate(patrol);
 
-        MissionOutcome missionOutcome = missionOutcomeResolver.resolve(
-                patrol,
-                simulationResult);
+                MissionOutcome missionOutcome = missionOutcomeResolver.resolve(
+                                patrol,
+                                simulationResult);
 
-        return ResolvedSimulationResult.builder()
-                .simulationResult(simulationResult)
-                .missionOutcome(missionOutcome)
-                .build();
-    }
+                int missionScore = missionScoreCalculator.calculate(
+                                missionOutcome,
+                                simulationResult);
+
+                return ResolvedSimulationResult.builder()
+                                .simulationResult(simulationResult)
+                                .missionOutcome(missionOutcome)
+                                .missionScore(missionScore)
+                                .build();
+        }
 
 }

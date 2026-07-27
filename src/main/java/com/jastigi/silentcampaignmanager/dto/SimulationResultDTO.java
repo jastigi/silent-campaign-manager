@@ -26,4 +26,6 @@ public class SimulationResultDTO {
 
     private String missionOutcome;
 
+    private int missionScore;
+
 }

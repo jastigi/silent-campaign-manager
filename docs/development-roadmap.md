@@ -64,7 +64,7 @@ Unlike the public README, this document is intended for development planning.
   - [x] Training Strategy
 - [x] Mission Outcome Resolver
 - [x] Mission Success Calculator
-- [ ] Mission Score Integration
+- [x] Mission Score Integration
 
 ---
 

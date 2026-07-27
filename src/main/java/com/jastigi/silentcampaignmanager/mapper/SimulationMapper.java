@@ -19,6 +19,8 @@ public class SimulationMapper {
                                 .missionOutcome(
                                                 resolvedResult.getMissionOutcome()
                                                                 .name())
+                                .missionScore(
+                                                resolvedResult.getMissionScore())
                                 .finalState(result.getFinalState().name())
                                 .completionDate(result.getCompletionDate())
                                 .contactsDetected(result.getContactsDetected())

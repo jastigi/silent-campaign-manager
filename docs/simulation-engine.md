@@ -285,3 +285,11 @@ Current base scores:
 The score is reduced by simulation incidents and lost contacts and is always limited to the range from 0 to 100.
 
 This calculator operates on transient simulation results and remains separate from the existing patrol persistence scoring service.
+The calculated mission score is included in `ResolvedSimulationResult` and exposed through the simulation REST response.
+
+The application service coordinates:
+
+1. Simulation execution
+2. Mission outcome resolution
+3. Mission score calculation
+4. REST DTO mapping
