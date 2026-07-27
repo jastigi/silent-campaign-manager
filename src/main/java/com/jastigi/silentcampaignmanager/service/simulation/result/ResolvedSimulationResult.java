@@ -17,4 +17,6 @@ public class ResolvedSimulationResult {
 
     private final String reportSummary;
 
+    private final String missionDebrief;
+
 }

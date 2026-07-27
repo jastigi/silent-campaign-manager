@@ -309,6 +309,21 @@ The report currently includes:
 
 Report generation belongs to the application reporting layer and does not modify the internal simulation result.
 
+### Mission Debrief
+
+`SimulationDebriefBuilder` produces a narrative operational assessment of the completed patrol.
+
+The current debrief includes:
+
+- Mission outcome
+- Detected contacts
+- Classified contacts
+- Hostile contacts
+- Incidents
+- Lost contacts
+
+The debrief is exposed through the simulation REST response while remaining independent from the simulation engine.
+
 ### Timeline Formatting
 
 `SimulationTimelineFormatter` converts structured simulation events into ordered human-readable timeline entries.

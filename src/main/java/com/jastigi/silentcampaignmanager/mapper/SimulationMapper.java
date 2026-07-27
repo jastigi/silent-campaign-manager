@@ -23,6 +23,8 @@ public class SimulationMapper {
                 return SimulationResultDTO.builder()
                                 .summary(
                                                 resolvedResult.getReportSummary())
+                                .missionDebrief(
+                                                resolvedResult.getMissionDebrief())
                                 .missionOutcome(
                                                 resolvedResult.getMissionOutcome()
                                                                 .name())

@@ -89,7 +89,7 @@ Mission types without a dedicated strategy temporarily use the generic mission o
 
 - [x] Simulation Report Builder
 - [x] Timeline Formatter
-- [ ] Mission Debrief Report
+- [x] Mission Debrief Report
 
 ---
 
