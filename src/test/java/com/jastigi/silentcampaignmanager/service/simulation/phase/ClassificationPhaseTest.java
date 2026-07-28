@@ -23,94 +23,98 @@ import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEven
 
 class ClassificationPhaseTest {
 
-    @Mock
-    private ClassificationCalculator classificationCalculator;
+        @Mock
+        private ClassificationCalculator classificationCalculator;
 
-    private ClassificationPhase classificationPhase;
+        private ClassificationPhase classificationPhase;
 
-    private SimulationContext context;
+        private SimulationContext context;
 
-    @BeforeEach
-    void setUp() {
+        @BeforeEach
+        void setUp() {
 
-        MockitoAnnotations.openMocks(this);
+                MockitoAnnotations.openMocks(this);
 
-        classificationPhase = new ClassificationPhase(
-                classificationCalculator);
+                classificationPhase = new ClassificationPhase(
+                                classificationCalculator);
 
-        context = SimulationContext.builder()
-                .patrol(new Patrol())
-                .simulationDate(
-                        LocalDate.of(1985, 1, 1))
-                .build();
-    }
+                context = SimulationContext.builder()
+                                .patrol(new Patrol())
+                                .simulationDate(
+                                                LocalDate.of(1985, 1, 1))
+                                .build();
+        }
 
-    @Test
-    void shouldDoNothingWhenThereAreNoContacts() {
+        @Test
+        void shouldDoNothingWhenThereAreNoContacts() {
 
-        classificationPhase.execute(context);
+                classificationPhase.execute(context);
 
-        assertTrue(context.getEventLog().isEmpty());
-    }
+                assertTrue(context.getEventLog().isEmpty());
+        }
 
-    @Test
-    void shouldClassifyContactSuccessfully() {
+        @Test
+        void shouldClassifyContactSuccessfully() {
 
-        DetectedContact contact = createContact();
+                DetectedContact contact = createContact();
 
-        context.addDetectedContact(contact);
+                context.addDetectedContact(contact);
 
-        when(classificationCalculator.classify(contact))
-                .thenReturn(true);
+                when(classificationCalculator.classify(
+                                contact,
+                                context.getWeatherReport()))
+                                .thenReturn(true);
 
-        classificationPhase.execute(context);
+                classificationPhase.execute(context);
 
-        assertEquals(
-                ContactClassificationStatus.CLASSIFIED,
-                contact.getClassificationStatus());
+                assertEquals(
+                                ContactClassificationStatus.CLASSIFIED,
+                                contact.getClassificationStatus());
 
-        assertEquals(
-                1,
-                context.getEventLog().size());
+                assertEquals(
+                                1,
+                                context.getEventLog().size());
 
-        assertEquals(
-                SimulationEventType.CONTACT_CLASSIFIED,
-                context.getEventLog()
-                        .getFirst()
-                        .getEventType());
-    }
+                assertEquals(
+                                SimulationEventType.CONTACT_CLASSIFIED,
+                                context.getEventLog()
+                                                .getFirst()
+                                                .getEventType());
+        }
 
-    @Test
-    void shouldKeepContactUnclassifiedWhenClassificationFails() {
+        @Test
+        void shouldKeepContactUnclassifiedWhenClassificationFails() {
 
-        DetectedContact contact = createContact();
+                DetectedContact contact = createContact();
 
-        context.addDetectedContact(contact);
+                context.addDetectedContact(contact);
 
-        when(classificationCalculator.classify(contact))
-                .thenReturn(false);
+                when(classificationCalculator.classify(
+                                contact,
+                                context.getWeatherReport()))
+                                .thenReturn(false);
 
-        classificationPhase.execute(context);
+                classificationPhase.execute(context);
 
-        assertEquals(
-                ContactClassificationStatus.UNCLASSIFIED,
-                contact.getClassificationStatus());
+                assertEquals(
+                                ContactClassificationStatus.UNCLASSIFIED,
+                                contact.getClassificationStatus());
 
-        assertEquals(
-                SimulationEventType.CONTACT_UNCLASSIFIED,
-                context.getEventLog()
-                        .getFirst()
-                        .getEventType());
-    }
+                assertEquals(
+                                SimulationEventType.CONTACT_UNCLASSIFIED,
+                                context.getEventLog()
+                                                .getFirst()
+                                                .getEventType());
+        }
 
-    private DetectedContact createContact() {
+        private DetectedContact createContact() {
 
-        return DetectedContact.builder()
-                .contactType(ContactType.SUBMARINE)
-                .nation(Nation.USSR)
-                .threatLevel(ThreatLevel.HIGH)
-                .confidenceLevel(80)
-                .build();
-    }
+                return DetectedContact.builder()
+                                .contactType(ContactType.SUBMARINE)
+                                .nation(Nation.USSR)
+                                .threatLevel(ThreatLevel.HIGH)
+                                .confidenceLevel(80)
+                                .build();
+        }
 
 }

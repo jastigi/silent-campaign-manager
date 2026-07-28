@@ -124,7 +124,7 @@ Planned for a later release:
 - [x] Weather Context Integration
 - [x] Weather Detection Modifier
 - [x] Sea State Detection Modifier
-- [ ] Weather Classification Modifier
+- [x] Weather Classification Modifier
 - [ ] Visibility
 
 ---

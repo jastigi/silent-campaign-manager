@@ -28,7 +28,8 @@ public class ClassificationPhase
 
         for (DetectedContact contact : context.getDetectedContacts()) {
 
-            boolean classified = classificationCalculator.classify(contact);
+            boolean classified = classificationCalculator.classify(contact,
+                    context.getWeatherReport());
 
             if (classified) {
 

@@ -12,79 +12,97 @@ import org.mockito.MockitoAnnotations;
 
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.impl.ClassificationCalculatorImpl;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
+import com.jastigi.silentcampaignmanager.service.simulation.model.WeatherReport;
+import com.jastigi.silentcampaignmanager.service.simulation.modifier.WeatherClassificationModifier;
 
 class ClassificationCalculatorImplTest {
 
-    @Mock
-    private SimulationRandomService randomService;
+        @Mock
+        private SimulationRandomService randomService;
 
-    private ClassificationCalculatorImpl calculator;
+        @Mock
+        private WeatherClassificationModifier weatherClassificationModifier;
 
-    @BeforeEach
-    void setUp() {
+        private ClassificationCalculatorImpl calculator;
 
-        MockitoAnnotations.openMocks(this);
+        private WeatherReport weatherReport;
 
-        calculator = new ClassificationCalculatorImpl(
-                randomService);
-    }
+        @BeforeEach
+        void setUp() {
 
-    @Test
-    void shouldReturnFalseWhenContactIsNull() {
+                MockitoAnnotations.openMocks(this);
 
-        boolean result = calculator.classify(null);
+                calculator = new ClassificationCalculatorImpl(
+                                randomService,
+                                weatherClassificationModifier);
 
-        assertFalse(result);
-    }
+                weatherReport = WeatherReport.builder()
+                                .build();
+        }
 
-    @Test
-    void shouldUseContactConfidenceAsProbability() {
+        @Test
+        void shouldReturnFalseWhenContactIsNull() {
 
-        DetectedContact contact = DetectedContact.builder()
-                .confidenceLevel(75)
-                .build();
+                boolean result = calculator.classify(
+                                null,
+                                weatherReport);
 
-        when(randomService.probability(75))
-                .thenReturn(true);
+                assertFalse(result);
+        }
 
-        boolean result = calculator.classify(contact);
+        @Test
+        void shouldApplyWeatherToContactConfidence() {
 
-        assertTrue(result);
+                DetectedContact contact = DetectedContact.builder()
+                                .confidenceLevel(75)
+                                .build();
 
-        verify(randomService)
-                .probability(75);
-    }
+                when(weatherClassificationModifier.apply(
+                                weatherReport,
+                                75))
+                                .thenReturn(65);
 
-    @Test
-    void shouldClampConfidenceAboveOneHundred() {
+                when(randomService.probability(65))
+                                .thenReturn(true);
 
-        DetectedContact contact = DetectedContact.builder()
-                .confidenceLevel(150)
-                .build();
+                boolean result = calculator.classify(
+                                contact,
+                                weatherReport);
 
-        when(randomService.probability(100))
-                .thenReturn(true);
+                assertTrue(result);
 
-        assertTrue(calculator.classify(contact));
+                verify(weatherClassificationModifier)
+                                .apply(
+                                                weatherReport,
+                                                75);
 
-        verify(randomService)
-                .probability(100);
-    }
+                verify(randomService)
+                                .probability(65);
+        }
 
-    @Test
-    void shouldClampNegativeConfidenceToZero() {
+        @Test
+        void shouldClampConfidenceBeforeApplyingWeather() {
 
-        DetectedContact contact = DetectedContact.builder()
-                .confidenceLevel(-20)
-                .build();
+                DetectedContact contact = DetectedContact.builder()
+                                .confidenceLevel(150)
+                                .build();
 
-        when(randomService.probability(0))
-                .thenReturn(false);
+                when(weatherClassificationModifier.apply(
+                                weatherReport,
+                                100))
+                                .thenReturn(90);
 
-        assertFalse(calculator.classify(contact));
+                when(randomService.probability(90))
+                                .thenReturn(true);
 
-        verify(randomService)
-                .probability(0);
-    }
+                assertTrue(
+                                calculator.classify(
+                                                contact,
+                                                weatherReport));
 
+                verify(weatherClassificationModifier)
+                                .apply(
+                                                weatherReport,
+                                                100);
+        }
 }

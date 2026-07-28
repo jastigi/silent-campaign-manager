@@ -367,14 +367,14 @@ Weather generation is recorded as a structured simulation event.
 
 Weather conditions are generated at the beginning of every simulation and stored in `SimulationContext`.
 
-Weather currently modifies the final contact detection probability:
+Weather also modifies contact classification probability:
 
-- `CALM`: +15 percentage points
+- `CALM`: +10 percentage points
 - `MODERATE`: no modifier
 - `ROUGH`: -10 percentage points
-- `STORM`: -25 percentage points
+- `STORM`: -20 percentage points
 
-The final probability is limited to the range from 0 to 100 and recorded in the simulation timeline.
+The classification modifier is applied to the contact confidence level before the probabilistic classification roll.
 
 Sea state and weather effects on classification remain planned.
 
