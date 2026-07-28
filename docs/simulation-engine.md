@@ -377,3 +377,13 @@ Weather currently modifies the final contact detection probability:
 The final probability is limited to the range from 0 to 100 and recorded in the simulation timeline.
 
 Sea state and weather effects on classification remain planned.
+
+Sea state also modifies contact detection:
+
+- `SEA_STATE_1`: +10 percentage points
+- `SEA_STATE_2`: +5 percentage points
+- `SEA_STATE_3`: no modifier
+- `SEA_STATE_4`: -10 percentage points
+- `SEA_STATE_5`: -20 percentage points
+
+Weather condition and sea state modifiers are applied sequentially before resolving contact detection.

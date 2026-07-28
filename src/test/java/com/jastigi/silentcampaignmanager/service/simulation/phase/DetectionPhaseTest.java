@@ -25,6 +25,7 @@ import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationCo
 import com.jastigi.silentcampaignmanager.service.simulation.generator.DetectedContactFactory;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
+import com.jastigi.silentcampaignmanager.service.simulation.modifier.SeaStateDetectionModifier;
 import com.jastigi.silentcampaignmanager.service.simulation.modifier.SubmarineDetectionModifier;
 import com.jastigi.silentcampaignmanager.service.simulation.modifier.WeatherDetectionModifier;
 
@@ -44,6 +45,9 @@ class DetectionPhaseTest {
         private WeatherDetectionModifier weatherDetectionModifier;
 
         @Mock
+        private SeaStateDetectionModifier seaStateDetectionModifier;
+
+        @Mock
         private DetectedContactFactory contactFactory;
 
         private DetectionPhase detectionPhase;
@@ -60,6 +64,7 @@ class DetectionPhaseTest {
                                 probabilityCalculator,
                                 submarineModifier,
                                 weatherDetectionModifier,
+                                seaStateDetectionModifier,
                                 contactFactory);
 
                 patrol = Patrol.builder()
@@ -86,12 +91,17 @@ class DetectionPhaseTest {
                                 context.getWeatherReport(),
                                 85))
                                 .thenReturn(75);
+
+                when(seaStateDetectionModifier.apply(
+                                context.getWeatherReport(),
+                                75))
+                                .thenReturn(65);
         }
 
         @Test
         void shouldRecordEventWhenNoContactIsDetected() {
 
-                when(randomService.probability(75))
+                when(randomService.probability(65))
                                 .thenReturn(false);
 
                 detectionPhase.execute(context);
@@ -127,6 +137,11 @@ class DetectionPhaseTest {
                                 .apply(
                                                 context.getWeatherReport(),
                                                 85);
+
+                verify(seaStateDetectionModifier)
+                                .apply(
+                                                context.getWeatherReport(),
+                                                75);
         }
 
         @Test
@@ -141,7 +156,7 @@ class DetectionPhaseTest {
                                 .confidenceLevel(80)
                                 .build();
 
-                when(randomService.probability(75))
+                when(randomService.probability(65))
                                 .thenReturn(true);
 
                 when(contactFactory.create(patrol))
@@ -185,6 +200,11 @@ class DetectionPhaseTest {
                                 .apply(
                                                 context.getWeatherReport(),
                                                 85);
+
+                verify(seaStateDetectionModifier)
+                                .apply(
+                                                context.getWeatherReport(),
+                                                75);
         }
 
 }

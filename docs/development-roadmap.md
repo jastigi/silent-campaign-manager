@@ -123,7 +123,7 @@ Planned for a later release:
 - [x] Weather Generator
 - [x] Weather Context Integration
 - [x] Weather Detection Modifier
-- [ ] Sea State Detection Modifier
+- [x] Sea State Detection Modifier
 - [ ] Weather Classification Modifier
 - [ ] Visibility
 
