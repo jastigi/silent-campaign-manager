@@ -8,7 +8,7 @@ import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationCo
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
 
 @Component
-@Order(5)
+@Order(6)
 public class ReturnPhase implements SimulationPhase {
 
     @Override

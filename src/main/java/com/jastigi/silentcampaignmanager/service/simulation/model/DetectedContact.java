@@ -24,4 +24,8 @@ public class DetectedContact {
     @Builder.Default
     private ContactClassificationStatus classificationStatus = ContactClassificationStatus.UNCLASSIFIED;
 
+    @Setter
+    @Builder.Default
+    private ContactBehaviour behaviour = ContactBehaviour.UNAWARE;
+
 }

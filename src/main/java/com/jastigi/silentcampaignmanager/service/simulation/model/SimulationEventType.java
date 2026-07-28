@@ -26,6 +26,8 @@ public enum SimulationEventType {
 
     ACTIVE_SONAR_USED,
 
-    ACTIVE_SONAR_FAILED
+    ACTIVE_SONAR_FAILED,
+
+    CONTACT_BEHAVIOUR_RESOLVED
 
 }

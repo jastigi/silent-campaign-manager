@@ -454,3 +454,20 @@ Active sonar adds 20 percentage points to the final passive detection probabilit
 Silent or covert missions do not use active sonar automatically.
 
 Both successful and failed active-sonar sweeps are recorded in the simulation timeline.
+
+## Tactical Contact Behaviour
+
+Detected contacts receive an operational behaviour after classification.
+
+Current behaviours:
+
+- `UNAWARE`
+- `EVASIVE`
+- `SHADOWING`
+- `AGGRESSIVE`
+
+Behaviour selection currently depends on `ThreatLevel` and a probabilistic tactical decision.
+
+The behaviour is stored in the transient `DetectedContact` and recorded in the simulation timeline.
+
+The contact-behaviour phase executes after classification and before the return phase.

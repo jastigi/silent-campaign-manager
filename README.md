@@ -169,6 +169,7 @@ Environmental weather conditions now influence tactical contact detection probab
 The environmental simulation now models weather, sea state and visibility, affecting both contact detection and classification.
 The sonar model now supports passive detection and mission-dependent active sonar sweeps.
 Submarine classes now include acoustic signatures that influence passive sonar performance.
+Detected contacts now adopt threat-based tactical behaviours during patrol simulations.
 
 ## Project Structure
 

@@ -8,45 +8,49 @@ import org.springframework.core.annotation.Order;
 
 class SimulationPhaseOrderTest {
 
-    @Test
-    void shouldDefineExpectedPipelineOrder() {
+        @Test
+        void shouldDefineExpectedPipelineOrder() {
 
-        assertOrder(
-                TransitPhase.class,
-                1);
+                assertOrder(
+                                TransitPhase.class,
+                                1);
 
-        assertOrder(
-                PatrolAreaPhase.class,
-                2);
+                assertOrder(
+                                PatrolAreaPhase.class,
+                                2);
 
-        assertOrder(
-                DetectionPhase.class,
-                3);
+                assertOrder(
+                                DetectionPhase.class,
+                                3);
 
-        assertOrder(
-                ClassificationPhase.class,
-                4);
+                assertOrder(
+                                ClassificationPhase.class,
+                                4);
 
-        assertOrder(
-                ReturnPhase.class,
-                5);
-    }
+                assertOrder(
+                                ContactBehaviourPhase.class,
+                                5);
 
-    private void assertOrder(
-            Class<?> phaseClass,
-            int expectedOrder) {
+                assertOrder(
+                                ReturnPhase.class,
+                                6);
+        }
 
-        Order order = phaseClass.getAnnotation(
-                Order.class);
+        private void assertOrder(
+                        Class<?> phaseClass,
+                        int expectedOrder) {
 
-        assertNotNull(
-                order,
-                phaseClass.getSimpleName()
-                        + " must declare @Order");
+                Order order = phaseClass.getAnnotation(
+                                Order.class);
 
-        assertEquals(
-                expectedOrder,
-                order.value());
-    }
+                assertNotNull(
+                                order,
+                                phaseClass.getSimpleName()
+                                                + " must declare @Order");
+
+                assertEquals(
+                                expectedOrder,
+                                order.value());
+        }
 
 }
