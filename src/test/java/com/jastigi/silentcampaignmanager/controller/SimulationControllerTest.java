@@ -21,6 +21,7 @@ import com.jastigi.silentcampaignmanager.mapper.SimulationMapper;
 import com.jastigi.silentcampaignmanager.service.simulation.SimulationService;
 import com.jastigi.silentcampaignmanager.service.simulation.resolver.MissionOutcome;
 import com.jastigi.silentcampaignmanager.service.simulation.result.ResolvedSimulationResult;
+import com.jastigi.silentcampaignmanager.security.JwtService;
 import com.jastigi.silentcampaignmanager.service.simulation.result.SimulationResult;
 
 @WebMvcTest(controllers = SimulationController.class, excludeAutoConfiguration = org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class)
@@ -34,6 +35,9 @@ class SimulationControllerTest {
 
     @MockitoBean
     private SimulationMapper simulationMapper;
+
+    @MockitoBean
+    private JwtService jwtService;
 
     @Test
     void shouldSimulatePatrolSuccessfully()
