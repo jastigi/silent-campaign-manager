@@ -26,129 +26,165 @@ import com.jastigi.silentcampaignmanager.service.simulation.generator.DetectedCo
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
 import com.jastigi.silentcampaignmanager.service.simulation.modifier.SubmarineDetectionModifier;
+import com.jastigi.silentcampaignmanager.service.simulation.modifier.WeatherDetectionModifier;
 
 @ExtendWith(MockitoExtension.class)
 class DetectionPhaseTest {
 
-    @Mock
-    private SimulationRandomService randomService;
+        @Mock
+        private SimulationRandomService randomService;
 
-    @Mock
-    private DetectionProbabilityCalculator probabilityCalculator;
+        @Mock
+        private DetectionProbabilityCalculator probabilityCalculator;
 
-    @Mock
-    private SubmarineDetectionModifier submarineModifier;
+        @Mock
+        private SubmarineDetectionModifier submarineModifier;
 
-    @Mock
-    private DetectedContactFactory contactFactory;
+        @Mock
+        private WeatherDetectionModifier weatherDetectionModifier;
 
-    private DetectionPhase detectionPhase;
+        @Mock
+        private DetectedContactFactory contactFactory;
 
-    private Patrol patrol;
+        private DetectionPhase detectionPhase;
 
-    private SimulationContext context;
+        private Patrol patrol;
 
-    @BeforeEach
-    void setUp() {
+        private SimulationContext context;
 
-        detectionPhase = new DetectionPhase(
-                randomService,
-                probabilityCalculator,
-                submarineModifier,
-                contactFactory);
+        @BeforeEach
+        void setUp() {
 
-        patrol = Patrol.builder()
-                .missionType(
-                        MissionType.HUNT_SSN)
-                .build();
+                detectionPhase = new DetectionPhase(
+                                randomService,
+                                probabilityCalculator,
+                                submarineModifier,
+                                weatherDetectionModifier,
+                                contactFactory);
 
-        context = SimulationContext.builder()
-                .patrol(patrol)
-                .simulationDate(
-                        LocalDate.of(
-                                1985,
+                patrol = Patrol.builder()
+                                .missionType(
+                                                MissionType.HUNT_SSN)
+                                .build();
+
+                context = SimulationContext.builder()
+                                .patrol(patrol)
+                                .simulationDate(
+                                                LocalDate.of(
+                                                                1985,
+                                                                1,
+                                                                1))
+                                .build();
+
+                when(probabilityCalculator.calculate(patrol))
+                                .thenReturn(75);
+
+                when(submarineModifier.apply(patrol, 75))
+                                .thenReturn(85);
+
+                when(weatherDetectionModifier.apply(
+                                context.getWeatherReport(),
+                                85))
+                                .thenReturn(75);
+        }
+
+        @Test
+        void shouldRecordEventWhenNoContactIsDetected() {
+
+                when(randomService.probability(75))
+                                .thenReturn(false);
+
+                detectionPhase.execute(context);
+
+                assertEquals(
+                                LocalDate.of(1985, 1, 3),
+                                context.getSimulationDate());
+
+                assertEquals(
+                                0,
+                                context.getContactsDetected().get());
+
+                assertEquals(
+                                2,
+                                context.getEventLog().size());
+
+                assertEquals(
+                                SimulationEventType.DETECTION_PROBABILITY,
+                                context.getEventLog()
+                                                .get(0)
+                                                .getEventType());
+
+                assertEquals(
+                                SimulationEventType.PATROL_AREA,
+                                context.getEventLog()
+                                                .get(1)
+                                                .getEventType());
+
+                verify(contactFactory, never())
+                                .create(patrol);
+
+                verify(weatherDetectionModifier)
+                                .apply(
+                                                context.getWeatherReport(),
+                                                85);
+        }
+
+        @Test
+        void shouldCreateAndRegisterDetectedContact() {
+
+                DetectedContact contact = DetectedContact.builder()
+                                .contactType(
+                                                ContactType.SUBMARINE)
+                                .nation(Nation.USSR)
+                                .threatLevel(
+                                                ThreatLevel.HIGH)
+                                .confidenceLevel(80)
+                                .build();
+
+                when(randomService.probability(75))
+                                .thenReturn(true);
+
+                when(contactFactory.create(patrol))
+                                .thenReturn(contact);
+
+                detectionPhase.execute(context);
+
+                assertEquals(
                                 1,
-                                1))
-                .build();
+                                context.getContactsDetected().get());
 
-        when(probabilityCalculator.calculate(patrol))
-                .thenReturn(75);
+                assertEquals(
+                                1,
+                                context.getDetectedContacts().size());
 
-        when(submarineModifier.apply(patrol, 75))
-                .thenReturn(85);
-    }
+                assertSame(
+                                contact,
+                                context.getDetectedContacts()
+                                                .getFirst());
 
-    @Test
-    void shouldRecordEventWhenNoContactIsDetected() {
+                assertEquals(
+                                2,
+                                context.getEventLog().size());
 
-        when(randomService.probability(85))
-                .thenReturn(false);
+                assertEquals(
+                                SimulationEventType.DETECTION_PROBABILITY,
+                                context.getEventLog()
+                                                .get(0)
+                                                .getEventType());
 
-        detectionPhase.execute(context);
+                assertEquals(
+                                SimulationEventType.CONTACT_DETECTED,
+                                context.getEventLog()
+                                                .get(1)
+                                                .getEventType());
 
-        assertEquals(
-                LocalDate.of(1985, 1, 3),
-                context.getSimulationDate());
+                verify(contactFactory)
+                                .create(patrol);
 
-        assertEquals(
-                0,
-                context.getContactsDetected().get());
-
-        assertEquals(
-                1,
-                context.getEventLog().size());
-
-        assertEquals(
-                SimulationEventType.PATROL_AREA,
-                context.getEventLog()
-                        .getFirst()
-                        .getEventType());
-
-        verify(contactFactory, never())
-                .create(patrol);
-    }
-
-    @Test
-    void shouldCreateAndRegisterDetectedContact() {
-
-        DetectedContact contact = DetectedContact.builder()
-                .contactType(
-                        ContactType.SUBMARINE)
-                .nation(Nation.USSR)
-                .threatLevel(
-                        ThreatLevel.HIGH)
-                .confidenceLevel(80)
-                .build();
-
-        when(randomService.probability(85))
-                .thenReturn(true);
-
-        when(contactFactory.create(patrol))
-                .thenReturn(contact);
-
-        detectionPhase.execute(context);
-
-        assertEquals(
-                1,
-                context.getContactsDetected().get());
-
-        assertEquals(
-                1,
-                context.getDetectedContacts().size());
-
-        assertSame(
-                contact,
-                context.getDetectedContacts()
-                        .getFirst());
-
-        assertEquals(
-                SimulationEventType.CONTACT_DETECTED,
-                context.getEventLog()
-                        .getFirst()
-                        .getEventType());
-
-        verify(contactFactory)
-                .create(patrol);
-    }
+                verify(weatherDetectionModifier)
+                                .apply(
+                                                context.getWeatherReport(),
+                                                85);
+        }
 
 }

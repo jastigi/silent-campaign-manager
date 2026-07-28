@@ -365,4 +365,15 @@ Current sea states:
 
 Weather generation is recorded as a structured simulation event.
 
-At this stage, weather is generated and exposed in the simulation timeline but does not yet modify detection, classification or mission scoring.
+Weather conditions are generated at the beginning of every simulation and stored in `SimulationContext`.
+
+Weather currently modifies the final contact detection probability:
+
+- `CALM`: +15 percentage points
+- `MODERATE`: no modifier
+- `ROUGH`: -10 percentage points
+- `STORM`: -25 percentage points
+
+The final probability is limited to the range from 0 to 100 and recorded in the simulation timeline.
+
+Sea state and weather effects on classification remain planned.

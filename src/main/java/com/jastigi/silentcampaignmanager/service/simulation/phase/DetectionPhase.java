@@ -9,6 +9,7 @@ import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationCo
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
 import com.jastigi.silentcampaignmanager.service.simulation.modifier.SubmarineDetectionModifier;
+import com.jastigi.silentcampaignmanager.service.simulation.modifier.WeatherDetectionModifier;
 import com.jastigi.silentcampaignmanager.service.simulation.generator.DetectedContactFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class DetectionPhase implements SimulationPhase {
         private final SimulationRandomService randomService;
         private final DetectionProbabilityCalculator detectionProbabilityCalculator;
         private final SubmarineDetectionModifier submarineDetectionModifier;
+        private final WeatherDetectionModifier weatherDetectionModifier;
         private final DetectedContactFactory detectedContactFactory;
 
         @Override
@@ -33,6 +35,16 @@ public class DetectionPhase implements SimulationPhase {
                 probability = submarineDetectionModifier.apply(
                                 context.getPatrol(),
                                 probability);
+
+                probability = weatherDetectionModifier.apply(
+                                context.getWeatherReport(),
+                                probability);
+
+                context.addEvent(
+                                SimulationEventType.DETECTION_PROBABILITY,
+                                "Final detection probability: "
+                                                + probability
+                                                + "%.");
 
                 boolean contactDetected = randomService.probability(probability);
 

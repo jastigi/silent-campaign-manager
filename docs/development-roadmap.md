@@ -122,6 +122,7 @@ Planned for a later release:
 - [x] Weather Model
 - [x] Weather Generator
 - [x] Weather Context Integration
+- [x] Weather Detection Modifier
 - [ ] Sea State Detection Modifier
 - [ ] Weather Classification Modifier
 - [ ] Visibility

@@ -20,6 +20,8 @@ public enum SimulationEventType {
 
     PATROL_COMPLETED,
 
-    WEATHER_GENERATED
+    WEATHER_GENERATED,
+
+    DETECTION_PROBABILITY
 
 }
