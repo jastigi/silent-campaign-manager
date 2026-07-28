@@ -471,3 +471,17 @@ Behaviour selection currently depends on `ThreatLevel` and a probabilistic tacti
 The behaviour is stored in the transient `DetectedContact` and recorded in the simulation timeline.
 
 The contact-behaviour phase executes after classification and before the return phase.
+
+### Shadowing Decision
+
+After contact behaviour has been resolved, the simulation evaluates whether the patrol should begin tracking the detected contact.
+
+Only classified contacts may be shadowed.
+
+Current missions eligible for shadowing:
+
+- FOLLOW_SSBN
+- HUNT_SSN
+- SURVEILLANCE
+
+The actual tracking process is implemented separately.

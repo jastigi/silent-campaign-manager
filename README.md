@@ -170,6 +170,7 @@ The environmental simulation now models weather, sea state and visibility, affec
 The sonar model now supports passive detection and mission-dependent active sonar sweeps.
 Submarine classes now include acoustic signatures that influence passive sonar performance.
 Detected contacts now adopt threat-based tactical behaviours during patrol simulations.
+Patrols can now evaluate whether detected contacts should be shadowed based on mission objectives.
 
 ## Project Structure
 

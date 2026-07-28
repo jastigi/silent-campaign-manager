@@ -28,4 +28,8 @@ public class DetectedContact {
     @Builder.Default
     private ContactBehaviour behaviour = ContactBehaviour.UNAWARE;
 
+    @Setter
+    @Builder.Default
+    private boolean shadowing = false;
+
 }

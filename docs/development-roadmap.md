@@ -155,8 +155,7 @@ Planned for a later release:
 ## Tactical AI
 
 - [x] Contact Behaviour
-- [ ] Contact Classification AI
-- [ ] Shadowing
+- [x] Shadowing Decision
 - [ ] Contact Evasion
 
 ---

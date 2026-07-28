@@ -20,12 +20,16 @@ import com.jastigi.silentcampaignmanager.service.simulation.model.ContactBehavio
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
 import com.jastigi.silentcampaignmanager.service.simulation.resolver.ContactBehaviourResolver;
+import com.jastigi.silentcampaignmanager.service.simulation.resolver.ShadowingDecisionResolver;
 
 @ExtendWith(MockitoExtension.class)
 class ContactBehaviourPhaseTest {
 
     @Mock
     private ContactBehaviourResolver contactBehaviourResolver;
+
+    @Mock
+    private ShadowingDecisionResolver shadowingDecisionResolver;
 
     private ContactBehaviourPhase phase;
 
@@ -35,7 +39,8 @@ class ContactBehaviourPhaseTest {
     void setUp() {
 
         phase = new ContactBehaviourPhase(
-                contactBehaviourResolver);
+                contactBehaviourResolver,
+                shadowingDecisionResolver);
 
         context = SimulationContext.builder()
                 .patrol(new Patrol())
@@ -77,13 +82,19 @@ class ContactBehaviourPhaseTest {
                 contact.getBehaviour());
 
         assertEquals(
-                1,
+                2,
                 context.getEventLog().size());
+
+        assertEquals(
+                SimulationEventType.SHADOWING_DECISION,
+                context.getEventLog()
+                        .get(0)
+                        .getEventType());
 
         assertEquals(
                 SimulationEventType.CONTACT_BEHAVIOUR_RESOLVED,
                 context.getEventLog()
-                        .getFirst()
+                        .get(1)
                         .getEventType());
 
         verify(contactBehaviourResolver)

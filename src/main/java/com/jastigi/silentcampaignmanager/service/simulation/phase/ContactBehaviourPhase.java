@@ -8,6 +8,7 @@ import com.jastigi.silentcampaignmanager.service.simulation.model.ContactBehavio
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
 import com.jastigi.silentcampaignmanager.service.simulation.resolver.ContactBehaviourResolver;
+import com.jastigi.silentcampaignmanager.service.simulation.resolver.ShadowingDecisionResolver;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +19,7 @@ public class ContactBehaviourPhase
         implements SimulationPhase {
 
     private final ContactBehaviourResolver contactBehaviourResolver;
+    private final ShadowingDecisionResolver shadowingDecisionResolver;
 
     @Override
     public void execute(
@@ -35,6 +37,19 @@ public class ContactBehaviourPhase
                     contact);
 
             contact.setBehaviour(behaviour);
+
+            boolean shadowing = shadowingDecisionResolver.shouldShadow(
+                    context.getPatrol(),
+                    contact);
+
+            contact.setShadowing(
+                    shadowing);
+
+            context.addEvent(
+                    SimulationEventType.SHADOWING_DECISION,
+                    shadowing
+                            ? "Shadowing initiated."
+                            : "Shadowing not initiated.");
 
             context.addEvent(
                     SimulationEventType.CONTACT_BEHAVIOUR_RESOLVED,
