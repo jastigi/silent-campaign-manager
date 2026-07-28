@@ -25,8 +25,8 @@ import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationCo
 import com.jastigi.silentcampaignmanager.service.simulation.generator.DetectedContactFactory;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
+import com.jastigi.silentcampaignmanager.service.simulation.modifier.PassiveSonarDetectionModifier;
 import com.jastigi.silentcampaignmanager.service.simulation.modifier.SeaStateDetectionModifier;
-import com.jastigi.silentcampaignmanager.service.simulation.modifier.SubmarineDetectionModifier;
 import com.jastigi.silentcampaignmanager.service.simulation.modifier.WeatherDetectionModifier;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +39,7 @@ class DetectionPhaseTest {
         private DetectionProbabilityCalculator probabilityCalculator;
 
         @Mock
-        private SubmarineDetectionModifier submarineModifier;
+        private PassiveSonarDetectionModifier passiveSonarDetectionModifier;
 
         @Mock
         private WeatherDetectionModifier weatherDetectionModifier;
@@ -62,7 +62,7 @@ class DetectionPhaseTest {
                 detectionPhase = new DetectionPhase(
                                 randomService,
                                 probabilityCalculator,
-                                submarineModifier,
+                                passiveSonarDetectionModifier,
                                 weatherDetectionModifier,
                                 seaStateDetectionModifier,
                                 contactFactory);
@@ -84,24 +84,24 @@ class DetectionPhaseTest {
                 when(probabilityCalculator.calculate(patrol))
                                 .thenReturn(75);
 
-                when(submarineModifier.apply(patrol, 75))
-                                .thenReturn(85);
+                when(passiveSonarDetectionModifier.apply(patrol, 75))
+                                .thenReturn(90);
 
                 when(weatherDetectionModifier.apply(
                                 context.getWeatherReport(),
-                                85))
-                                .thenReturn(75);
+                                90))
+                                .thenReturn(80);
 
                 when(seaStateDetectionModifier.apply(
                                 context.getWeatherReport(),
-                                75))
-                                .thenReturn(65);
+                                80))
+                                .thenReturn(70);
         }
 
         @Test
         void shouldRecordEventWhenNoContactIsDetected() {
 
-                when(randomService.probability(65))
+                when(randomService.probability(70))
                                 .thenReturn(false);
 
                 detectionPhase.execute(context);
@@ -133,15 +133,20 @@ class DetectionPhaseTest {
                 verify(contactFactory, never())
                                 .create(patrol);
 
+                verify(passiveSonarDetectionModifier)
+                                .apply(
+                                                patrol,
+                                                75);
+
                 verify(weatherDetectionModifier)
                                 .apply(
                                                 context.getWeatherReport(),
-                                                85);
+                                                90);
 
                 verify(seaStateDetectionModifier)
                                 .apply(
                                                 context.getWeatherReport(),
-                                                75);
+                                                80);
         }
 
         @Test
@@ -156,7 +161,7 @@ class DetectionPhaseTest {
                                 .confidenceLevel(80)
                                 .build();
 
-                when(randomService.probability(65))
+                when(randomService.probability(70))
                                 .thenReturn(true);
 
                 when(contactFactory.create(patrol))
@@ -196,15 +201,20 @@ class DetectionPhaseTest {
                 verify(contactFactory)
                                 .create(patrol);
 
+                verify(passiveSonarDetectionModifier)
+                                .apply(
+                                                patrol,
+                                                75);
+
                 verify(weatherDetectionModifier)
                                 .apply(
                                                 context.getWeatherReport(),
-                                                85);
+                                                90);
 
                 verify(seaStateDetectionModifier)
                                 .apply(
                                                 context.getWeatherReport(),
-                                                75);
+                                                80);
         }
 
 }

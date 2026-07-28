@@ -27,7 +27,7 @@ Unlike the public README, this document is intended for development planning.
 
 - [x] Detection Phase
 - [x] DetectionProbabilityCalculator
-- [x] SubmarineDetectionModifier
+- [x] Passive Sonar Detection Modifier
 
 ---
 
@@ -146,7 +146,7 @@ Planned for a later release:
 
 ## Sonar Engine
 
-- [ ] Passive Detection
+- [x] Passive Detection
 - [ ] Active Sonar
 - [ ] Acoustic Signature
 

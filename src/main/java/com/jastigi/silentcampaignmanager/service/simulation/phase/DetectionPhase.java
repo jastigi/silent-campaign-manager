@@ -8,8 +8,8 @@ import com.jastigi.silentcampaignmanager.service.simulation.calculator.Simulatio
 import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationContext;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
 import com.jastigi.silentcampaignmanager.service.simulation.model.SimulationEventType;
+import com.jastigi.silentcampaignmanager.service.simulation.modifier.PassiveSonarDetectionModifier;
 import com.jastigi.silentcampaignmanager.service.simulation.modifier.SeaStateDetectionModifier;
-import com.jastigi.silentcampaignmanager.service.simulation.modifier.SubmarineDetectionModifier;
 import com.jastigi.silentcampaignmanager.service.simulation.modifier.WeatherDetectionModifier;
 import com.jastigi.silentcampaignmanager.service.simulation.generator.DetectedContactFactory;
 
@@ -22,7 +22,7 @@ public class DetectionPhase implements SimulationPhase {
 
         private final SimulationRandomService randomService;
         private final DetectionProbabilityCalculator detectionProbabilityCalculator;
-        private final SubmarineDetectionModifier submarineDetectionModifier;
+        private final PassiveSonarDetectionModifier passiveSonarDetectionModifier;
         private final WeatherDetectionModifier weatherDetectionModifier;
         private final SeaStateDetectionModifier seaStateDetectionModifier;
         private final DetectedContactFactory detectedContactFactory;
@@ -34,7 +34,7 @@ public class DetectionPhase implements SimulationPhase {
                 int probability = detectionProbabilityCalculator.calculate(
                                 context.getPatrol());
 
-                probability = submarineDetectionModifier.apply(
+                probability = passiveSonarDetectionModifier.apply(
                                 context.getPatrol(),
                                 probability);
 

@@ -147,7 +147,7 @@ After the base probability has been calculated, simulation modifiers may adjust 
 
 Current modifiers:
 
-- SubmarineDetectionModifier
+- PassiveSonarDetectionModifier
 
 Future modifiers may include:
 
@@ -405,3 +405,16 @@ Visibility modifies contact classification probability:
 - `ZERO`: -20 percentage points
 
 Weather condition and visibility modifiers are combined before the classification roll.
+
+## Passive Sonar
+
+`PassiveSonarDetectionModifier` represents the passive-search capability of the assigned submarine.
+
+Current role modifiers:
+
+- `SSN`: +15 percentage points
+- `SSBN`: -5 percentage points
+
+The passive sonar modifier is applied before environmental detection modifiers.
+
+The previous generic submarine-role modifier has been replaced to avoid applying duplicate platform bonuses.

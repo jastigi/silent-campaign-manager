@@ -2,8 +2,10 @@ package com.jastigi.silentcampaignmanager.service.simulation.modifier;
 
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 
-public interface SubmarineDetectionModifier {
+public interface PassiveSonarDetectionModifier {
 
-    int apply(Patrol patrol, int probability);
+    int apply(
+            Patrol patrol,
+            int probability);
 
 }
