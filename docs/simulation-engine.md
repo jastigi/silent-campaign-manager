@@ -419,6 +419,26 @@ The passive sonar modifier is applied before environmental detection modifiers.
 
 The previous generic submarine-role modifier has been replaced to avoid applying duplicate platform bonuses.
 
+### Acoustic Signature
+
+Each `SubmarineClass` defines an acoustic signature:
+
+- `ULTRA_QUIET`
+- `QUIET`
+- `MODERATE`
+- `LOUD`
+
+The assigned submarine acoustic signature modifies passive sonar effectiveness:
+
+- `ULTRA_QUIET`: +10 percentage points
+- `QUIET`: +5 percentage points
+- `MODERATE`: no modifier
+- `LOUD`: -10 percentage points
+
+The acoustic modifier represents platform self-noise and its effect on passive listening performance.
+
+Role and acoustic-signature modifiers are combined inside `PassiveSonarDetectionModifier`.
+
 ### Active Sonar
 
 Active sonar is used as a secondary detection attempt when passive detection fails.

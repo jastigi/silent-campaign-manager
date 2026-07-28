@@ -168,6 +168,7 @@ Simulation responses now include an operational summary, formatted timeline and 
 Environmental weather conditions now influence tactical contact detection probabilities.
 The environmental simulation now models weather, sea state and visibility, affecting both contact detection and classification.
 The sonar model now supports passive detection and mission-dependent active sonar sweeps.
+Submarine classes now include acoustic signatures that influence passive sonar performance.
 
 ## Project Structure
 

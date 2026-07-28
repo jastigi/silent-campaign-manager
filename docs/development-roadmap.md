@@ -148,7 +148,7 @@ Planned for a later release:
 
 - [x] Passive Detection
 - [x] Active Sonar
-- [ ] Acoustic Signature
+- [x] Acoustic Signature
 
 ---
 
