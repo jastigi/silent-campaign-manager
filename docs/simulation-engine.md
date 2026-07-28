@@ -418,3 +418,19 @@ Current role modifiers:
 The passive sonar modifier is applied before environmental detection modifiers.
 
 The previous generic submarine-role modifier has been replaced to avoid applying duplicate platform bonuses.
+
+### Active Sonar
+
+Active sonar is used as a secondary detection attempt when passive detection fails.
+
+Current supported missions:
+
+- `HUNT_SSN`
+- `ESCORT`
+- `TRAINING`
+
+Active sonar adds 20 percentage points to the final passive detection probability, limited to a maximum of 100.
+
+Silent or covert missions do not use active sonar automatically.
+
+Both successful and failed active-sonar sweeps are recorded in the simulation timeline.

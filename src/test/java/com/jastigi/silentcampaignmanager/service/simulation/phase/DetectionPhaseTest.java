@@ -19,6 +19,7 @@ import com.jastigi.silentcampaignmanager.entity.MissionType;
 import com.jastigi.silentcampaignmanager.entity.Nation;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
+import com.jastigi.silentcampaignmanager.service.simulation.calculator.ActiveSonarDetectionCalculator;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.DetectionProbabilityCalculator;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.SimulationRandomService;
 import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationContext;
@@ -37,6 +38,9 @@ class DetectionPhaseTest {
 
         @Mock
         private DetectionProbabilityCalculator probabilityCalculator;
+
+        @Mock
+        private ActiveSonarDetectionCalculator activeSonarDetectionCalculator;
 
         @Mock
         private PassiveSonarDetectionModifier passiveSonarDetectionModifier;
@@ -62,6 +66,7 @@ class DetectionPhaseTest {
                 detectionPhase = new DetectionPhase(
                                 randomService,
                                 probabilityCalculator,
+                                activeSonarDetectionCalculator,
                                 passiveSonarDetectionModifier,
                                 weatherDetectionModifier,
                                 seaStateDetectionModifier,
@@ -100,6 +105,10 @@ class DetectionPhaseTest {
 
         @Test
         void shouldRecordEventWhenNoContactIsDetected() {
+
+                when(activeSonarDetectionCalculator
+                                .isAvailable(patrol))
+                                .thenReturn(false);
 
                 when(randomService.probability(70))
                                 .thenReturn(false);
@@ -215,6 +224,122 @@ class DetectionPhaseTest {
                                 .apply(
                                                 context.getWeatherReport(),
                                                 80);
+        }
+
+        @Test
+        void shouldDetectContactUsingActiveSonarAfterPassiveFailure() {
+
+                DetectedContact contact = DetectedContact.builder()
+                                .contactType(
+                                                ContactType.SUBMARINE)
+                                .nation(Nation.USSR)
+                                .threatLevel(
+                                                ThreatLevel.HIGH)
+                                .confidenceLevel(80)
+                                .build();
+
+                when(activeSonarDetectionCalculator
+                                .isAvailable(patrol))
+                                .thenReturn(true);
+
+                when(activeSonarDetectionCalculator
+                                .calculate(70))
+                                .thenReturn(90);
+
+                when(randomService.probability(70))
+                                .thenReturn(false);
+
+                when(randomService.probability(90))
+                                .thenReturn(true);
+
+                when(contactFactory.create(patrol))
+                                .thenReturn(contact);
+
+                detectionPhase.execute(context);
+
+                assertEquals(
+                                1,
+                                context.getContactsDetected().get());
+
+                assertEquals(
+                                3,
+                                context.getEventLog().size());
+
+                assertEquals(
+                                SimulationEventType.DETECTION_PROBABILITY,
+                                context.getEventLog()
+                                                .get(0)
+                                                .getEventType());
+
+                assertEquals(
+                                SimulationEventType.ACTIVE_SONAR_USED,
+                                context.getEventLog()
+                                                .get(1)
+                                                .getEventType());
+
+                assertEquals(
+                                SimulationEventType.CONTACT_DETECTED,
+                                context.getEventLog()
+                                                .get(2)
+                                                .getEventType());
+
+                verify(contactFactory)
+                                .create(patrol);
+        }
+
+        @Test
+        void shouldRecordFailureWhenActiveSonarFindsNoContact() {
+
+                when(activeSonarDetectionCalculator
+                                .isAvailable(patrol))
+                                .thenReturn(true);
+
+                when(activeSonarDetectionCalculator
+                                .calculate(70))
+                                .thenReturn(90);
+
+                when(randomService.probability(70))
+                                .thenReturn(false);
+
+                when(randomService.probability(90))
+                                .thenReturn(false);
+
+                detectionPhase.execute(context);
+
+                assertEquals(
+                                0,
+                                context.getContactsDetected().get());
+
+                assertEquals(
+                                4,
+                                context.getEventLog().size());
+
+                assertEquals(
+                                SimulationEventType.DETECTION_PROBABILITY,
+                                context.getEventLog()
+                                                .get(0)
+                                                .getEventType());
+
+                assertEquals(
+                                SimulationEventType.ACTIVE_SONAR_USED,
+                                context.getEventLog()
+                                                .get(1)
+                                                .getEventType());
+
+                assertEquals(
+                                SimulationEventType.ACTIVE_SONAR_FAILED,
+                                context.getEventLog()
+                                                .get(2)
+                                                .getEventType());
+
+                assertEquals(
+                                SimulationEventType.PATROL_AREA,
+                                context.getEventLog()
+                                                .get(3)
+                                                .getEventType());
+
+                verify(contactFactory, never())
+                                .create(patrol);
         }
 
 }

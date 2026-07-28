@@ -147,7 +147,7 @@ Planned for a later release:
 ## Sonar Engine
 
 - [x] Passive Detection
-- [ ] Active Sonar
+- [x] Active Sonar
 - [ ] Acoustic Signature
 
 ---

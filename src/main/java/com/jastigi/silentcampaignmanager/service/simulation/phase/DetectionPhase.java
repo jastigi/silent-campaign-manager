@@ -3,6 +3,7 @@ package com.jastigi.silentcampaignmanager.service.simulation.phase;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import com.jastigi.silentcampaignmanager.service.simulation.calculator.ActiveSonarDetectionCalculator;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.DetectionProbabilityCalculator;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.SimulationRandomService;
 import com.jastigi.silentcampaignmanager.service.simulation.context.SimulationContext;
@@ -22,6 +23,7 @@ public class DetectionPhase implements SimulationPhase {
 
         private final SimulationRandomService randomService;
         private final DetectionProbabilityCalculator detectionProbabilityCalculator;
+        private final ActiveSonarDetectionCalculator activeSonarDetectionCalculator;
         private final PassiveSonarDetectionModifier passiveSonarDetectionModifier;
         private final WeatherDetectionModifier weatherDetectionModifier;
         private final SeaStateDetectionModifier seaStateDetectionModifier;
@@ -48,11 +50,37 @@ public class DetectionPhase implements SimulationPhase {
 
                 context.addEvent(
                                 SimulationEventType.DETECTION_PROBABILITY,
-                                "Final detection probability: "
+                                "Final passive detection probability: "
                                                 + probability
                                                 + "%.");
 
-                boolean contactDetected = randomService.probability(probability);
+                boolean contactDetected = randomService.probability(
+                                probability);
+
+                if (!contactDetected
+                                && activeSonarDetectionCalculator
+                                                .isAvailable(
+                                                                context.getPatrol())) {
+
+                        int activeSonarProbability = activeSonarDetectionCalculator
+                                        .calculate(probability);
+
+                        context.addEvent(
+                                        SimulationEventType.ACTIVE_SONAR_USED,
+                                        "Active sonar employed. Detection probability: "
+                                                        + activeSonarProbability
+                                                        + "%.");
+
+                        contactDetected = randomService.probability(
+                                        activeSonarProbability);
+
+                        if (!contactDetected) {
+
+                                context.addEvent(
+                                                SimulationEventType.ACTIVE_SONAR_FAILED,
+                                                "Active sonar sweep completed without contact.");
+                        }
+                }
 
                 context.advanceDays(2);
 
