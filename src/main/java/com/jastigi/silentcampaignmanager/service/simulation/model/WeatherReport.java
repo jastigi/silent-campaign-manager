@@ -11,4 +11,6 @@ public class WeatherReport {
 
     private final SeaState seaState;
 
+    private final Visibility visibility;
+
 }

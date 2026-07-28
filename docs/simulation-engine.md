@@ -387,3 +387,21 @@ Sea state also modifies contact detection:
 - `SEA_STATE_5`: -20 percentage points
 
 Weather condition and sea state modifiers are applied sequentially before resolving contact detection.
+
+### Visibility
+
+Each generated weather report includes an operational visibility level:
+
+- `EXCELLENT`
+- `GOOD`
+- `POOR`
+- `ZERO`
+
+Visibility modifies contact classification probability:
+
+- `EXCELLENT`: +10 percentage points
+- `GOOD`: +5 percentage points
+- `POOR`: -10 percentage points
+- `ZERO`: -20 percentage points
+
+Weather condition and visibility modifiers are combined before the classification roll.

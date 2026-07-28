@@ -166,6 +166,7 @@ Simulation responses now include a mission-specific outcome based on the patrol 
 Simulation responses now include both a mission-specific outcome and a numeric mission score.
 Simulation responses now include an operational summary, formatted timeline and narrative mission debrief.
 Environmental weather conditions now influence tactical contact detection probabilities.
+The environmental simulation now models weather, sea state and visibility, affecting both contact detection and classification.
 
 ## Project Structure
 

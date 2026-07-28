@@ -15,32 +15,35 @@ import lombok.RequiredArgsConstructor;
 @Order(1)
 public class TransitPhase implements SimulationPhase {
 
-    private final WeatherGenerator weatherGenerator;
+        private final WeatherGenerator weatherGenerator;
 
-    @Override
-    public void execute(SimulationContext context) {
+        @Override
+        public void execute(SimulationContext context) {
 
-        context.setWeatherReport(
-                weatherGenerator.generate());
+                context.setWeatherReport(
+                                weatherGenerator.generate());
 
-        context.addEvent(
-                SimulationEventType.WEATHER_GENERATED,
-                "Weather conditions: "
-                        + context.getWeatherReport()
-                                .getWeatherCondition()
-                        + ", "
-                        + context.getWeatherReport()
-                                .getSeaState()
-                        + ".");
+                context.addEvent(
+                                SimulationEventType.WEATHER_GENERATED,
+                                "Weather conditions: "
+                                                + context.getWeatherReport()
+                                                                .getWeatherCondition()
+                                                + ", "
+                                                + context.getWeatherReport()
+                                                                .getSeaState()
+                                                + ", visibility "
+                                                + context.getWeatherReport()
+                                                                .getVisibility()
+                                                + ".");
 
-        context.setState(PatrolSimulationState.TRANSIT);
+                context.setState(PatrolSimulationState.TRANSIT);
 
-        context.advanceDays(3);
+                context.advanceDays(3);
 
-        context.addEvent(SimulationEventType.TRANSIT,
+                context.addEvent(SimulationEventType.TRANSIT,
 
-                "Transit completed (+3 days).");
+                                "Transit completed (+3 days).");
 
-    }
+        }
 
 }

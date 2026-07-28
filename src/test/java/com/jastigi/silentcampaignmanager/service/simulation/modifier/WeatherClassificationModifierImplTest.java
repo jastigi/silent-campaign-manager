@@ -5,96 +5,135 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.jastigi.silentcampaignmanager.service.simulation.model.Visibility;
 import com.jastigi.silentcampaignmanager.service.simulation.model.WeatherCondition;
 import com.jastigi.silentcampaignmanager.service.simulation.model.WeatherReport;
 import com.jastigi.silentcampaignmanager.service.simulation.modifier.impl.WeatherClassificationModifierImpl;
 
 class WeatherClassificationModifierImplTest {
 
-    private WeatherClassificationModifier modifier;
+        private WeatherClassificationModifier modifier;
 
-    @BeforeEach
-    void setUp() {
+        @BeforeEach
+        void setUp() {
 
-        modifier = new WeatherClassificationModifierImpl();
-    }
+                modifier = new WeatherClassificationModifierImpl();
+        }
 
-    @Test
-    void shouldIncreaseProbabilityInCalmWeather() {
+        @Test
+        void shouldApplyCalmWeatherAndExcellentVisibility() {
 
-        assertEquals(
-                80,
-                modifier.apply(
-                        weather(WeatherCondition.CALM),
-                        70));
-    }
+                assertEquals(
+                                90,
+                                modifier.apply(
+                                                report(
+                                                                WeatherCondition.CALM,
+                                                                Visibility.EXCELLENT),
+                                                70));
+        }
 
-    @Test
-    void shouldKeepProbabilityInModerateWeather() {
+        @Test
+        void shouldApplyModerateWeatherAndGoodVisibility() {
 
-        assertEquals(
-                70,
-                modifier.apply(
-                        weather(WeatherCondition.MODERATE),
-                        70));
-    }
+                assertEquals(
+                                75,
+                                modifier.apply(
+                                                report(
+                                                                WeatherCondition.MODERATE,
+                                                                Visibility.GOOD),
+                                                70));
+        }
 
-    @Test
-    void shouldReduceProbabilityInRoughWeather() {
+        @Test
+        void shouldApplyRoughWeatherAndPoorVisibility() {
 
-        assertEquals(
-                60,
-                modifier.apply(
-                        weather(WeatherCondition.ROUGH),
-                        70));
-    }
+                assertEquals(
+                                50,
+                                modifier.apply(
+                                                report(
+                                                                WeatherCondition.ROUGH,
+                                                                Visibility.POOR),
+                                                70));
+        }
 
-    @Test
-    void shouldReduceProbabilityDuringStorm() {
+        @Test
+        void shouldApplyStormAndZeroVisibility() {
 
-        assertEquals(
-                50,
-                modifier.apply(
-                        weather(WeatherCondition.STORM),
-                        70));
-    }
+                assertEquals(
+                                30,
+                                modifier.apply(
+                                                report(
+                                                                WeatherCondition.STORM,
+                                                                Visibility.ZERO),
+                                                70));
+        }
 
-    @Test
-    void shouldKeepProbabilityWhenWeatherIsNull() {
+        @Test
+        void shouldApplyOnlyWeatherWhenVisibilityIsNull() {
 
-        assertEquals(
-                70,
-                modifier.apply(
-                        null,
-                        70));
-    }
+                assertEquals(
+                                60,
+                                modifier.apply(
+                                                report(
+                                                                WeatherCondition.ROUGH,
+                                                                null),
+                                                70));
+        }
 
-    @Test
-    void shouldClampProbabilityToOneHundred() {
+        @Test
+        void shouldApplyOnlyVisibilityWhenWeatherIsNull() {
 
-        assertEquals(
-                100,
-                modifier.apply(
-                        weather(WeatherCondition.CALM),
-                        95));
-    }
+                assertEquals(
+                                60,
+                                modifier.apply(
+                                                report(
+                                                                null,
+                                                                Visibility.POOR),
+                                                70));
+        }
 
-    @Test
-    void shouldClampProbabilityToZero() {
+        @Test
+        void shouldKeepProbabilityWhenReportIsNull() {
 
-        assertEquals(
-                0,
-                modifier.apply(
-                        weather(WeatherCondition.STORM),
-                        10));
-    }
+                assertEquals(
+                                70,
+                                modifier.apply(
+                                                null,
+                                                70));
+        }
 
-    private WeatherReport weather(
-            WeatherCondition condition) {
+        @Test
+        void shouldClampProbabilityToOneHundred() {
 
-        return WeatherReport.builder()
-                .weatherCondition(condition)
-                .build();
-    }
+                assertEquals(
+                                100,
+                                modifier.apply(
+                                                report(
+                                                                WeatherCondition.CALM,
+                                                                Visibility.EXCELLENT),
+                                                90));
+        }
+
+        @Test
+        void shouldClampProbabilityToZero() {
+
+                assertEquals(
+                                0,
+                                modifier.apply(
+                                                report(
+                                                                WeatherCondition.STORM,
+                                                                Visibility.ZERO),
+                                                30));
+        }
+
+        private WeatherReport report(
+                        WeatherCondition condition,
+                        Visibility visibility) {
+
+                return WeatherReport.builder()
+                                .weatherCondition(condition)
+                                .visibility(visibility)
+                                .build();
+        }
 
 }

@@ -125,7 +125,7 @@ Planned for a later release:
 - [x] Weather Detection Modifier
 - [x] Sea State Detection Modifier
 - [x] Weather Classification Modifier
-- [ ] Visibility
+- [x] Visibility
 
 ---
 
