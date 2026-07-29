@@ -86,13 +86,13 @@ class ContactBehaviourPhaseTest {
                 context.getEventLog().size());
 
         assertEquals(
-                SimulationEventType.SHADOWING_DECISION,
+                SimulationEventType.CONTACT_BEHAVIOUR_RESOLVED,
                 context.getEventLog()
                         .get(0)
                         .getEventType());
 
         assertEquals(
-                SimulationEventType.CONTACT_BEHAVIOUR_RESOLVED,
+                SimulationEventType.SHADOWING_DECISION,
                 context.getEventLog()
                         .get(1)
                         .getEventType());

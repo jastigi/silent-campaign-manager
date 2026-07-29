@@ -15,66 +15,86 @@ import com.jastigi.silentcampaignmanager.service.simulation.resolver.impl.Shadow
 
 class ShadowingDecisionResolverImplTest {
 
-    private ShadowingDecisionResolver resolver;
+        private ShadowingDecisionResolver resolver;
 
-    @BeforeEach
-    void setUp() {
-        resolver = new ShadowingDecisionResolverImpl();
-    }
+        @BeforeEach
+        void setUp() {
+                resolver = new ShadowingDecisionResolverImpl();
+        }
 
-    @Test
-    void shouldShadowWhenMissionIsFollowSsbn() {
-        Patrol patrol = Patrol.builder()
-                .missionType(MissionType.FOLLOW_SSBN)
-                .build();
+        @Test
+        void shouldShadowWhenMissionIsFollowSsbn() {
+                Patrol patrol = Patrol.builder()
+                                .missionType(MissionType.FOLLOW_SSBN)
+                                .build();
 
-        DetectedContact contact = DetectedContact.builder()
-                .classificationStatus(ContactClassificationStatus.CLASSIFIED)
-                .behaviour(ContactBehaviour.UNAWARE)
-                .build();
+                DetectedContact contact = DetectedContact.builder()
+                                .classificationStatus(ContactClassificationStatus.CLASSIFIED)
+                                .behaviour(ContactBehaviour.UNAWARE)
+                                .build();
 
-        assertTrue(resolver.shouldShadow(patrol, contact));
-    }
+                assertTrue(resolver.shouldShadow(patrol, contact));
+        }
 
-    @Test
-    void shouldShadowWhenMissionIsHuntSsn() {
-        Patrol patrol = Patrol.builder()
-                .missionType(MissionType.HUNT_SSN)
-                .build();
+        @Test
+        void shouldShadowWhenMissionIsHuntSsn() {
+                Patrol patrol = Patrol.builder()
+                                .missionType(MissionType.HUNT_SSN)
+                                .build();
 
-        DetectedContact contact = DetectedContact.builder()
-                .classificationStatus(ContactClassificationStatus.CLASSIFIED)
-                .behaviour(ContactBehaviour.UNAWARE)
-                .build();
+                DetectedContact contact = DetectedContact.builder()
+                                .classificationStatus(ContactClassificationStatus.CLASSIFIED)
+                                .behaviour(ContactBehaviour.UNAWARE)
+                                .build();
 
-        assertTrue(resolver.shouldShadow(patrol, contact));
-    }
+                assertTrue(resolver.shouldShadow(patrol, contact));
+        }
 
-    @Test
-    void shouldNotShadowWhenMissionIsTraining() {
-        Patrol patrol = Patrol.builder()
-                .missionType(MissionType.TRAINING)
-                .build();
+        @Test
+        void shouldNotShadowWhenMissionIsTraining() {
+                Patrol patrol = Patrol.builder()
+                                .missionType(MissionType.TRAINING)
+                                .build();
 
-        DetectedContact contact = DetectedContact.builder()
-                .classificationStatus(ContactClassificationStatus.CLASSIFIED)
-                .behaviour(ContactBehaviour.UNAWARE)
-                .build();
+                DetectedContact contact = DetectedContact.builder()
+                                .classificationStatus(ContactClassificationStatus.CLASSIFIED)
+                                .behaviour(ContactBehaviour.UNAWARE)
+                                .build();
 
-        assertFalse(resolver.shouldShadow(patrol, contact));
-    }
+                assertFalse(resolver.shouldShadow(patrol, contact));
+        }
 
-    @Test
-    void shouldNotShadowWhenContactIsUnclassified() {
-        Patrol patrol = Patrol.builder()
-                .missionType(MissionType.FOLLOW_SSBN)
-                .build();
+        @Test
+        void shouldNotShadowWhenContactIsUnclassified() {
+                Patrol patrol = Patrol.builder()
+                                .missionType(MissionType.FOLLOW_SSBN)
+                                .build();
 
-        DetectedContact contact = DetectedContact.builder()
-                .classificationStatus(ContactClassificationStatus.UNCLASSIFIED)
-                .behaviour(ContactBehaviour.UNAWARE)
-                .build();
+                DetectedContact contact = DetectedContact.builder()
+                                .classificationStatus(ContactClassificationStatus.UNCLASSIFIED)
+                                .behaviour(ContactBehaviour.UNAWARE)
+                                .build();
 
-        assertFalse(resolver.shouldShadow(patrol, contact));
-    }
+                assertFalse(resolver.shouldShadow(patrol, contact));
+        }
+
+        @Test
+        void shouldReturnFalseWhenMissionTypeIsNull() {
+
+                Patrol patrol = Patrol.builder()
+                                .missionType(null)
+                                .build();
+
+                DetectedContact contact = DetectedContact.builder()
+                                .classificationStatus(ContactClassificationStatus.CLASSIFIED)
+                                .behaviour(ContactBehaviour.UNAWARE)
+                                .build();
+
+                boolean result = resolver.shouldShadow(
+                                patrol,
+                                contact);
+
+                assertFalse(result);
+        }
+
 }

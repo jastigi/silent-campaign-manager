@@ -36,6 +36,10 @@ public class ShadowingDecisionResolverImpl
 
         MissionType mission = patrol.getMissionType();
 
+        if (mission == null) {
+            return false;
+        }
+
         return switch (mission) {
 
             case FOLLOW_SSBN,

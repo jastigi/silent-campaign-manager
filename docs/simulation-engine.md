@@ -485,3 +485,11 @@ Current missions eligible for shadowing:
 - SURVEILLANCE
 
 The actual tracking process is implemented separately.
+
+### Contact Tracking
+
+After a patrol decides to shadow a classified contact, the simulation determines whether tracking can be maintained.
+
+Tracking probability depends on the detected contact behaviour.
+
+A successful tracking attempt does not resolve the mission by itself but enables future tactical decisions.

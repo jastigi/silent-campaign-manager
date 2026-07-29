@@ -32,8 +32,12 @@ class SimulationPhaseOrderTest {
                                 5);
 
                 assertOrder(
-                                ReturnPhase.class,
+                                TrackingPhase.class,
                                 6);
+
+                assertOrder(
+                                ReturnPhase.class,
+                                7);
         }
 
         private void assertOrder(

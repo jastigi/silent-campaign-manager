@@ -16,48 +16,48 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Order(5)
 public class ContactBehaviourPhase
-        implements SimulationPhase {
+                implements SimulationPhase {
 
-    private final ContactBehaviourResolver contactBehaviourResolver;
-    private final ShadowingDecisionResolver shadowingDecisionResolver;
+        private final ContactBehaviourResolver contactBehaviourResolver;
+        private final ShadowingDecisionResolver shadowingDecisionResolver;
 
-    @Override
-    public void execute(
-            SimulationContext context) {
+        @Override
+        public void execute(
+                        SimulationContext context) {
 
-        if (context.getDetectedContacts() == null
-                || context.getDetectedContacts().isEmpty()) {
+                if (context.getDetectedContacts() == null
+                                || context.getDetectedContacts().isEmpty()) {
 
-            return;
+                        return;
+                }
+
+                for (DetectedContact contact : context.getDetectedContacts()) {
+
+                        ContactBehaviour behaviour = contactBehaviourResolver.resolve(
+                                        contact);
+
+                        contact.setBehaviour(behaviour);
+
+                        context.addEvent(
+                                        SimulationEventType.CONTACT_BEHAVIOUR_RESOLVED,
+                                        "Contact behaviour resolved as "
+                                                        + behaviour
+                                                        + " for "
+                                                        + contact.getContactType()
+                                                        + ".");
+
+                        boolean shadowing = shadowingDecisionResolver.shouldShadow(
+                                        context.getPatrol(),
+                                        contact);
+
+                        contact.setShadowing(
+                                        shadowing);
+
+                        context.addEvent(
+                                        SimulationEventType.SHADOWING_DECISION,
+                                        shadowing
+                                                        ? "Shadowing initiated."
+                                                        : "Shadowing not initiated.");
+                }
         }
-
-        for (DetectedContact contact : context.getDetectedContacts()) {
-
-            ContactBehaviour behaviour = contactBehaviourResolver.resolve(
-                    contact);
-
-            contact.setBehaviour(behaviour);
-
-            boolean shadowing = shadowingDecisionResolver.shouldShadow(
-                    context.getPatrol(),
-                    contact);
-
-            contact.setShadowing(
-                    shadowing);
-
-            context.addEvent(
-                    SimulationEventType.SHADOWING_DECISION,
-                    shadowing
-                            ? "Shadowing initiated."
-                            : "Shadowing not initiated.");
-
-            context.addEvent(
-                    SimulationEventType.CONTACT_BEHAVIOUR_RESOLVED,
-                    "Contact behaviour resolved as "
-                            + behaviour
-                            + " for "
-                            + contact.getContactType()
-                            + ".");
-        }
-    }
 }

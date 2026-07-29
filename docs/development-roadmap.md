@@ -156,7 +156,8 @@ Planned for a later release:
 
 - [x] Contact Behaviour
 - [x] Shadowing Decision
-- [ ] Contact Evasion
+- [x] Contact Tracking
+- [ ] Contact Loss
 
 ---
 

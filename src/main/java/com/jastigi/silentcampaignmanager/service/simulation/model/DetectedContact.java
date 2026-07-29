@@ -32,4 +32,8 @@ public class DetectedContact {
     @Builder.Default
     private boolean shadowing = false;
 
+    @Setter
+    @Builder.Default
+    private boolean tracking = false;
+
 }
