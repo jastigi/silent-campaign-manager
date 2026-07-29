@@ -493,3 +493,22 @@ After a patrol decides to shadow a classified contact, the simulation determines
 Tracking probability depends on the detected contact behaviour.
 
 A successful tracking attempt does not resolve the mission by itself but enables future tactical decisions.
+
+### Contact Loss
+
+After the tracking phase, the simulation determines whether a shadowed contact has been lost.
+
+A contact is considered lost when:
+
+- the patrol decided to shadow the contact;
+- tracking could not be established or maintained.
+
+Contacts that were never selected for shadowing are not treated as lost.
+
+Lost contacts remain in the simulation contact collection so that reporting and mission evaluation can inspect their complete tactical history.
+
+When a contact is lost:
+
+- the contact `lost` state is set to `true`;
+- the `contactsLost` counter in `SimulationContext` is incremented;
+- a `CONTACT_LOST` event is added to the simulation timeline.

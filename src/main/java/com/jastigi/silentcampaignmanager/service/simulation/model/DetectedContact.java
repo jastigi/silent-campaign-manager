@@ -36,4 +36,8 @@ public class DetectedContact {
     @Builder.Default
     private boolean tracking = false;
 
+    @Setter
+    @Builder.Default
+    private boolean lost = false;
+
 }

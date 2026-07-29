@@ -131,8 +131,8 @@ Planned for a later release:
 
 ## Contact Resolution
 
-- [ ] Contact Tracking
-- [ ] Contact Loss
+- [x] Contact Tracking
+- [x] Contact Loss
 - [ ] Intelligence Gathering
 
 ---
@@ -157,7 +157,7 @@ Planned for a later release:
 - [x] Contact Behaviour
 - [x] Shadowing Decision
 - [x] Contact Tracking
-- [ ] Contact Loss
+- [x] Contact Loss
 
 ---
 
