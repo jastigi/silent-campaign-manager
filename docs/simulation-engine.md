@@ -586,3 +586,22 @@ Instead, each simulation record stores a stable operational summary:
 The record is persisted after tactical mission evaluation and before the result is returned by `SimulationServiceImpl`.
 
 Simulation-history queries and REST endpoints are introduced separately so that persistence can be validated before exposing new API contracts.
+
+### Simulation History
+
+Persisted simulation records can be queried through the simulation-history API.
+
+The history layer consists of:
+
+- `SimulationHistoryController`;
+- `SimulationHistoryService`;
+- `SimulationHistoryServiceImpl`;
+- `SimulationHistoryMapper`;
+- `SimulationHistoryResponseDTO`.
+
+Available endpoints:
+
+```text
+GET /api/v1/simulations/history
+GET /api/v1/patrols/{patrolId}/simulations
+```

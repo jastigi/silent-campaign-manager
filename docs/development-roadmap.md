@@ -141,8 +141,10 @@ Planned for a later release:
 
 - [x] Simulation Persistence Foundation
 - [x] Automatic Simulation Result Persistence
-- [ ] Simulation History Service
-- [ ] Simulation History REST API
+- [x] Simulation History Service
+- [x] Simulation History REST API
+- [x] Simulation History Pagination
+- [x] Simulation History Filtering by Patrol
 
 ---
 
