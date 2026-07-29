@@ -9,6 +9,7 @@ import com.jastigi.silentcampaignmanager.service.simulation.SimulationService;
 import com.jastigi.silentcampaignmanager.service.simulation.engine.SimulationEngine;
 import com.jastigi.silentcampaignmanager.service.simulation.evaluation.TacticalMissionEvaluator;
 import com.jastigi.silentcampaignmanager.service.simulation.evaluation.model.TacticalMissionEvaluation;
+import com.jastigi.silentcampaignmanager.service.simulation.persistence.SimulationPersistenceService;
 import com.jastigi.silentcampaignmanager.service.simulation.result.ResolvedSimulationResult;
 import com.jastigi.silentcampaignmanager.service.simulation.result.SimulationResult;
 
@@ -24,6 +25,8 @@ public class SimulationServiceImpl
         private final PatrolRepository patrolRepository;
 
         private final TacticalMissionEvaluator tacticalMissionEvaluator;
+
+        private final SimulationPersistenceService simulationPersistenceService;
 
         @Override
         public ResolvedSimulationResult simulate(
@@ -42,7 +45,7 @@ public class SimulationServiceImpl
                                 patrol,
                                 simulationResult);
 
-                return ResolvedSimulationResult.builder()
+                ResolvedSimulationResult resolvedResult = ResolvedSimulationResult.builder()
                                 .simulationResult(
                                                 simulationResult)
                                 .missionOutcome(
@@ -54,6 +57,12 @@ public class SimulationServiceImpl
                                 .missionDebrief(
                                                 evaluation.getMissionDebrief())
                                 .build();
+
+                simulationPersistenceService.persist(
+                                patrol,
+                                resolvedResult);
+
+                return resolvedResult;
         }
 
 }

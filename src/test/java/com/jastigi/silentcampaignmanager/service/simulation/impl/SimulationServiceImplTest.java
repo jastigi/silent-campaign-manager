@@ -23,6 +23,7 @@ import com.jastigi.silentcampaignmanager.service.simulation.SimulationService;
 import com.jastigi.silentcampaignmanager.service.simulation.engine.SimulationEngine;
 import com.jastigi.silentcampaignmanager.service.simulation.evaluation.TacticalMissionEvaluator;
 import com.jastigi.silentcampaignmanager.service.simulation.evaluation.model.TacticalMissionEvaluation;
+import com.jastigi.silentcampaignmanager.service.simulation.persistence.SimulationPersistenceService;
 import com.jastigi.silentcampaignmanager.service.simulation.resolver.MissionOutcome;
 import com.jastigi.silentcampaignmanager.service.simulation.result.ResolvedSimulationResult;
 import com.jastigi.silentcampaignmanager.service.simulation.result.SimulationResult;
@@ -30,147 +31,164 @@ import com.jastigi.silentcampaignmanager.service.simulation.result.SimulationRes
 @ExtendWith(MockitoExtension.class)
 class SimulationServiceImplTest {
 
-    @Mock
-    private SimulationEngine simulationEngine;
+        @Mock
+        private SimulationEngine simulationEngine;
 
-    @Mock
-    private PatrolRepository patrolRepository;
+        @Mock
+        private PatrolRepository patrolRepository;
 
-    @Mock
-    private TacticalMissionEvaluator tacticalMissionEvaluator;
+        @Mock
+        private TacticalMissionEvaluator tacticalMissionEvaluator;
 
-    private SimulationService simulationService;
+        @Mock
+        private SimulationPersistenceService simulationPersistenceService;
 
-    @BeforeEach
-    void setUp() {
+        private SimulationService simulationService;
 
-        simulationService = new SimulationServiceImpl(
-                simulationEngine,
-                patrolRepository,
-                tacticalMissionEvaluator);
-    }
+        @BeforeEach
+        void setUp() {
 
-    @Test
-    void shouldSimulateAndResolvePatrol() {
+                simulationService = new SimulationServiceImpl(
+                                simulationEngine,
+                                patrolRepository,
+                                tacticalMissionEvaluator,
+                                simulationPersistenceService);
+        }
 
-        Long patrolId = 1L;
+        @Test
+        void shouldSimulateEvaluateAndPersistPatrol() {
 
-        Patrol patrol = Patrol.builder()
-                .id(patrolId)
-                .missionType(
-                        MissionType.INTELLIGENCE)
-                .build();
+                Long patrolId = 1L;
 
-        SimulationResult simulationResult = SimulationResult.builder()
-                .contactsDetected(1)
-                .contactsLost(0)
-                .intelligenceGathered(1)
-                .incidents(0)
-                .build();
+                Patrol patrol = Patrol.builder()
+                                .id(patrolId)
+                                .missionType(
+                                                MissionType.INTELLIGENCE)
+                                .build();
 
-        TacticalMissionEvaluation evaluation = TacticalMissionEvaluation.builder()
-                .missionOutcome(
-                        MissionOutcome.SUCCESS)
-                .missionScore(100)
-                .reportSummary(
-                        "Mission completed successfully.")
-                .missionDebrief(
-                        "Useful intelligence was gathered.")
-                .build();
+                SimulationResult simulationResult = SimulationResult.builder()
+                                .contactsDetected(1)
+                                .contactsLost(0)
+                                .intelligenceGathered(1)
+                                .incidents(0)
+                                .build();
 
-        when(
-                patrolRepository.findById(
-                        patrolId))
-                .thenReturn(
-                        Optional.of(
-                                patrol));
+                TacticalMissionEvaluation evaluation = TacticalMissionEvaluation.builder()
+                                .missionOutcome(
+                                                MissionOutcome.SUCCESS)
+                                .missionScore(100)
+                                .reportSummary(
+                                                "Mission completed successfully.")
+                                .missionDebrief(
+                                                "Useful intelligence was gathered.")
+                                .build();
 
-        when(
-                simulationEngine.simulate(
-                        patrol))
-                .thenReturn(
-                        simulationResult);
+                when(
+                                patrolRepository.findById(
+                                                patrolId))
+                                .thenReturn(
+                                                Optional.of(
+                                                                patrol));
 
-        when(
-                tacticalMissionEvaluator.evaluate(
-                        patrol,
-                        simulationResult))
-                .thenReturn(
-                        evaluation);
+                when(
+                                simulationEngine.simulate(
+                                                patrol))
+                                .thenReturn(
+                                                simulationResult);
 
-        ResolvedSimulationResult result = simulationService.simulate(
-                patrolId);
+                when(
+                                tacticalMissionEvaluator.evaluate(
+                                                patrol,
+                                                simulationResult))
+                                .thenReturn(
+                                                evaluation);
 
-        assertSame(
-                simulationResult,
-                result.getSimulationResult());
+                ResolvedSimulationResult result = simulationService.simulate(
+                                patrolId);
 
-        assertEquals(
-                MissionOutcome.SUCCESS,
-                result.getMissionOutcome());
+                assertSame(
+                                simulationResult,
+                                result.getSimulationResult());
 
-        assertEquals(
-                100,
-                result.getMissionScore());
+                assertEquals(
+                                MissionOutcome.SUCCESS,
+                                result.getMissionOutcome());
 
-        assertEquals(
-                "Mission completed successfully.",
-                result.getReportSummary());
+                assertEquals(
+                                100,
+                                result.getMissionScore());
 
-        assertEquals(
-                "Useful intelligence was gathered.",
-                result.getMissionDebrief());
+                assertEquals(
+                                "Mission completed successfully.",
+                                result.getReportSummary());
 
-        verify(
-                patrolRepository)
-                .findById(
-                        patrolId);
+                assertEquals(
+                                "Useful intelligence was gathered.",
+                                result.getMissionDebrief());
 
-        verify(
-                simulationEngine)
-                .simulate(
-                        patrol);
+                verify(
+                                patrolRepository)
+                                .findById(
+                                                patrolId);
 
-        verify(
-                tacticalMissionEvaluator)
-                .evaluate(
-                        patrol,
-                        simulationResult);
-    }
+                verify(
+                                simulationEngine)
+                                .simulate(
+                                                patrol);
 
-    @Test
-    void shouldThrowExceptionWhenPatrolDoesNotExist() {
+                verify(
+                                tacticalMissionEvaluator)
+                                .evaluate(
+                                                patrol,
+                                                simulationResult);
 
-        Long patrolId = 999L;
+                verify(
+                                simulationPersistenceService)
+                                .persist(
+                                                patrol,
+                                                result);
+        }
 
-        when(
-                patrolRepository.findById(
-                        patrolId))
-                .thenReturn(
-                        Optional.empty());
+        @Test
+        void shouldThrowExceptionWhenPatrolDoesNotExist() {
 
-        assertThrows(
-                PatrolNotFoundException.class,
-                () -> simulationService.simulate(
-                        patrolId));
+                Long patrolId = 999L;
 
-        verify(
-                patrolRepository)
-                .findById(
-                        patrolId);
+                when(
+                                patrolRepository.findById(
+                                                patrolId))
+                                .thenReturn(
+                                                Optional.empty());
 
-        verify(
-                simulationEngine,
-                never())
-                .simulate(
-                        org.mockito.ArgumentMatchers.any());
+                assertThrows(
+                                PatrolNotFoundException.class,
+                                () -> simulationService.simulate(
+                                                patrolId));
 
-        verify(
-                tacticalMissionEvaluator,
-                never())
-                .evaluate(
-                        org.mockito.ArgumentMatchers.any(),
-                        org.mockito.ArgumentMatchers.any());
-    }
+                verify(
+                                patrolRepository)
+                                .findById(
+                                                patrolId);
+
+                verify(
+                                simulationEngine,
+                                never())
+                                .simulate(
+                                                org.mockito.ArgumentMatchers.any());
+
+                verify(
+                                tacticalMissionEvaluator,
+                                never())
+                                .evaluate(
+                                                org.mockito.ArgumentMatchers.any(),
+                                                org.mockito.ArgumentMatchers.any());
+
+                verify(
+                                simulationPersistenceService,
+                                never())
+                                .persist(
+                                                org.mockito.ArgumentMatchers.any(),
+                                                org.mockito.ArgumentMatchers.any());
+        }
 
 }

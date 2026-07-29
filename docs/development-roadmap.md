@@ -139,8 +139,10 @@ Planned for a later release:
 
 ## Simulation Persistence
 
-- [ ] Optional Simulation Persistence
-- [ ] Simulation History
+- [x] Simulation Persistence Foundation
+- [x] Automatic Simulation Result Persistence
+- [ ] Simulation History Service
+- [ ] Simulation History REST API
 
 ---
 

@@ -553,3 +553,36 @@ When useful intelligence is obtained:
 - an `INTELLIGENCE_GATHERED` event is recorded in the simulation timeline.
 
 The intelligence mission outcome uses this operational result instead of recalculating intelligence eligibility independently.
+
+## Simulation Persistence
+
+Completed simulations are stored as stable `SimulationRecord` entities.
+
+The persistence model does not store transient engine objects such as:
+
+- `SimulationContext`;
+- `DetectedContact`;
+- `SimulationEvent`.
+
+Instead, each simulation record stores a stable operational summary:
+
+- patrol reference;
+- mission outcome;
+- mission score;
+- final simulation state;
+- contacts detected;
+- contacts lost;
+- intelligence gathered;
+- incidents;
+- completion date;
+- report summary;
+- mission debrief;
+- persistence timestamp.
+
+`SimulationPersistenceService` coordinates the conversion and storage of the final `ResolvedSimulationResult`.
+
+`SimulationRecordMapper` converts the simulation-domain result into a persistence entity without recalculating mission rules.
+
+The record is persisted after tactical mission evaluation and before the result is returned by `SimulationServiceImpl`.
+
+Simulation-history queries and REST endpoints are introduced separately so that persistence can be validated before exposing new API contracts.
