@@ -272,6 +272,28 @@ Every supported `MissionType` now has its own mission success rules.
 - Simulation REST responses now expose the resolved mission outcome.
 - Kept the simulation engine independent from REST DTOs and persistence.
 
+### Tactical Mission Evaluation
+
+After the simulation phases have completed, tactical mission evaluation is coordinated by `TacticalMissionEvaluator`.
+
+The evaluator combines the existing post-simulation components:
+
+- `MissionOutcomeResolver`;
+- `SimulationMissionScoreCalculator`;
+- `SimulationReportBuilder`;
+- `SimulationDebriefBuilder`.
+
+The resulting `TacticalMissionEvaluation` contains:
+
+- the resolved mission outcome;
+- the mission score;
+- the report summary;
+- the mission debrief.
+
+`SimulationServiceImpl` is responsible only for loading the patrol, running the simulation and assembling the final `ResolvedSimulationResult`.
+
+Pre-mission risk evaluation remains separated in `MissionEvaluationService` and is not part of tactical post-simulation evaluation.
+
 ## Mission Scoring
 
 `SimulationMissionScoreCalculator` converts the resolved mission outcome into a numeric score.

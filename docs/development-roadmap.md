@@ -164,8 +164,11 @@ Planned for a later release:
 
 ## Mission Evaluation
 
-- [ ] Dynamic Mission Scoring
-- [ ] Operational Success Calculation
+- [x] Mission Outcome Strategies
+- [x] Mission Score Calculation
+- [x] Mission Report Generation
+- [x] Mission Debrief Generation
+- [x] Tactical Mission Evaluation Orchestration
 
 ---
 
