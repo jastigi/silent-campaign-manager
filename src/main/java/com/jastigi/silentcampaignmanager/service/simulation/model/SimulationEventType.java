@@ -36,6 +36,8 @@ public enum SimulationEventType {
 
     TRACKING_FAILED,
 
-    CONTACT_LOST
+    CONTACT_LOST,
+
+    INTELLIGENCE_GATHERED
 
 }

@@ -3,7 +3,6 @@ package com.jastigi.silentcampaignmanager.service.simulation.resolver.impl;
 import org.springframework.stereotype.Component;
 
 import com.jastigi.silentcampaignmanager.entity.MissionType;
-import com.jastigi.silentcampaignmanager.service.simulation.model.ContactClassificationStatus;
 import com.jastigi.silentcampaignmanager.service.simulation.resolver.MissionOutcome;
 import com.jastigi.silentcampaignmanager.service.simulation.resolver.MissionSuccessStrategy;
 import com.jastigi.silentcampaignmanager.service.simulation.result.SimulationResult;
@@ -14,11 +13,13 @@ public class IntelligenceSuccessStrategy
 
     @Override
     public MissionType getMissionType() {
+
         return MissionType.INTELLIGENCE;
     }
 
     @Override
-    public MissionOutcome resolve(SimulationResult result) {
+    public MissionOutcome resolve(
+            SimulationResult result) {
 
         if (result == null
                 || result.getDetectedContacts() == null
@@ -27,9 +28,10 @@ public class IntelligenceSuccessStrategy
             return MissionOutcome.FAILURE;
         }
 
-        boolean usefulIntelligence = result.getDetectedContacts().stream()
-                .anyMatch(contact -> contact.getClassificationStatus() == ContactClassificationStatus.CLASSIFIED
-                        && contact.getConfidenceLevel() >= 60);
+        boolean usefulIntelligence = result.getDetectedContacts()
+                .stream()
+                .anyMatch(
+                        contact -> contact.isIntelligenceGathered());
 
         return usefulIntelligence
                 ? MissionOutcome.SUCCESS

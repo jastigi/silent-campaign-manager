@@ -137,13 +137,25 @@ class MissionSuccessStrategiesTest {
 
         MissionSuccessStrategy strategy = new IntelligenceSuccessStrategy();
 
+        DetectedContact contact = DetectedContact.builder()
+                .contactType(ContactType.SURFACE_SHIP)
+                .classificationStatus(
+                        ContactClassificationStatus.CLASSIFIED)
+                .confidenceLevel(80)
+                .intelligenceGathered(true)
+                .build();
+
+        SimulationResult result = SimulationResult.builder()
+                .finalState(
+                        PatrolSimulationState.COMPLETED)
+                .contactsDetected(1)
+                .detectedContacts(
+                        List.of(contact))
+                .build();
+
         assertEquals(
                 MissionOutcome.SUCCESS,
-                strategy.resolve(
-                        resultWithContact(
-                                ContactType.SURFACE_SHIP,
-                                ContactClassificationStatus.CLASSIFIED,
-                                80)));
+                strategy.resolve(result));
     }
 
     @Test

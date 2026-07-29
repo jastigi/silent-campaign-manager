@@ -40,4 +40,8 @@ public class DetectedContact {
     @Builder.Default
     private boolean lost = false;
 
+    @Setter
+    @Builder.Default
+    private boolean intelligenceGathered = false;
+
 }

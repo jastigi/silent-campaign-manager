@@ -20,6 +20,8 @@ public class SimulationResultDTO {
 
     private int contactsLost;
 
+    private int intelligenceGathered;
+
     private int incidents;
 
     private List<String> timeline;

@@ -107,6 +107,10 @@ class SimulationMapperTest {
                 dto.getContactsLost());
 
         assertEquals(
+                0,
+                dto.getIntelligenceGathered());
+
+        assertEquals(
                 3,
                 dto.getIncidents());
 

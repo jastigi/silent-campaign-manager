@@ -133,7 +133,7 @@ Planned for a later release:
 
 - [x] Contact Tracking
 - [x] Contact Loss
-- [ ] Intelligence Gathering
+- [x] Intelligence Gathering
 
 ---
 
@@ -158,6 +158,7 @@ Planned for a later release:
 - [x] Shadowing Decision
 - [x] Contact Tracking
 - [x] Contact Loss
+- [x] Intelligence Gathering
 
 ---
 

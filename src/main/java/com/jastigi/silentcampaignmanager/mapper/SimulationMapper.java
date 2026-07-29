@@ -33,8 +33,12 @@ public class SimulationMapper {
                                 .finalState(result.getFinalState().name())
                                 .completionDate(result.getCompletionDate())
                                 .contactsDetected(result.getContactsDetected())
-                                .contactsLost(result.getContactsLost())
-                                .incidents(result.getIncidents())
+                                .contactsLost(
+                                                result.getContactsLost())
+                                .intelligenceGathered(
+                                                result.getIntelligenceGathered())
+                                .incidents(
+                                                result.getIncidents())
                                 .timeline(
                                                 timelineFormatter.format(
                                                                 result.getEventLog()))

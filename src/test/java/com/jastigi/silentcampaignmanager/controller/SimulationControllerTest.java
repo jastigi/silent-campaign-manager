@@ -76,6 +76,7 @@ class SimulationControllerTest {
                                 12))
                 .contactsDetected(1)
                 .contactsLost(0)
+                .intelligenceGathered(0)
                 .incidents(0)
                 .timeline(
                         List.of(
@@ -117,6 +118,9 @@ class SimulationControllerTest {
                                 .value(1))
                 .andExpect(
                         jsonPath("$.contactsLost")
+                                .value(0))
+                .andExpect(
+                        jsonPath("$.intelligenceGathered")
                                 .value(0))
                 .andExpect(
                         jsonPath("$.incidents")

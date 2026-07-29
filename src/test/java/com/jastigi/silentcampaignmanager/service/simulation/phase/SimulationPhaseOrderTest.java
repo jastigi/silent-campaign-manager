@@ -40,8 +40,12 @@ class SimulationPhaseOrderTest {
                                 7);
 
                 assertOrder(
-                                ReturnPhase.class,
+                                IntelligenceGatheringPhase.class,
                                 8);
+
+                assertOrder(
+                                ReturnPhase.class,
+                                9);
         }
 
         private void assertOrder(

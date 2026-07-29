@@ -34,6 +34,9 @@ public class SimulationContext {
     private final AtomicInteger contactsLost = new AtomicInteger();
 
     @Builder.Default
+    private final AtomicInteger intelligenceGathered = new AtomicInteger();
+
+    @Builder.Default
     private final AtomicInteger incidents = new AtomicInteger();
 
     @Builder.Default

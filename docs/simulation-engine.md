@@ -512,3 +512,22 @@ When a contact is lost:
 - the contact `lost` state is set to `true`;
 - the `contactsLost` counter in `SimulationContext` is incremented;
 - a `CONTACT_LOST` event is added to the simulation timeline.
+
+### Intelligence Gathering
+
+After contact tracking and contact-loss resolution, the simulation evaluates whether useful intelligence can be gathered from each detected contact.
+
+Intelligence is gathered only when the contact:
+
+- has been classified;
+- is still being tracked;
+- has not been lost;
+- has a confidence level of at least 60.
+
+When useful intelligence is obtained:
+
+- the contact `intelligenceGathered` state is set to `true`;
+- the `intelligenceGathered` counter in `SimulationContext` is incremented;
+- an `INTELLIGENCE_GATHERED` event is recorded in the simulation timeline.
+
+The intelligence mission outcome uses this operational result instead of recalculating intelligence eligibility independently.

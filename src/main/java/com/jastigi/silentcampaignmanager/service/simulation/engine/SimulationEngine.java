@@ -32,8 +32,12 @@ public class SimulationEngine {
                 .summary("Simulation completed.")
                 .eventLog(context.getEventLog())
                 .contactsDetected(context.getContactsDetected().get())
-                .contactsLost(context.getContactsLost().get())
-                .incidents(context.getIncidents().get())
+                .contactsLost(
+                        context.getContactsLost().get())
+                .intelligenceGathered(
+                        context.getIntelligenceGathered().get())
+                .incidents(
+                        context.getIncidents().get())
                 .finalState(context.getState())
                 .detectedContacts(context.getDetectedContacts())
                 .completionDate(context.getSimulationDate())

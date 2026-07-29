@@ -117,6 +117,10 @@ class SimulationEngineTest {
                 result.getContactsLost());
 
         assertEquals(
+                0,
+                result.getIntelligenceGathered());
+
+        assertEquals(
                 2,
                 result.getIncidents());
 
@@ -162,6 +166,10 @@ class SimulationEngineTest {
         assertEquals(
                 0,
                 result.getContactsLost());
+
+        assertEquals(
+                0,
+                result.getIntelligenceGathered());
 
         assertEquals(
                 0,

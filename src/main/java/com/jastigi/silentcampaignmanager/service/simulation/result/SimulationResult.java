@@ -24,6 +24,8 @@ public class SimulationResult {
 
     private final int contactsLost;
 
+    private final int intelligenceGathered;
+
     private final int incidents;
 
     private final PatrolSimulationState finalState;
