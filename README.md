@@ -8,51 +8,84 @@
 
 > **Cold War Submarine Operations Simulator**
 
-A backend application built with **Java 21** and **Spring Boot** for managing and simulating Cold War submarine operations.
+[![Release](https://img.shields.io/badge/release-v0.9.0-blue)](https://github.com/jastigi/silent-campaign-manager/releases)
+![Java](https://img.shields.io/badge/Java-21-blue)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5-6DB33F)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-336791)
+![Docker](https://img.shields.io/badge/Docker-2496ED)
+![JUnit](https://img.shields.io/badge/JUnit-5-success)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-The project combines a modern REST API with extensible simulation engines capable of evaluating tactical risk, mission success and submarine patrols using clean architecture and design patterns.
+A backend application built with **Java 21** and **Spring Boot 3.5** for managing and simulating Cold War submarine patrol operations.
 
-<p align="center">
-
-<img src="https://img.shields.io/badge/Java-21-blue">
-
-<img src="https://img.shields.io/badge/Spring_Boot-3.5-6DB33F">
-
-<img src="https://img.shields.io/badge/PostgreSQL-17-336791">
-
-<img src="https://img.shields.io/badge/Docker-2496ED">
-
-<img src="https://img.shields.io/badge/JUnit-5-success">
-
-<img src="https://img.shields.io/badge/License-MIT-green">
-
-</p>
+The project combines a secured REST API, PostgreSQL persistence and an extensible tactical simulation engine capable of resolving submarine patrols through detection, classification, tracking, contact loss, intelligence gathering and mission evaluation.
 
 ## Table of Contents
 
 - [Overview](#overview)
+- [Release Status](#release-status)
 - [Features](#features)
 - [Architecture](#architecture)
 - [Technology Stack](#technology-stack)
+- [Simulation Engine](#simulation-engine)
 - [Project Structure](#project-structure)
-- [Simulation Engines](#simulation-engines)
 - [Getting Started](#getting-started)
+- [Authentication](#authentication)
 - [API Documentation](#api-documentation)
 - [REST API Overview](#rest-api-overview)
 - [Testing](#testing)
 - [Roadmap](#roadmap)
 - [Screenshots](#screenshots)
+- [Future Vision](#future-vision)
 - [License](#license)
 
 ## Overview
 
 Silent Campaign Manager is inspired by Cold War submarine operations and naval warfare simulations.
 
-Unlike a traditional CRUD application, the project is evolving into a modular simulation platform capable of evaluating patrol missions, tactical situations and contact risk through extensible rule engines.
+Unlike a traditional CRUD application, it provides a modular simulation platform capable of:
 
-The architecture has been designed to be scalable, testable and easy to extend with future simulation mechanics.
+- managing campaigns, submarines, patrols, contacts and patrol events;
+- evaluating patrol missions through mission-specific strategies;
+- executing complete tactical patrol simulations;
+- modelling environmental and sonar conditions;
+- persisting completed simulation results;
+- consulting a paginated operational history;
+- protecting the REST API with JWT authentication.
 
----
+The architecture is designed to remain testable and extensible as new tactical mechanics are introduced.
+
+## Release Status
+
+The current stable release is:
+
+```text
+v0.9.0
+```
+
+Release 0.9 completes the tactical simulation and persistence foundations.
+
+It includes:
+
+- complete patrol simulation pipeline;
+- passive and active sonar;
+- environmental weather modelling;
+- contact detection and classification;
+- contact tactical behaviour;
+- shadowing and tracking;
+- contact-loss resolution;
+- intelligence gathering;
+- tactical mission evaluation;
+- mission scoring and debriefing;
+- automatic persistence of completed simulations;
+- paginated simulation history;
+- simulation history filtered by patrol.
+
+Detailed release information is available in:
+
+```text
+docs/release-notes/0.9.md
+```
 
 ## Features
 
@@ -61,120 +94,232 @@ The architecture has been designed to be scalable, testable and easy to extend w
 - Campaign management
 - Patrol management
 - Submarine management
-- Contact tracking
+- Contact management
 - Patrol event management
 - Patrol contact assignment
-- Patrol contact retrieval endpoint
-- Modular mission evaluation architecture prepared for automatic patrol assessment
-- Automatic patrol closing with mission evaluation
-- Mission evaluation report endpoint available through REST API
-- Patrol simulation endpoint available through REST API
-- Campaign statistics endpoint with patrol and contact operational metric
+- Campaign operational statistics
+- Patrol reporting
+- Automatic patrol closing
+- Mission evaluation reports
 
-### Simulation
+### Tactical Simulation
 
-- Contact Risk Evaluation Engine
-- Mission Evaluation Engine
-- Mission Scoring Engine
-- Strategy-based business rules
-- Mission Doctrine Engine (Strategy Pattern)
-- Strategy-based business rules
+- Ordered patrol simulation pipeline
+- Transit phase
+- Patrol-area phase
+- Contact detection
+- Contact classification
+- Contact tactical behaviour
+- Shadowing decisions
+- Contact tracking
+- Contact-loss resolution
+- Intelligence gathering
+- Return phase
+- Tactical mission evaluation
+- Mission-specific outcomes
+- Numeric mission scoring
+- Operational reports
+- Formatted event timelines
+- Narrative mission debriefing
 
-### Backend
+### Environmental and Sonar Modelling
+
+- Weather generation
+- Sea-state modelling
+- Visibility modelling
+- Environmental detection modifiers
+- Environmental classification modifiers
+- Passive sonar detection
+- Active sonar sweeps
+- Submarine acoustic signatures
+- Mission-dependent sonar behaviour
+
+### Simulation Persistence
+
+- Automatic persistence of completed simulations
+- Stable operational simulation records
+- Global paginated simulation history
+- Simulation history filtered by patrol
+- Default ordering by most recent execution
+- DTO-based history responses
+- JPA entity graph for patrol history data
+
+### Security
+
+- JWT authentication
+- Stateless Spring Security configuration
+- Protected application endpoints
+- Public authentication endpoint
+- Public Swagger and OpenAPI endpoints
+- Password encoding
+- Persistent application users
+
+### Backend Platform
 
 - REST API
-- Validation
-- Exception handling
+- Request validation
+- Global exception handling
 - DTO mapping
-- Swagger documentation
-- Dynamic filtering, pagination and sorting support for REST endpoints using Spring Data Specifications
-
----
-
-## Technology Stack
-
-| Technology        | Purpose               |
-| ----------------- | --------------------- |
-| Java 21           | Programming Language  |
-| Spring Boot       | Backend Framework     |
-| Spring Data JPA   | Persistence           |
-| Hibernate         | ORM                   |
-| PostgreSQL        | Database              |
-| Docker Compose    | Local Infrastructure  |
-| Maven             | Build Tool            |
-| Lombok            | Boilerplate Reduction |
-| Swagger / OpenAPI | API Documentation     |
-| JUnit 5           | Testing               |
-| Mockito           | Unit Testing          |
-
----
+- Pagination and sorting
+- Dynamic filtering through Spring Data Specifications
+- Swagger/OpenAPI documentation
+- PostgreSQL persistence
+- Docker Compose support
+- Automated unit, repository, controller and integration tests
 
 ## Architecture
 
-The project follows a layered architecture with a strong separation between business logic and infrastructure.
+The application follows a layered architecture with a clear separation between presentation, business logic, simulation logic and persistence.
 
-For more details see:
+```text
+REST Controllers
+        │
+        ▼
+Application Services
+        │
+        ├── Domain Services
+        │
+        ├── Mission Evaluation
+        │
+        └── Simulation Services
+                │
+                ▼
+        Tactical Simulation Engine
+                │
+                ▼
+        Tactical Mission Evaluator
+                │
+                ▼
+        Simulation Persistence
+                │
+                ▼
+        Spring Data JPA / PostgreSQL
+```
 
-📄 **docs/architecture.md**
+The main architectural principles are:
 
-## Domain Model
+- separation of concerns;
+- dependency injection;
+- strategy-based mission evaluation;
+- ordered and independently testable simulation phases;
+- DTO isolation between REST and persistence layers;
+- Open/Closed Principle for tactical mechanics;
+- stateless JWT security.
 
-The simulation is centered around patrols.
+Further documentation:
 
-Each patrol belongs to a campaign and generates contacts and events that are later evaluated by specialized simulation engines.
+```text
+docs/architecture.md
+docs/domain-model.md
+docs/simulation-engine.md
+docs/development-roadmap.md
+```
 
-See:
+## Technology Stack
 
-📄 **docs/domain-model.md**
+| Technology        | Purpose                          |
+| ----------------- | -------------------------------- |
+| Java 21           | Programming language             |
+| Spring Boot 3.5   | Backend framework                |
+| Spring Web        | REST API                         |
+| Spring Security   | Authentication and authorization |
+| JWT               | Stateless access tokens          |
+| Spring Data JPA   | Persistence layer                |
+| Hibernate         | ORM                              |
+| PostgreSQL 17     | Relational database              |
+| Docker Compose    | Local infrastructure             |
+| Maven             | Build and dependency management  |
+| Lombok            | Boilerplate reduction            |
+| Springdoc OpenAPI | Swagger/OpenAPI documentation    |
+| JUnit 5           | Automated testing                |
+| Mockito           | Unit testing                     |
+| MockMvc           | Controller testing               |
+| H2                | Repository and integration tests |
 
----
+## Simulation Engine
 
-## Simulation Engines
+The simulation engine executes a patrol through an ordered tactical pipeline.
 
-The project includes several independent simulation engines designed following the Strategy Pattern and the Open/Closed Principle.
+```text
+Transit
+  │
+  ▼
+Patrol Area
+  │
+  ▼
+Detection
+  │
+  ▼
+Classification
+  │
+  ▼
+Contact Behaviour
+  │
+  ▼
+Tracking
+  │
+  ▼
+Contact Loss
+  │
+  ▼
+Intelligence Gathering
+  │
+  ▼
+Return
+```
 
-### Contact Risk Evaluation Engine
+After the simulation phases finish, the result follows this process:
 
-Calculates the tactical risk associated with detected contacts.
+```text
+SimulationEngine
+        │
+        ▼
+SimulationResult
+        │
+        ▼
+TacticalMissionEvaluator
+        │
+        ▼
+ResolvedSimulationResult
+        │
+        ▼
+SimulationPersistenceService
+        │
+        ▼
+SimulationRecordRepository
+        │
+        ▼
+PostgreSQL
+```
 
-### Mission Evaluation Engine
+### Core simulation characteristics
 
-Evaluates patrol success according to the assigned mission profile.
+- ordered simulation phases;
+- shared simulation context;
+- structured tactical events;
+- probabilistic decision-making;
+- mission-dependent behaviour;
+- weather and sea-state influence;
+- passive and active sonar;
+- contact classification confidence;
+- threat-based contact behaviour;
+- shadowing and tracking decisions;
+- contact-loss probabilities;
+- intelligence collection;
+- mission-specific success strategies;
+- tactical scoring and debriefing.
 
-### Simulation Engine
+### Simulation history
 
-Executes submarine patrols through an ordered simulation pipeline.
+Completed simulations are persisted automatically and can be queried through the REST API.
 
-Current phases include:
+```http
+GET /api/v1/simulations/history
+GET /api/v1/patrols/{patrolId}/simulations
+```
 
-- Transit
-- Patrol Area
-- Detection
-- Return
+Both endpoints support pagination and use `recordedAt DESC` as their default ordering.
 
-The engine is based on:
-
-- Ordered simulation phases
-- Shared simulation context
-- Structured simulation events
-- Probabilistic decision making
-- Extensible simulation models
-
-The architecture has been designed to allow additional phases without modifying the engine.
-The Simulation Engine can now be executed through a dedicated REST endpoint, allowing complete patrol simulations to be launched directly from the API without persisting simulation results.
-Simulation responses now include a mission-specific outcome based on the patrol doctrine and generated simulation events.
-Simulation responses now include both a mission-specific outcome and a numeric mission score.
-Simulation responses now include an operational summary, formatted timeline and narrative mission debrief.
-Environmental weather conditions now influence tactical contact detection probabilities.
-The environmental simulation now models weather, sea state and visibility, affecting both contact detection and classification.
-The sonar model now supports passive detection and mission-dependent active sonar sweeps.
-Submarine classes now include acoustic signatures that influence passive sonar performance.
-Detected contacts now adopt threat-based tactical behaviours during patrol simulations.
-Patrols can now evaluate whether detected contacts should be shadowed based on mission objectives.
-
-## Project Structure
-
-````text
 ## Project Structure
 
 ```text
@@ -195,21 +340,25 @@ src
 │   │               ├── service
 │   │               │   ├── auth
 │   │               │   ├── campaign
-│   │               │   │   └── statistics
-│   │               │   │       └── impl
 │   │               │   ├── contact
 │   │               │   ├── missions
-│   │               │   │   ├── constants
-│   │               │   │   ├── impl
-│   │               │   │   ├── model
-│   │               │   │   └── strategy
 │   │               │   ├── patrol
-│   │               │   ├── submarine
-│   │               │   └── simulation
+│   │               │   ├── simulation
+│   │               │   │   ├── calculator
+│   │               │   │   ├── context
+│   │               │   │   ├── engine
+│   │               │   │   ├── evaluation
+│   │               │   │   ├── generator
+│   │               │   │   ├── history
+│   │               │   │   ├── modifier
+│   │               │   │   ├── persistence
+│   │               │   │   ├── phase
+│   │               │   │   ├── resolver
+│   │               │   │   └── result
+│   │               │   └── submarine
 │   │               └── SilentCampaignManagerApplication.java
 │   └── resources
-│       ├── application.properties
-│       └── ...
+│       └── application.properties
 │
 └── test
     └── java
@@ -217,43 +366,39 @@ src
             └── jastigi
                 └── silentcampaignmanager
                     ├── controller
+                    ├── mapper
                     ├── repository
-                    ├── service
-                    └── ...
-│
+                    ├── security
+                    └── service
+
 docs
 ├── architecture.md
+├── development-roadmap.md
 ├── domain-model.md
+├── simulation-engine.md
 ├── decisions
 ├── images
-└── LICENSE
-````
-
-The project is organized following a layered architecture that clearly separates presentation, business logic, persistence and simulation engines.
+└── release-notes
+```
 
 ## Getting Started
 
 ### Prerequisites
 
-Before running the project, make sure you have installed:
+Install the following tools:
 
 - Java 21
 - Docker Desktop
 - Git
 
-The project includes the Maven Wrapper, so no Maven installation is required.
-
----
+The project includes Maven Wrapper, so a separate Maven installation is not required.
 
 ### Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/silent-campaign-manager.git
-
+git clone https://github.com/jastigi/silent-campaign-manager.git
 cd silent-campaign-manager
 ```
-
----
 
 ### Start PostgreSQL
 
@@ -261,19 +406,21 @@ cd silent-campaign-manager
 docker compose up -d
 ```
 
-Verify that the PostgreSQL container is running.
+Verify that the PostgreSQL container is running:
 
----
+```bash
+docker compose ps
+```
 
 ### Run the application
 
-Windows
+Windows:
 
-```bash
-mvnw.cmd spring-boot:run
+```powershell
+.\mvnw.cmd spring-boot:run
 ```
 
-Linux / macOS
+Linux or macOS:
 
 ```bash
 ./mvnw spring-boot:run
@@ -281,166 +428,271 @@ Linux / macOS
 
 The application will be available at:
 
-```
+```text
 http://localhost:8080
 ```
 
+### Stop the infrastructure
+
+```bash
+docker compose down
+```
+
+## Authentication
+
+The application uses JWT-based authentication.
+
+Most application endpoints require a valid bearer token.
+
+### Obtain an access token
+
+```http
+POST /api/v1/auth/login
+Content-Type: application/json
+```
+
+Example request:
+
+```json
+{
+  "username": "admin",
+  "password": "admin123"
+}
+```
+
+Example response:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+### Authorize Swagger
+
+1. Open Swagger UI.
+2. Execute `POST /api/v1/auth/login`.
+3. Copy the returned token.
+4. Select **Authorize**.
+5. Enter the JWT token.
+6. Execute the protected endpoints.
+
+The public routes are:
+
+```text
+/api/v1/auth/**
+/swagger-ui/**
+/v3/api-docs/**
+```
+
+All remaining endpoints require authentication.
+
+> Development credentials must be replaced with environment-specific credentials before production deployment.
+
 ## API Documentation
 
-Once the application is running, Swagger UI is available at:
+Swagger UI is available after starting the application:
 
-```
+```text
 http://localhost:8080/swagger-ui/index.html
 ```
 
-The OpenAPI documentation is generated automatically.
+The generated OpenAPI specification is available at:
+
+```text
+http://localhost:8080/v3/api-docs
+```
 
 ![Swagger](docs/images/swagger.png)
 
----
+## REST API Overview
 
-# REST API Overview
+### Authentication
 
-The following endpoints are currently available.
+| Method | Endpoint             | Description                          |
+| ------ | -------------------- | ------------------------------------ |
+| POST   | `/api/v1/auth/login` | Authenticate a user and return a JWT |
 
-## Campaigns
+### Campaigns
 
-| Method | Endpoint                            | Description                                    |
-| ------ | ----------------------------------- | ---------------------------------------------- |
-| GET    | `/api/v1/campaigns`                 | Retrieve all campaigns                         |
-| GET    | `/api/v1/campaigns/paged`           | Retrieve campaigns with pagination             |
-| GET    | `/api/v1/campaigns/search`          | Search campaigns using dynamic filters         |
-| GET    | `/api/v1/campaigns/{id}`            | Retrieve a campaign by ID                      |
-| POST   | `/api/v1/campaigns`                 | Create a new campaign                          |
-| PUT    | `/api/v1/campaigns/{id}`            | Update an existing campaign                    |
-| DELETE | `/api/v1/campaigns/{id}`            | Delete a campaign                              |
-| GET    | `/api/v1/campaigns/{id}/statistics` | Retrieve operational statistics for a campaign |
+| Method | Endpoint                            | Description                              |
+| ------ | ----------------------------------- | ---------------------------------------- |
+| POST   | `/api/v1/campaigns`                 | Create a campaign                        |
+| GET    | `/api/v1/campaigns`                 | Retrieve campaigns                       |
+| GET    | `/api/v1/campaigns/paged`           | Retrieve campaigns with pagination       |
+| GET    | `/api/v1/campaigns/search`          | Search campaigns with dynamic filters    |
+| GET    | `/api/v1/campaigns/{id}`            | Retrieve a campaign                      |
+| GET    | `/api/v1/campaigns/{id}/details`    | Retrieve detailed campaign information   |
+| GET    | `/api/v1/campaigns/status/{status}` | Retrieve campaigns by status             |
+| PUT    | `/api/v1/campaigns/{id}`            | Update a campaign                        |
+| DELETE | `/api/v1/campaigns/{id}`            | Delete a campaign                        |
+| GET    | `/api/v1/campaigns/{id}/statistics` | Retrieve campaign operational statistics |
 
----
+### Patrols
 
-## Patrols
+| Method | Endpoint                                                 | Description                                           |
+| ------ | -------------------------------------------------------- | ----------------------------------------------------- |
+| POST   | `/api/v1/campaigns/{campaignId}/patrols`                 | Create a patrol                                       |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols`                 | Retrieve campaign patrols                             |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/paged`           | Retrieve patrols with pagination                      |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/search`          | Search patrols with filtering, pagination and sorting |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/{id}/report`     | Retrieve a patrol report                              |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/{id}/contacts`   | Retrieve contacts assigned to a patrol                |
+| PATCH  | `/api/v1/campaigns/{campaignId}/patrols/{id}/close`      | Close and evaluate a patrol                           |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/{id}/evaluation` | Retrieve the mission evaluation                       |
+| GET    | `/api/v1/patrols/{id}`                                   | Retrieve a patrol directly                            |
+| PUT    | `/api/v1/patrols/{id}`                                   | Update a patrol directly                              |
+| DELETE | `/api/v1/patrols/{id}`                                   | Delete a patrol directly                              |
 
-| Method | Endpoint                                                 | Description                                   |
-| ------ | -------------------------------------------------------- | --------------------------------------------- |
-| GET    | `/api/v1/campaigns/{campaignId}/patrols`                 | Retrieve campaign patrols                     |
-| GET    | `/api/v1/campaigns/{campaignId}/patrols/paged`           | Retrieve campaign patrols with pagination     |
-| GET    | `/api/v1/campaigns/{campaignId}/patrols/search`          | Search patrols by mission result              |
-| GET    | `/api/v1/campaigns/{campaignId}/patrols/{id}`            | Retrieve patrol details                       |
-| POST   | `/api/v1/campaigns/{campaignId}/patrols`                 | Create a patrol                               |
-| PUT    | `/api/v1/campaigns/{campaignId}/patrols/{id}`            | Update a patrol                               |
-| DELETE | `/api/v1/campaigns/{campaignId}/patrols/{id}`            | Delete a patrol                               |
-| PATCH  | `/api/v1/campaigns/{campaignId}/patrols/{id}/close`      | Close a patrol and execute mission evaluation |
-| GET    | `/api/v1/campaigns/{campaignId}/patrols/{id}/evaluation` | Retrieve mission evaluation report            |
+### Contacts
 
----
+| Method | Endpoint                              | Description                  |
+| ------ | ------------------------------------- | ---------------------------- |
+| POST   | `/api/v1/patrols/{patrolId}/contacts` | Assign a contact to a patrol |
+| GET    | `/api/v1/patrols/{patrolId}/contacts` | Retrieve patrol contacts     |
+| GET    | `/api/v1/contacts/{id}`               | Retrieve a contact           |
+| PUT    | `/api/v1/contacts/{id}`               | Update a contact             |
+| DELETE | `/api/v1/contacts/{id}`               | Delete a contact             |
 
-## Contacts
+### Patrol events
 
-| Method | Endpoint                              | Description                            |
-| ------ | ------------------------------------- | -------------------------------------- |
-| GET    | `/api/v1/patrols/{patrolId}/contacts` | Retrieve contacts assigned to a patrol |
-| POST   | `/api/v1/patrols/{patrolId}/contacts` | Assign a contact to a patrol           |
+| Method | Endpoint                            | Description             |
+| ------ | ----------------------------------- | ----------------------- |
+| POST   | `/api/v1/patrols/{patrolId}/events` | Create a patrol event   |
+| GET    | `/api/v1/patrols/{patrolId}/events` | Retrieve patrol events  |
+| GET    | `/api/v1/patrol-events/{id}`        | Retrieve a patrol event |
+| PUT    | `/api/v1/patrol-events/{id}`        | Update a patrol event   |
+| DELETE | `/api/v1/patrol-events/{id}`        | Delete a patrol event   |
 
----
+### Submarines
 
-## Simulation
+| Method | Endpoint                  | Description          |
+| ------ | ------------------------- | -------------------- |
+| POST   | `/api/v1/submarines`      | Create a submarine   |
+| GET    | `/api/v1/submarines`      | Retrieve submarines  |
+| GET    | `/api/v1/submarines/{id}` | Retrieve a submarine |
+| PUT    | `/api/v1/submarines/{id}` | Update a submarine   |
+| DELETE | `/api/v1/submarines/{id}` | Delete a submarine   |
 
-| Method | Endpoint                        | Description                                |
-| ------ | ------------------------------- | ------------------------------------------ |
-| POST   | `/api/v1/patrols/{id}/simulate` | Execute a complete simulation for a patrol |
+### Simulations
 
----
+| Method | Endpoint                                 | Description                                        |
+| ------ | ---------------------------------------- | -------------------------------------------------- |
+| POST   | `/api/v1/patrols/{id}/simulate`          | Execute and persist a complete patrol simulation   |
+| GET    | `/api/v1/simulations/history`            | Retrieve the complete paginated simulation history |
+| GET    | `/api/v1/patrols/{patrolId}/simulations` | Retrieve paginated simulation history for a patrol |
 
-The API is fully documented using OpenAPI and can be explored interactively through Swagger UI.
+### Pagination examples
+
+Global simulation history:
+
+```http
+GET /api/v1/simulations/history?page=0&size=10
+```
+
+Patrol simulation history:
+
+```http
+GET /api/v1/patrols/1/simulations?page=0&size=10
+```
+
+The default simulation-history ordering is:
+
+```text
+recordedAt,DESC
+```
 
 ## Testing
 
-The project includes automated tests covering the most important business components.
+The project includes automated tests covering:
 
-Current test coverage includes:
+- domain services;
+- REST controllers;
+- DTO mappers;
+- JPA repositories;
+- JWT security;
+- mission evaluation strategies;
+- simulation calculators;
+- simulation generators;
+- environmental modifiers;
+- tactical resolvers;
+- simulation phases;
+- complete simulation execution;
+- tactical mission evaluation;
+- simulation persistence;
+- simulation history.
 
-- Service layer
-- REST controllers
-- Simulation engines
-- Risk calculation
-- Mission evaluation
+Run the complete test suite on Windows:
 
-Run all tests:
-
-```bash
-mvnw test
+```powershell
+.\mvnw.cmd clean test
 ```
 
-Expected output:
+Linux or macOS:
+
+```bash
+./mvnw clean test
+```
+
+Expected result:
 
 ```text
 BUILD SUCCESS
-
-Tests run: XXX
-
 Failures: 0
-
+Errors: 0
 Skipped: 0
 ```
 
 ![Tests](docs/images/tests.png)
 
-## Current Status
-
-### Implemented
-
-- Campaign Management
-- Patrol Management
-- Contact Management
-- Patrol Events
-- Submarine Management
-- Contact Risk Evaluation Engine
-- Mission Evaluation Engine
-- Mission Scoring Engine
-- PostgreSQL Persistence
-- Docker Support
-- REST API
-- Swagger Documentation
-- Patrol Contact Assignment
-- Patrol Contact REST endpoint
-- Strategy Pattern for mission evaluation
-- Mission evaluation is executed through a dedicated business service when a patrol is closed
-- Campaign pagination endpoint
-- Patrol pagination endpoint
-- Patrol filtering endpoint with pagination and sorting
-- Patrol Simulation REST endpoint
-- Simulation Engine Foundation (Release 0.8)
-- Mission-specific simulation outcomes
-- Simulation mission scoring
-- Operational simulation reporting and debriefing
-
-### Under Development
-
-- Campaign Simulation
-- Dynamic Mission Scoring
-- Authentication & Authorization
-- Tactical Combat
-
 ## Roadmap
 
-### Version 0.8
+### Version 0.8 — Simulation Engine Foundation
 
-- Mission Evaluation Engine
-- Strategy Pattern refactoring
-- Patrol contacts
+Completed:
 
-### Version 0.9
+- simulation engine foundation;
+- ordered simulation phases;
+- shared simulation context;
+- structured simulation events;
+- mission-specific outcomes;
+- mission scoring;
+- operational reporting and debriefing.
 
-- Campaign Simulation Engine
-- Dynamic Patrol Resolution
-- Tactical Events
+### Version 0.9 — Tactical Simulation and Persistence
 
-### Version 1.0
+Completed:
 
-- Cold War Campaign Simulator
-- NATO vs Warsaw Pact
-- Advanced Statistics
-- AI-assisted Mission Evaluation
+- contact detection;
+- contact classification;
+- environmental weather engine;
+- passive and active sonar;
+- contact tactical behaviour;
+- shadowing;
+- tracking;
+- contact loss;
+- intelligence gathering;
+- tactical mission evaluation;
+- automatic simulation persistence;
+- paginated simulation history;
+- simulation history filtered by patrol.
+
+### Version 1.0 — Campaign Simulation
+
+Planned:
+
+- campaign-level simulation;
+- strategic campaign progression;
+- historical simulation analytics;
+- advanced operational statistics;
+- NATO and Warsaw Pact doctrine;
+- tactical combat and weapon engagement.
+
+The detailed roadmap is available in:
+
+```text
+docs/development-roadmap.md
+```
 
 ## Screenshots
 
@@ -448,13 +700,9 @@ Skipped: 0
 
 ![Swagger](docs/images/swagger.png)
 
----
-
 ### Docker
 
 ![Docker](docs/images/docker.png)
-
----
 
 ### Architecture
 
@@ -462,39 +710,44 @@ Skipped: 0
 
 ## Future Vision
 
-Silent Campaign Manager aims to evolve into a modular simulation platform capable of reproducing Cold War submarine operations through extensible rule-based engines.
+Silent Campaign Manager aims to evolve into a modular campaign platform capable of reproducing Cold War submarine operations through extensible rule-based engines.
 
-Future versions will introduce:
+Future versions are expected to introduce:
 
-- Dynamic sonar detection
-- Weapon engagement
-- Strategic campaign progression
-- NATO and Warsaw Pact doctrine
-- AI-assisted mission planning
-- Advanced operational statistics
+- campaign-level progression;
+- weapon engagement;
+- strategic consequences;
+- NATO and Warsaw Pact doctrine;
+- historical operational analytics;
+- advanced statistics;
+- AI-assisted mission planning.
 
 ## About the Author
 
 **Jorge Martínez Juan**
 
-Backend Developer passionate about Java, software architecture and naval warfare simulations.
+Backend developer interested in Java, software architecture and naval warfare simulations.
 
-GitHub
+GitHub:
 
+```text
 https://github.com/jastigi
+```
 
-LinkedIn
+LinkedIn:
 
+```text
 https://www.linkedin.com/in/jorgemartinezjuan
+```
 
 ## Contributing
 
-Contributions, suggestions and constructive feedback are always welcome.
+Contributions, suggestions and constructive feedback are welcome.
 
-If you would like to discuss new features or improvements, feel free to open an issue.
+Open an issue to report a problem, propose a feature or discuss an architectural improvement.
 
 ## License
 
 This project is licensed under the MIT License.
 
-See the LICENSE file for more information.
+See the `LICENSE` file for more information.
