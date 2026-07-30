@@ -180,6 +180,12 @@ Planned for a later release:
 
 ## Campaign Engine
 
+- [x] Campaign Simulation Architecture
+- [x] Campaign Simulation Foundation
+- [x] Ordered Patrol Orchestration
+- [x] Campaign Simulation Result
+- [ ] Campaign Progression
+- [ ] Campaign Execution Persistence
 - [ ] Campaign Timeline
 - [ ] Dynamic Patrol Generation
 - [ ] AI Opponent

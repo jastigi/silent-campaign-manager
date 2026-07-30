@@ -605,3 +605,34 @@ Available endpoints:
 GET /api/v1/simulations/history
 GET /api/v1/patrols/{patrolId}/simulations
 ```
+
+## Campaign Simulation Orchestration
+
+Release 1.0 introduces a strategic orchestration layer above the tactical
+patrol simulation engine.
+
+The campaign layer does not execute tactical rules directly.
+
+The orchestration flow is:
+
+```text
+CampaignSimulationService
+        |
+        v
+Ordered Campaign Patrols
+        |
+        v
+SimulationService
+        |
+        v
+SimulationEngine
+        |
+        v
+TacticalMissionEvaluator
+        |
+        v
+SimulationPersistenceService
+        |
+        v
+ResolvedSimulationResult
+```

@@ -13,7 +13,12 @@ public interface PatrolRepository extends JpaRepository<Patrol, Long> {
 
     List<Patrol> findByCampaignId(Long campaignId);
 
-    Page<Patrol> findByCampaignId(Long campaignId, Pageable pageable);
+    List<Patrol> findByCampaignIdOrderByPatrolDateAscIdAsc(
+            Long campaignId);
+
+    Page<Patrol> findByCampaignId(
+            Long campaignId,
+            Pageable pageable);
 
     Page<Patrol> findByCampaignIdAndResult(
             Long campaignId,
