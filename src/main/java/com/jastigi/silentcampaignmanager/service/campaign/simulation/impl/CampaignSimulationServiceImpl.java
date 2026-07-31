@@ -11,6 +11,8 @@ import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
+import com.jastigi.silentcampaignmanager.service.campaign.progress.CampaignProgressService;
+import com.jastigi.silentcampaignmanager.service.campaign.progress.result.CampaignProgress;
 import com.jastigi.silentcampaignmanager.service.campaign.simulation.CampaignSimulationService;
 import com.jastigi.silentcampaignmanager.service.campaign.simulation.result.CampaignSimulationResult;
 import com.jastigi.silentcampaignmanager.service.simulation.SimulationService;
@@ -21,46 +23,50 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CampaignSimulationServiceImpl
-        implements CampaignSimulationService {
+                implements CampaignSimulationService {
 
-    private final CampaignRepository campaignRepository;
+        private final CampaignRepository campaignRepository;
 
-    private final PatrolRepository patrolRepository;
+        private final PatrolRepository patrolRepository;
 
-    private final SimulationService simulationService;
+        private final SimulationService simulationService;
 
-    @Override
-    public CampaignSimulationResult simulateCampaign(
-            Long campaignId) {
+        private final CampaignProgressService campaignProgressService;
 
-        Campaign campaign = campaignRepository.findById(
-                campaignId)
-                .orElseThrow(
-                        () -> new CampaignNotFoundException(
-                                campaignId));
+        @Override
+        public CampaignSimulationResult simulateCampaign(
+                        Long campaignId) {
 
-        List<Patrol> patrols = patrolRepository
-                .findByCampaignIdOrderByPatrolDateAscIdAsc(
-                        campaignId);
+                Campaign campaign = campaignRepository.findById(
+                                campaignId)
+                                .orElseThrow(
+                                                () -> new CampaignNotFoundException(
+                                                                campaignId));
 
-        List<ResolvedSimulationResult> patrolResults = new ArrayList<>(
-                patrols.size());
+                List<Patrol> patrols = patrolRepository
+                                .findByCampaignIdOrderByPatrolDateAscIdAsc(
+                                                campaignId);
 
-        for (Patrol patrol : patrols) {
+                List<ResolvedSimulationResult> patrolResults = new ArrayList<>(
+                                patrols.size());
 
-            ResolvedSimulationResult patrolResult = simulationService.simulate(
-                    patrol.getId());
+                for (Patrol patrol : patrols) {
 
-            patrolResults.add(
-                    patrolResult);
+                        ResolvedSimulationResult patrolResult = simulationService.simulate(
+                                        patrol.getId());
+
+                        patrolResults.add(
+                                        patrolResult);
+                }
+
+                CampaignProgress progress = campaignProgressService.getProgress(
+                                campaignId);
+
+                return new CampaignSimulationResult(
+                                campaign,
+                                patrolResults,
+                                progress,
+                                Instant.now());
         }
-
-        return new CampaignSimulationResult(
-                campaign,
-                patrolResults,
-                patrols.size(),
-                patrolResults.size(),
-                Instant.now());
-    }
 
 }

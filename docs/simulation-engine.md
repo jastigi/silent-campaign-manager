@@ -636,3 +636,22 @@ SimulationPersistenceService
         v
 ResolvedSimulationResult
 ```
+
+## Campaign Progression
+
+Campaign progression is derived from persisted tactical simulation
+records.
+
+The progression flow is:
+
+```text
+CampaignProgressService
+        |
+        +--> PatrolRepository
+        |       |
+        |       +--> Total campaign patrols
+        |
+        +--> SimulationRecordRepository
+                |
+                +--> Distinct simulated campaign patrols
+```

@@ -1,9 +1,6 @@
 package com.jastigi.silentcampaignmanager.service.campaign.simulation.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -25,6 +22,8 @@ import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
+import com.jastigi.silentcampaignmanager.service.campaign.progress.CampaignProgressService;
+import com.jastigi.silentcampaignmanager.service.campaign.progress.result.CampaignProgress;
 import com.jastigi.silentcampaignmanager.service.campaign.simulation.CampaignSimulationService;
 import com.jastigi.silentcampaignmanager.service.campaign.simulation.result.CampaignSimulationResult;
 import com.jastigi.silentcampaignmanager.service.simulation.SimulationService;
@@ -34,292 +33,337 @@ import com.jastigi.silentcampaignmanager.service.simulation.result.ResolvedSimul
 @ExtendWith(MockitoExtension.class)
 class CampaignSimulationServiceImplTest {
 
-    @Mock
-    private CampaignRepository campaignRepository;
+        @Mock
+        private CampaignRepository campaignRepository;
 
-    @Mock
-    private PatrolRepository patrolRepository;
+        @Mock
+        private PatrolRepository patrolRepository;
 
-    @Mock
-    private SimulationService simulationService;
+        @Mock
+        private SimulationService simulationService;
 
-    private CampaignSimulationService campaignSimulationService;
+        @Mock
+        private CampaignProgressService campaignProgressService;
 
-    @BeforeEach
-    void setUp() {
+        private CampaignSimulationService campaignSimulationService;
 
-        campaignSimulationService = new CampaignSimulationServiceImpl(
-                campaignRepository,
-                patrolRepository,
-                simulationService);
-    }
+        @BeforeEach
+        void setUp() {
 
-    @Test
-    void shouldSimulateCampaignPatrolsInRepositoryOrder() {
+                campaignSimulationService = new CampaignSimulationServiceImpl(
+                                campaignRepository,
+                                patrolRepository,
+                                simulationService,
+                                campaignProgressService);
+        }
 
-        Long campaignId = 1L;
+        @Test
+        void shouldSimulateCampaignPatrolsInRepositoryOrder() {
 
-        Campaign campaign = new Campaign();
-        campaign.setId(
-                campaignId);
-        campaign.setName(
-                "North Atlantic Campaign");
+                Long campaignId = 1L;
 
-        Patrol firstPatrol = Patrol.builder()
-                .id(10L)
-                .patrolName("First Patrol")
-                .patrolDate(LocalDate.of(
-                        1984,
-                        1,
-                        10))
-                .build();
+                Campaign campaign = new Campaign();
+                CampaignProgress progress = new CampaignProgress(
+                                2,
+                                2);
 
-        Patrol secondPatrol = Patrol.builder()
-                .id(20L)
-                .patrolName("Second Patrol")
-                .patrolDate(LocalDate.of(
-                        1984,
-                        2,
-                        10))
-                .build();
+                campaign.setId(
+                                campaignId);
+                campaign.setName(
+                                "North Atlantic Campaign");
 
-        ResolvedSimulationResult firstResult = ResolvedSimulationResult.builder()
-                .missionOutcome(
-                        MissionOutcome.SUCCESS)
-                .missionScore(90)
-                .build();
+                Patrol firstPatrol = Patrol.builder()
+                                .id(10L)
+                                .patrolName("First Patrol")
+                                .patrolDate(LocalDate.of(
+                                                1984,
+                                                1,
+                                                10))
+                                .build();
 
-        ResolvedSimulationResult secondResult = ResolvedSimulationResult.builder()
-                .missionOutcome(
-                        MissionOutcome.PARTIAL_SUCCESS)
-                .missionScore(60)
-                .build();
+                Patrol secondPatrol = Patrol.builder()
+                                .id(20L)
+                                .patrolName("Second Patrol")
+                                .patrolDate(LocalDate.of(
+                                                1984,
+                                                2,
+                                                10))
+                                .build();
 
-        when(
-                campaignRepository.findById(
-                        campaignId))
-                .thenReturn(
-                        Optional.of(
-                                campaign));
+                ResolvedSimulationResult firstResult = ResolvedSimulationResult.builder()
+                                .missionOutcome(
+                                                MissionOutcome.SUCCESS)
+                                .missionScore(90)
+                                .build();
 
-        when(
-                patrolRepository
-                        .findByCampaignIdOrderByPatrolDateAscIdAsc(
-                                campaignId))
-                .thenReturn(
-                        List.of(
-                                firstPatrol,
-                                secondPatrol));
+                ResolvedSimulationResult secondResult = ResolvedSimulationResult.builder()
+                                .missionOutcome(
+                                                MissionOutcome.PARTIAL_SUCCESS)
+                                .missionScore(60)
+                                .build();
 
-        when(
-                simulationService.simulate(
-                        firstPatrol.getId()))
-                .thenReturn(
-                        firstResult);
+                when(
+                                campaignRepository.findById(
+                                                campaignId))
+                                .thenReturn(
+                                                Optional.of(
+                                                                campaign));
 
-        when(
-                simulationService.simulate(
-                        secondPatrol.getId()))
-                .thenReturn(
-                        secondResult);
+                when(
+                                patrolRepository
+                                                .findByCampaignIdOrderByPatrolDateAscIdAsc(
+                                                                campaignId))
+                                .thenReturn(
+                                                List.of(
+                                                                firstPatrol,
+                                                                secondPatrol));
 
-        CampaignSimulationResult result = campaignSimulationService
-                .simulateCampaign(
-                        campaignId);
+                when(
+                                simulationService.simulate(
+                                                firstPatrol.getId()))
+                                .thenReturn(
+                                                firstResult);
 
-        assertSame(
-                campaign,
-                result.getCampaign());
+                when(
+                                simulationService.simulate(
+                                                secondPatrol.getId()))
+                                .thenReturn(
+                                                secondResult);
 
-        assertEquals(
-                List.of(
-                        firstResult,
-                        secondResult),
-                result.getPatrolResults());
+                when(
+                                campaignProgressService.getProgress(
+                                                campaignId))
+                                .thenReturn(
+                                                progress);
 
-        assertEquals(
-                2,
-                result.getTotalPatrols());
+                CampaignSimulationResult result = campaignSimulationService
+                                .simulateCampaign(
+                                                campaignId);
 
-        assertEquals(
-                2,
-                result.getCompletedPatrols());
+                assertSame(
+                                campaign,
+                                result.getCampaign());
 
-        assertTrue(
-                result.getExecutedAt() != null);
+                assertEquals(
+                                List.of(
+                                                firstResult,
+                                                secondResult),
+                                result.getPatrolResults());
 
-        InOrder simulationOrder = inOrder(
-                simulationService);
+                assertSame(
+                                progress,
+                                result.getProgress());
 
-        simulationOrder.verify(
-                simulationService)
-                .simulate(
-                        firstPatrol.getId());
+                assertEquals(
+                                2,
+                                result.getProgress().getTotalPatrols());
 
-        simulationOrder.verify(
-                simulationService)
-                .simulate(
-                        secondPatrol.getId());
+                assertEquals(
+                                2,
+                                result.getProgress().getCompletedPatrols());
 
-        verify(
-                campaignRepository)
-                .findById(
-                        campaignId);
+                assertTrue(
+                                result.getExecutedAt() != null);
 
-        verify(
-                patrolRepository)
-                .findByCampaignIdOrderByPatrolDateAscIdAsc(
-                        campaignId);
-    }
+                InOrder simulationOrder = inOrder(
+                                simulationService);
 
-    @Test
-    void shouldReturnEmptyResultWhenCampaignHasNoPatrols() {
+                simulationOrder.verify(
+                                simulationService)
+                                .simulate(
+                                                firstPatrol.getId());
 
-        Long campaignId = 2L;
+                simulationOrder.verify(
+                                simulationService)
+                                .simulate(
+                                                secondPatrol.getId());
 
-        Campaign campaign = new Campaign();
-        campaign.setId(
-                campaignId);
-        campaign.setName(
-                "Empty Campaign");
+                verify(
+                                campaignRepository)
+                                .findById(
+                                                campaignId);
 
-        when(
-                campaignRepository.findById(
-                        campaignId))
-                .thenReturn(
-                        Optional.of(
-                                campaign));
+                verify(
+                                patrolRepository)
+                                .findByCampaignIdOrderByPatrolDateAscIdAsc(
+                                                campaignId);
 
-        when(
-                patrolRepository
-                        .findByCampaignIdOrderByPatrolDateAscIdAsc(
-                                campaignId))
-                .thenReturn(
-                        List.of());
+                verify(
+                                campaignProgressService)
+                                .getProgress(
+                                                campaignId);
+        }
 
-        CampaignSimulationResult result = campaignSimulationService
-                .simulateCampaign(
-                        campaignId);
+        @Test
+        void shouldReturnEmptyResultWhenCampaignHasNoPatrols() {
 
-        assertSame(
-                campaign,
-                result.getCampaign());
+                Long campaignId = 2L;
 
-        assertTrue(
-                result.getPatrolResults().isEmpty());
+                Campaign campaign = new Campaign();
+                CampaignProgress progress = new CampaignProgress(
+                                0,
+                                0);
 
-        assertEquals(
-                0,
-                result.getTotalPatrols());
+                campaign.setId(
+                                campaignId);
+                campaign.setName(
+                                "Empty Campaign");
 
-        assertEquals(
-                0,
-                result.getCompletedPatrols());
+                when(
+                                campaignRepository.findById(
+                                                campaignId))
+                                .thenReturn(
+                                                Optional.of(
+                                                                campaign));
 
-        verify(
-                simulationService,
-                never())
-                .simulate(
-                        org.mockito.ArgumentMatchers.anyLong());
-    }
+                when(
+                                patrolRepository
+                                                .findByCampaignIdOrderByPatrolDateAscIdAsc(
+                                                                campaignId))
+                                .thenReturn(
+                                                List.of());
 
-    @Test
-    void shouldThrowExceptionWhenCampaignDoesNotExist() {
+                when(
+                                campaignProgressService.getProgress(
+                                                campaignId))
+                                .thenReturn(
+                                                progress);
 
-        Long campaignId = 999L;
+                CampaignSimulationResult result = campaignSimulationService
+                                .simulateCampaign(
+                                                campaignId);
 
-        when(
-                campaignRepository.findById(
-                        campaignId))
-                .thenReturn(
-                        Optional.empty());
+                assertSame(
+                                progress,
+                                result.getProgress());
 
-        assertThrows(
-                CampaignNotFoundException.class,
-                () -> campaignSimulationService.simulateCampaign(
-                        campaignId));
+                assertEquals(
+                                0,
+                                result.getProgress().getTotalPatrols());
 
-        verify(
-                campaignRepository)
-                .findById(
-                        campaignId);
+                assertEquals(
+                                0,
+                                result.getProgress().getCompletedPatrols());
 
-        verify(
-                patrolRepository,
-                never())
-                .findByCampaignIdOrderByPatrolDateAscIdAsc(
-                        org.mockito.ArgumentMatchers.anyLong());
+                assertFalse(
+                                result.getProgress().isCompleted());
 
-        verify(
-                simulationService,
-                never())
-                .simulate(
-                        org.mockito.ArgumentMatchers.anyLong());
-    }
+                verify(
+                                simulationService,
+                                never())
+                                .simulate(
+                                                org.mockito.ArgumentMatchers.anyLong());
+        }
 
-    @Test
-    void shouldStopCampaignExecutionWhenPatrolSimulationFails() {
+        @Test
+        void shouldThrowExceptionWhenCampaignDoesNotExist() {
 
-        Long campaignId = 3L;
+                Long campaignId = 999L;
 
-        Campaign campaign = new Campaign();
-        campaign.setId(
-                campaignId);
+                when(
+                                campaignRepository.findById(
+                                                campaignId))
+                                .thenReturn(
+                                                Optional.empty());
 
-        Patrol firstPatrol = Patrol.builder()
-                .id(30L)
-                .patrolDate(LocalDate.of(
-                        1984,
-                        3,
-                        1))
-                .build();
+                assertThrows(
+                                CampaignNotFoundException.class,
+                                () -> campaignSimulationService.simulateCampaign(
+                                                campaignId));
 
-        Patrol secondPatrol = Patrol.builder()
-                .id(40L)
-                .patrolDate(LocalDate.of(
-                        1984,
-                        3,
-                        2))
-                .build();
+                verify(
+                                campaignRepository)
+                                .findById(
+                                                campaignId);
 
-        when(
-                campaignRepository.findById(
-                        campaignId))
-                .thenReturn(
-                        Optional.of(
-                                campaign));
+                verify(
+                                patrolRepository,
+                                never())
+                                .findByCampaignIdOrderByPatrolDateAscIdAsc(
+                                                org.mockito.ArgumentMatchers.anyLong());
 
-        when(
-                patrolRepository
-                        .findByCampaignIdOrderByPatrolDateAscIdAsc(
-                                campaignId))
-                .thenReturn(
-                        List.of(
-                                firstPatrol,
-                                secondPatrol));
+                verify(
+                                simulationService,
+                                never())
+                                .simulate(
+                                                org.mockito.ArgumentMatchers.anyLong());
 
-        when(
-                simulationService.simulate(
-                        firstPatrol.getId()))
-                .thenThrow(
-                        new IllegalStateException(
-                                "Patrol simulation failed"));
+                verify(
+                                campaignProgressService,
+                                never())
+                                .getProgress(
+                                                org.mockito.ArgumentMatchers.anyLong());
+        }
 
-        assertThrows(
-                IllegalStateException.class,
-                () -> campaignSimulationService.simulateCampaign(
-                        campaignId));
+        @Test
+        void shouldStopCampaignExecutionWhenPatrolSimulationFails() {
 
-        verify(
-                simulationService)
-                .simulate(
-                        firstPatrol.getId());
+                Long campaignId = 3L;
 
-        verify(
-                simulationService,
-                never())
-                .simulate(
-                        secondPatrol.getId());
-    }
+                Campaign campaign = new Campaign();
+                campaign.setId(
+                                campaignId);
+
+                Patrol firstPatrol = Patrol.builder()
+                                .id(30L)
+                                .patrolDate(LocalDate.of(
+                                                1984,
+                                                3,
+                                                1))
+                                .build();
+
+                Patrol secondPatrol = Patrol.builder()
+                                .id(40L)
+                                .patrolDate(LocalDate.of(
+                                                1984,
+                                                3,
+                                                2))
+                                .build();
+
+                when(
+                                campaignRepository.findById(
+                                                campaignId))
+                                .thenReturn(
+                                                Optional.of(
+                                                                campaign));
+
+                when(
+                                patrolRepository
+                                                .findByCampaignIdOrderByPatrolDateAscIdAsc(
+                                                                campaignId))
+                                .thenReturn(
+                                                List.of(
+                                                                firstPatrol,
+                                                                secondPatrol));
+
+                when(
+                                simulationService.simulate(
+                                                firstPatrol.getId()))
+                                .thenThrow(
+                                                new IllegalStateException(
+                                                                "Patrol simulation failed"));
+
+                assertThrows(
+                                IllegalStateException.class,
+                                () -> campaignSimulationService.simulateCampaign(
+                                                campaignId));
+
+                verify(
+                                simulationService)
+                                .simulate(
+                                                firstPatrol.getId());
+
+                verify(
+                                simulationService,
+                                never())
+                                .simulate(
+                                                secondPatrol.getId());
+
+                verify(
+                                campaignProgressService,
+                                never())
+                                .getProgress(
+                                                org.mockito.ArgumentMatchers.anyLong());
+        }
 
 }

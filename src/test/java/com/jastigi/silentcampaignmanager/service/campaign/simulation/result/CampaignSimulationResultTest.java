@@ -11,131 +11,105 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.jastigi.silentcampaignmanager.entity.Campaign;
+import com.jastigi.silentcampaignmanager.service.campaign.progress.result.CampaignProgress;
 import com.jastigi.silentcampaignmanager.service.simulation.resolver.MissionOutcome;
 import com.jastigi.silentcampaignmanager.service.simulation.result.ResolvedSimulationResult;
 
 class CampaignSimulationResultTest {
 
-    @Test
-    void shouldCreateImmutableCampaignSimulationResult() {
+        @Test
+        void shouldCreateImmutableCampaignSimulationResult() {
 
-        Campaign campaign = new Campaign();
-        campaign.setId(1L);
-        campaign.setName("North Atlantic Campaign");
+                Campaign campaign = new Campaign();
+                campaign.setId(1L);
+                campaign.setName("North Atlantic Campaign");
 
-        ResolvedSimulationResult patrolResult = ResolvedSimulationResult.builder()
-                .missionOutcome(
-                        MissionOutcome.SUCCESS)
-                .missionScore(90)
-                .build();
+                ResolvedSimulationResult patrolResult = ResolvedSimulationResult.builder()
+                                .missionOutcome(
+                                                MissionOutcome.SUCCESS)
+                                .missionScore(90)
+                                .build();
 
-        List<ResolvedSimulationResult> sourceResults = new ArrayList<>();
-        sourceResults.add(
-                patrolResult);
+                List<ResolvedSimulationResult> sourceResults = new ArrayList<>();
+                sourceResults.add(
+                                patrolResult);
 
-        Instant executedAt = Instant.parse(
-                "2026-07-29T10:00:00Z");
+                CampaignProgress progress = new CampaignProgress(
+                                1,
+                                1);
 
-        CampaignSimulationResult result = new CampaignSimulationResult(
-                campaign,
-                sourceResults,
-                1,
-                1,
-                executedAt);
+                Instant executedAt = Instant.parse(
+                                "2026-07-30T09:00:00Z");
 
-        sourceResults.clear();
+                CampaignSimulationResult result = new CampaignSimulationResult(
+                                campaign,
+                                sourceResults,
+                                progress,
+                                executedAt);
 
-        assertSame(
-                campaign,
-                result.getCampaign());
+                sourceResults.clear();
 
-        assertEquals(
-                List.of(patrolResult),
-                result.getPatrolResults());
+                assertSame(
+                                campaign,
+                                result.getCampaign());
 
-        assertEquals(
-                1,
-                result.getTotalPatrols());
+                assertEquals(
+                                List.of(patrolResult),
+                                result.getPatrolResults());
 
-        assertEquals(
-                1,
-                result.getCompletedPatrols());
+                assertSame(
+                                progress,
+                                result.getProgress());
 
-        assertEquals(
-                executedAt,
-                result.getExecutedAt());
+                assertEquals(
+                                executedAt,
+                                result.getExecutedAt());
 
-        assertThrows(
-                UnsupportedOperationException.class,
-                () -> result.getPatrolResults().clear());
-    }
+                assertThrows(
+                                UnsupportedOperationException.class,
+                                () -> result.getPatrolResults().clear());
+        }
 
-    @Test
-    void shouldRejectCompletedPatrolCountGreaterThanTotal() {
+        @Test
+        void shouldRejectNullRequiredValues() {
 
-        Campaign campaign = new Campaign();
+                Campaign campaign = new Campaign();
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new CampaignSimulationResult(
-                        campaign,
-                        List.of(),
-                        1,
-                        2,
-                        Instant.now()));
-    }
+                CampaignProgress progress = new CampaignProgress(
+                                0,
+                                0);
 
-    @Test
-    void shouldRejectResultCountDifferentFromCompletedPatrols() {
+                assertThrows(
+                                NullPointerException.class,
+                                () -> new CampaignSimulationResult(
+                                                null,
+                                                List.of(),
+                                                progress,
+                                                Instant.now()));
 
-        Campaign campaign = new Campaign();
+                assertThrows(
+                                NullPointerException.class,
+                                () -> new CampaignSimulationResult(
+                                                campaign,
+                                                null,
+                                                progress,
+                                                Instant.now()));
 
-        ResolvedSimulationResult patrolResult = ResolvedSimulationResult.builder()
-                .missionOutcome(
-                        MissionOutcome.SUCCESS)
-                .build();
+                assertThrows(
+                                NullPointerException.class,
+                                () -> new CampaignSimulationResult(
+                                                campaign,
+                                                List.of(),
+                                                null,
+                                                Instant.now()));
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new CampaignSimulationResult(
-                        campaign,
-                        List.of(patrolResult),
-                        2,
-                        2,
-                        Instant.now()));
-    }
-
-    @Test
-    void shouldRejectNullRequiredValues() {
-
-        Campaign campaign = new Campaign();
-
-        assertThrows(
-                NullPointerException.class,
-                () -> new CampaignSimulationResult(
-                        null,
-                        List.of(),
-                        0,
-                        0,
-                        Instant.now()));
-
-        assertThrows(
-                NullPointerException.class,
-                () -> new CampaignSimulationResult(
-                        campaign,
-                        null,
-                        0,
-                        0,
-                        Instant.now()));
-
-        assertThrows(
-                NullPointerException.class,
-                () -> new CampaignSimulationResult(
-                        campaign,
-                        List.of(),
-                        0,
-                        0,
-                        null));
-    }
+                assertThrows(
+                                NullPointerException.class,
+                                () -> new CampaignSimulationResult(
+                                                campaign,
+                                                List.of(),
+                                                progress,
+                                                null));
+        }
 
 }

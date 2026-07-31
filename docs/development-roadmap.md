@@ -184,8 +184,10 @@ Planned for a later release:
 - [x] Campaign Simulation Foundation
 - [x] Ordered Patrol Orchestration
 - [x] Campaign Simulation Result
-- [ ] Campaign Progression
+- [x] Campaign Progression
+- [x] Derived Campaign Progress
 - [ ] Campaign Execution Persistence
+- [ ] Campaign Statistics
 - [ ] Campaign Timeline
 - [ ] Dynamic Patrol Generation
 - [ ] AI Opponent

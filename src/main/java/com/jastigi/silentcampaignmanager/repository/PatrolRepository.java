@@ -11,18 +11,20 @@ import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 
 public interface PatrolRepository extends JpaRepository<Patrol, Long> {
 
-    List<Patrol> findByCampaignId(Long campaignId);
+        List<Patrol> findByCampaignId(Long campaignId);
 
-    List<Patrol> findByCampaignIdOrderByPatrolDateAscIdAsc(
-            Long campaignId);
+        List<Patrol> findByCampaignIdOrderByPatrolDateAscIdAsc(
+                        Long campaignId);
 
-    Page<Patrol> findByCampaignId(
-            Long campaignId,
-            Pageable pageable);
+        long countByCampaignId(Long campaignId);
 
-    Page<Patrol> findByCampaignIdAndResult(
-            Long campaignId,
-            PatrolResult result,
-            Pageable pageable);
+        Page<Patrol> findByCampaignId(
+                        Long campaignId,
+                        Pageable pageable);
+
+        Page<Patrol> findByCampaignIdAndResult(
+                        Long campaignId,
+                        PatrolResult result,
+                        Pageable pageable);
 
 }
