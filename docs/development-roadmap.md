@@ -201,12 +201,13 @@ Planned for a later release:
 - [x] Campaign State Diagram
 - [x] Campaign Transition Rules
 - [x] ADR-003 Lifecycle Decision
-- [ ] Campaign Lifecycle Service
-- [ ] Finish Campaign Transition
-- [ ] Abandon Campaign Transition
+- [x] Campaign Lifecycle Service
+- [x] Finish Campaign Transition
+- [x] Abandon Campaign Transition
 - [ ] Campaign Execution Status Validation
 - [ ] Campaign Lifecycle REST API
-- [ ] Campaign Lifecycle Tests
+- [x] Campaign Lifecycle Unit Tests
+- [ ] Campaign Lifecycle Integration Tests
 
 ---
 

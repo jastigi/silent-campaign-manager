@@ -311,3 +311,15 @@ The campaign lifecycle implementation will be complete when:
 - invalid transitions are rejected;
 - lifecycle transitions are covered by unit and integration tests;
 - campaign history remains available after terminal transitions.
+
+## Lifecycle Service Implementation
+
+Campaign lifecycle transitions are coordinated by
+`CampaignLifecycleService`.
+
+Implemented operations:
+
+```text
+finishCampaign(campaignId)
+abandonCampaign(campaignId)
+```
