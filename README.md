@@ -4,7 +4,7 @@
 
 ![Silent Campaign Manager Banner](docs/images/banner.png)
 
-# Silent Campaign Manager
+## Silent Campaign Manager
 
 > **A modular backend platform for Cold War submarine campaign management and tactical simulation.**
 
