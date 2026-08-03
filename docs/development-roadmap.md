@@ -195,6 +195,21 @@ Planned for a later release:
 
 ---
 
+## Campaign Lifecycle
+
+- [x] Campaign Lifecycle Design
+- [x] Campaign State Diagram
+- [x] Campaign Transition Rules
+- [x] ADR-003 Lifecycle Decision
+- [ ] Campaign Lifecycle Service
+- [ ] Finish Campaign Transition
+- [ ] Abandon Campaign Transition
+- [ ] Campaign Execution Status Validation
+- [ ] Campaign Lifecycle REST API
+- [ ] Campaign Lifecycle Tests
+
+---
+
 ## Combat
 
 - [ ] Weapon Launch
