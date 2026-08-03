@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import com.jastigi.silentcampaignmanager.entity.Campaign;
+import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
 import com.jastigi.silentcampaignmanager.entity.MissionType;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolSimulationState;
@@ -382,6 +384,121 @@ class SimulationRecordRepositoryTest {
                 return simulationRecordRepository
                                 .saveAndFlush(
                                                 record);
+        }
+
+        @Test
+        void shouldFindSimulationRecordsByCampaign() {
+
+                Campaign firstCampaign = persistCampaign(
+                                "First Campaign");
+
+                Campaign secondCampaign = persistCampaign(
+                                "Second Campaign");
+
+                Patrol firstPatrol = persistPatrol(
+                                "First Campaign Patrol",
+                                firstCampaign);
+
+                Patrol secondPatrol = persistPatrol(
+                                "Second Campaign Patrol",
+                                secondCampaign);
+
+                persistRecord(
+                                firstPatrol,
+                                LocalDateTime.of(
+                                                2026,
+                                                7,
+                                                31,
+                                                10,
+                                                0));
+
+                persistRecord(
+                                firstPatrol,
+                                LocalDateTime.of(
+                                                2026,
+                                                7,
+                                                31,
+                                                11,
+                                                0));
+
+                persistRecord(
+                                secondPatrol,
+                                LocalDateTime.of(
+                                                2026,
+                                                7,
+                                                31,
+                                                12,
+                                                0));
+
+                List<SimulationRecord> result = simulationRecordRepository
+                                .findByPatrolCampaignId(
+                                                firstCampaign.getId());
+
+                assertEquals(
+                                2,
+                                result.size());
+
+                assertEquals(
+                                firstCampaign.getId(),
+                                result.get(0)
+                                                .getPatrol()
+                                                .getCampaign()
+                                                .getId());
+
+                assertEquals(
+                                firstCampaign.getId(),
+                                result.get(1)
+                                                .getPatrol()
+                                                .getCampaign()
+                                                .getId());
+        }
+
+        private Campaign persistCampaign(
+                        String campaignName) {
+
+                Campaign campaign = new Campaign();
+
+                campaign.setName(
+                                campaignName);
+
+                campaign.setDescription(
+                                "Campaign used by repository tests.");
+
+                campaign.setStartDate(
+                                LocalDate.of(
+                                                1985,
+                                                1,
+                                                1));
+
+                campaign.setStatus(
+                                CampaignStatus.ACTIVE);
+
+                return entityManager.persistAndFlush(
+                                campaign);
+        }
+
+        private Patrol persistPatrol(
+                        String patrolName,
+                        Campaign campaign) {
+
+                Patrol patrol = Patrol.builder()
+                                .patrolName(
+                                                patrolName)
+                                .patrolDate(
+                                                LocalDate.of(
+                                                                1985,
+                                                                1,
+                                                                1))
+                                .area(
+                                                "North Atlantic")
+                                .missionType(
+                                                MissionType.INTELLIGENCE)
+                                .campaign(
+                                                campaign)
+                                .build();
+
+                return entityManager.persistAndFlush(
+                                patrol);
         }
 
 }

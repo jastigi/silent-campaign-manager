@@ -655,3 +655,22 @@ CampaignProgressService
                 |
                 +--> Distinct simulated campaign patrols
 ```
+
+## Campaign Statistics
+
+Campaign statistics are calculated from persisted tactical simulation
+records.
+
+The statistics flow is:
+
+```text
+CampaignStatisticsService
+        |
+        +--> CampaignProgressService
+        |       |
+        |       +--> Campaign patrol progression
+        |
+        +--> SimulationRecordRepository
+                |
+                +--> Persisted tactical outcomes and metrics
+```

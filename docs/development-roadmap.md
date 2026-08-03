@@ -186,8 +186,9 @@ Planned for a later release:
 - [x] Campaign Simulation Result
 - [x] Campaign Progression
 - [x] Derived Campaign Progress
+- [x] Campaign Statistics
+- [x] Statistics from Simulation History
 - [ ] Campaign Execution Persistence
-- [ ] Campaign Statistics
 - [ ] Campaign Timeline
 - [ ] Dynamic Patrol Generation
 - [ ] AI Opponent

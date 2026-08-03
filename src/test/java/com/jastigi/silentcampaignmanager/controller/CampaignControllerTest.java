@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
 import com.jastigi.silentcampaignmanager.security.JwtService;
 import com.jastigi.silentcampaignmanager.service.CampaignService;
+import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatistics;
 
 @WebMvcTest(controllers = CampaignController.class, excludeAutoConfiguration = org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class)
 class CampaignControllerTest {
@@ -90,4 +91,94 @@ class CampaignControllerTest {
 
         verify(campaignService).getAllCampaigns(0, 10, "name", "desc");
     }
+
+    @Test
+    void shouldReturnCampaignStatistics() throws Exception {
+
+        Long campaignId = 1L;
+
+        CampaignStatistics statistics = CampaignStatistics.builder()
+                .totalPatrols(5)
+                .completedPatrols(3)
+                .pendingPatrols(2)
+                .completionPercentage(60.0)
+                .completed(false)
+                .totalSimulations(4)
+                .successfulSimulations(2)
+                .partialSuccessfulSimulations(1)
+                .failedSimulations(1)
+                .successRate(50.0)
+                .averageMissionScore(65.0)
+                .totalContactsDetected(6)
+                .totalContactsLost(1)
+                .totalIntelligenceGathered(4)
+                .totalIncidents(3)
+                .build();
+
+        when(
+                campaignService.getStatistics(
+                        campaignId))
+                .thenReturn(
+                        statistics);
+
+        mockMvc.perform(
+                get(
+                        "/api/v1/campaigns/{id}/statistics",
+                        campaignId)
+                        .contentType(
+                                MediaType.APPLICATION_JSON))
+                .andExpect(
+                        status().isOk())
+                .andExpect(
+                        jsonPath("$.totalPatrols")
+                                .value(5))
+                .andExpect(
+                        jsonPath("$.completedPatrols")
+                                .value(3))
+                .andExpect(
+                        jsonPath("$.pendingPatrols")
+                                .value(2))
+                .andExpect(
+                        jsonPath("$.completionPercentage")
+                                .value(60.0))
+                .andExpect(
+                        jsonPath("$.completed")
+                                .value(false))
+                .andExpect(
+                        jsonPath("$.totalSimulations")
+                                .value(4))
+                .andExpect(
+                        jsonPath("$.successfulSimulations")
+                                .value(2))
+                .andExpect(
+                        jsonPath("$.partialSuccessfulSimulations")
+                                .value(1))
+                .andExpect(
+                        jsonPath("$.failedSimulations")
+                                .value(1))
+                .andExpect(
+                        jsonPath("$.successRate")
+                                .value(50.0))
+                .andExpect(
+                        jsonPath("$.averageMissionScore")
+                                .value(65.0))
+                .andExpect(
+                        jsonPath("$.totalContactsDetected")
+                                .value(6))
+                .andExpect(
+                        jsonPath("$.totalContactsLost")
+                                .value(1))
+                .andExpect(
+                        jsonPath("$.totalIntelligenceGathered")
+                                .value(4))
+                .andExpect(
+                        jsonPath("$.totalIncidents")
+                                .value(3));
+
+        verify(
+                campaignService)
+                .getStatistics(
+                        campaignId);
+    }
+
 }

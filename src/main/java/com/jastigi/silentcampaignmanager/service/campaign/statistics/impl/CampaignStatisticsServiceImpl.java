@@ -3,87 +3,174 @@ package com.jastigi.silentcampaignmanager.service.campaign.statistics.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.jastigi.silentcampaignmanager.entity.Patrol;
-import com.jastigi.silentcampaignmanager.entity.PatrolResult;
-import com.jastigi.silentcampaignmanager.repository.ContactRepository;
-import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
+import com.jastigi.silentcampaignmanager.entity.SimulationOutcome;
+import com.jastigi.silentcampaignmanager.entity.SimulationRecord;
+import com.jastigi.silentcampaignmanager.repository.SimulationRecordRepository;
+import com.jastigi.silentcampaignmanager.service.campaign.progress.CampaignProgressService;
+import com.jastigi.silentcampaignmanager.service.campaign.progress.result.CampaignProgress;
 import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatistics;
 import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatisticsService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CampaignStatisticsServiceImpl
                 implements CampaignStatisticsService {
 
-        private final PatrolRepository patrolRepository;
-        private final ContactRepository contactRepository;
+        private final SimulationRecordRepository simulationRecordRepository;
 
-        public CampaignStatisticsServiceImpl(
-                        PatrolRepository patrolRepository,
-                        ContactRepository contactRepository) {
-
-                this.patrolRepository = patrolRepository;
-                this.contactRepository = contactRepository;
-        }
+        private final CampaignProgressService campaignProgressService;
 
         @Override
-        public CampaignStatistics calculate(Long campaignId) {
+        @Transactional(readOnly = true)
+        public CampaignStatistics calculate(
+                        Long campaignId) {
 
-                List<Patrol> patrols = patrolRepository.findByCampaignId(campaignId);
+                CampaignProgress progress = campaignProgressService.getProgress(
+                                campaignId);
+
+                List<SimulationRecord> simulationRecords = simulationRecordRepository
+                                .findByPatrolCampaignId(
+                                                campaignId);
+
+                long totalSimulations = simulationRecords.size();
+
+                long successfulSimulations = countByOutcome(
+                                simulationRecords,
+                                SimulationOutcome.SUCCESS);
+
+                long partialSuccessfulSimulations = countByOutcome(
+                                simulationRecords,
+                                SimulationOutcome.PARTIAL_SUCCESS);
+
+                long failedSimulations = countByOutcome(
+                                simulationRecords,
+                                SimulationOutcome.FAILURE);
 
                 return CampaignStatistics.builder()
-                                .totalPatrols(patrols.size())
-                                .successfulPatrols(countPatrols(
-                                                patrols,
-                                                PatrolResult.SUCCESS))
-                                .partialSuccessfulPatrols(countPatrols(
-                                                patrols,
-                                                PatrolResult.PARTIAL_SUCCESS))
-                                .failedPatrols(countPatrols(
-                                                patrols,
-                                                PatrolResult.FAILURE))
-                                .totalContacts(contactRepository.countByPatrolCampaignId(campaignId))
-                                .averageRisk(0)
-                                .averageMissionScore(calculateAverageMissionScore(patrols))
+                                .totalPatrols(
+                                                progress.getTotalPatrols())
+                                .completedPatrols(
+                                                progress.getCompletedPatrols())
+                                .pendingPatrols(
+                                                progress.getPendingPatrols())
+                                .completionPercentage(
+                                                progress.getCompletionPercentage())
+                                .completed(
+                                                progress.isCompleted())
+                                .totalSimulations(
+                                                totalSimulations)
+                                .successfulSimulations(
+                                                successfulSimulations)
+                                .partialSuccessfulSimulations(
+                                                partialSuccessfulSimulations)
+                                .failedSimulations(
+                                                failedSimulations)
+                                .successRate(
+                                                calculateSuccessRate(
+                                                                successfulSimulations,
+                                                                totalSimulations))
+                                .averageMissionScore(
+                                                calculateAverageMissionScore(
+                                                                simulationRecords))
+                                .totalContactsDetected(
+                                                sumContactsDetected(
+                                                                simulationRecords))
+                                .totalContactsLost(
+                                                sumContactsLost(
+                                                                simulationRecords))
+                                .totalIntelligenceGathered(
+                                                sumIntelligenceGathered(
+                                                                simulationRecords))
+                                .totalIncidents(
+                                                sumIncidents(
+                                                                simulationRecords))
                                 .build();
         }
 
-        private long countPatrols(
-                        List<Patrol> patrols,
-                        PatrolResult result) {
+        private long countByOutcome(
+                        List<SimulationRecord> simulationRecords,
+                        SimulationOutcome outcome) {
 
-                return patrols.stream()
-                                .filter(p -> p.getResult() == result)
+                return simulationRecords.stream()
+                                .filter(record -> record.getMissionOutcome() == outcome)
                                 .count();
         }
 
-        private double calculateAverageMissionScore(
-                        List<Patrol> patrols) {
+        private double calculateSuccessRate(
+                        long successfulSimulations,
+                        long totalSimulations) {
 
-                if (patrols.isEmpty()) {
-                        return 0;
+                if (totalSimulations == 0) {
+                        return 0.0;
                 }
 
-                return patrols.stream()
-                                .mapToInt(this::scorePatrol)
-                                .average()
-                                .orElse(0);
+                double successRate = successfulSimulations
+                                * 100.0
+                                / totalSimulations;
 
+                return roundToTwoDecimals(
+                                successRate);
         }
 
-        private int scorePatrol(Patrol patrol) {
+        private double calculateAverageMissionScore(
+                        List<SimulationRecord> simulationRecords) {
 
-                return switch (patrol.getResult()) {
+                double average = simulationRecords.stream()
+                                .mapToInt(
+                                                SimulationRecord::getMissionScore)
+                                .average()
+                                .orElse(0.0);
 
-                        case SUCCESS -> 100;
+                return roundToTwoDecimals(
+                                average);
+        }
 
-                        case PARTIAL_SUCCESS -> 70;
+        private long sumContactsDetected(
+                        List<SimulationRecord> simulationRecords) {
 
-                        case FAILURE -> 30;
+                return simulationRecords.stream()
+                                .mapToLong(
+                                                SimulationRecord::getContactsDetected)
+                                .sum();
+        }
 
-                        default -> 0;
-                };
+        private long sumContactsLost(
+                        List<SimulationRecord> simulationRecords) {
 
+                return simulationRecords.stream()
+                                .mapToLong(
+                                                SimulationRecord::getContactsLost)
+                                .sum();
+        }
+
+        private long sumIntelligenceGathered(
+                        List<SimulationRecord> simulationRecords) {
+
+                return simulationRecords.stream()
+                                .mapToLong(
+                                                SimulationRecord::getIntelligenceGathered)
+                                .sum();
+        }
+
+        private long sumIncidents(
+                        List<SimulationRecord> simulationRecords) {
+
+                return simulationRecords.stream()
+                                .mapToLong(
+                                                SimulationRecord::getIncidents)
+                                .sum();
+        }
+
+        private double roundToTwoDecimals(
+                        double value) {
+
+                return Math.round(
+                                value * 100.0)
+                                / 100.0;
         }
 
 }

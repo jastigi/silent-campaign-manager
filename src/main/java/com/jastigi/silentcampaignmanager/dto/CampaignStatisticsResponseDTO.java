@@ -15,14 +15,32 @@ public class CampaignStatisticsResponseDTO {
 
     private long totalPatrols;
 
-    private long successfulPatrols;
+    private long completedPatrols;
 
-    private long partialSuccessfulPatrols;
+    private long pendingPatrols;
 
-    private long failedPatrols;
+    private double completionPercentage;
 
-    private long totalContacts;
+    private boolean completed;
 
-    private double averageRisk;
+    private long totalSimulations;
+
+    private long successfulSimulations;
+
+    private long partialSuccessfulSimulations;
+
+    private long failedSimulations;
+
+    private double successRate;
+
+    private double averageMissionScore;
+
+    private long totalContactsDetected;
+
+    private long totalContactsLost;
+
+    private long totalIntelligenceGathered;
+
+    private long totalIncidents;
 
 }
