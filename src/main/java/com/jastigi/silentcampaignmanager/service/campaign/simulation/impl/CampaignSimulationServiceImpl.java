@@ -11,6 +11,7 @@ import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
+import com.jastigi.silentcampaignmanager.service.campaign.lifecycle.CampaignLifecycleService;
 import com.jastigi.silentcampaignmanager.service.campaign.progress.CampaignProgressService;
 import com.jastigi.silentcampaignmanager.service.campaign.progress.result.CampaignProgress;
 import com.jastigi.silentcampaignmanager.service.campaign.simulation.CampaignSimulationService;
@@ -33,6 +34,8 @@ public class CampaignSimulationServiceImpl
 
         private final CampaignProgressService campaignProgressService;
 
+        private final CampaignLifecycleService campaignLifecycleService;
+
         @Override
         public CampaignSimulationResult simulateCampaign(
                         Long campaignId) {
@@ -42,6 +45,9 @@ public class CampaignSimulationServiceImpl
                                 .orElseThrow(
                                                 () -> new CampaignNotFoundException(
                                                                 campaignId));
+
+                campaignLifecycleService.validateExecutionAllowed(
+                                campaign);
 
                 List<Patrol> patrols = patrolRepository
                                 .findByCampaignIdOrderByPatrolDateAscIdAsc(

@@ -17,92 +17,110 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CampaignLifecycleServiceImpl
-        implements CampaignLifecycleService {
+                implements CampaignLifecycleService {
 
-    private final CampaignRepository campaignRepository;
+        private final CampaignRepository campaignRepository;
 
-    private final CampaignProgressService campaignProgressService;
+        private final CampaignProgressService campaignProgressService;
 
-    @Override
-    @Transactional
-    public Campaign finishCampaign(
-            Long campaignId) {
+        @Override
+        @Transactional
+        public Campaign finishCampaign(
+                        Long campaignId) {
 
-        Campaign campaign = findCampaign(
-                campaignId);
+                Campaign campaign = findCampaign(
+                                campaignId);
 
-        validateActiveCampaign(
-                campaign,
-                CampaignStatus.FINISHED);
+                validateActiveCampaign(
+                                campaign,
+                                CampaignStatus.FINISHED);
 
-        CampaignProgress progress = campaignProgressService.getProgress(
-                campaignId);
+                CampaignProgress progress = campaignProgressService.getProgress(
+                                campaignId);
 
-        validateCampaignCanFinish(
-                progress);
+                validateCampaignCanFinish(
+                                progress);
 
-        campaign.setStatus(
-                CampaignStatus.FINISHED);
+                campaign.setStatus(
+                                CampaignStatus.FINISHED);
 
-        return campaignRepository.save(
-                campaign);
-    }
-
-    @Override
-    @Transactional
-    public Campaign abandonCampaign(
-            Long campaignId) {
-
-        Campaign campaign = findCampaign(
-                campaignId);
-
-        validateActiveCampaign(
-                campaign,
-                CampaignStatus.ABANDONED);
-
-        campaign.setStatus(
-                CampaignStatus.ABANDONED);
-
-        return campaignRepository.save(
-                campaign);
-    }
-
-    private Campaign findCampaign(
-            Long campaignId) {
-
-        return campaignRepository.findById(
-                campaignId)
-                .orElseThrow(
-                        () -> new CampaignNotFoundException(
-                                campaignId));
-    }
-
-    private void validateActiveCampaign(
-            Campaign campaign,
-            CampaignStatus targetStatus) {
-
-        if (campaign.getStatus() != CampaignStatus.ACTIVE) {
-
-            throw new InvalidCampaignTransitionException(
-                    campaign.getStatus(),
-                    targetStatus);
-        }
-    }
-
-    private void validateCampaignCanFinish(
-            CampaignProgress progress) {
-
-        if (progress.getTotalPatrols() == 0) {
-
-            throw new InvalidCampaignTransitionException(
-                    "Campaign cannot be finished because it has no patrols");
+                return campaignRepository.save(
+                                campaign);
         }
 
-        if (!progress.isCompleted()) {
+        @Override
+        @Transactional
+        public Campaign abandonCampaign(
+                        Long campaignId) {
 
-            throw new InvalidCampaignTransitionException(
-                    "Campaign cannot be finished because its patrol progression is incomplete");
+                Campaign campaign = findCampaign(
+                                campaignId);
+
+                validateActiveCampaign(
+                                campaign,
+                                CampaignStatus.ABANDONED);
+
+                campaign.setStatus(
+                                CampaignStatus.ABANDONED);
+
+                return campaignRepository.save(
+                                campaign);
         }
-    }
+
+        @Override
+        public void validateExecutionAllowed(
+                        Campaign campaign) {
+
+                if (campaign == null) {
+
+                        throw new IllegalArgumentException(
+                                        "Campaign must not be null");
+                }
+
+                if (campaign.getStatus() != CampaignStatus.ACTIVE) {
+
+                        throw new InvalidCampaignTransitionException(
+                                        "Campaign cannot be simulated because its status is "
+                                                        + campaign.getStatus());
+                }
+        }
+
+        private Campaign findCampaign(
+                        Long campaignId) {
+
+                return campaignRepository.findById(
+                                campaignId)
+                                .orElseThrow(
+                                                () -> new CampaignNotFoundException(
+                                                                campaignId));
+        }
+
+        private void validateActiveCampaign(
+                        Campaign campaign,
+                        CampaignStatus targetStatus) {
+
+                if (campaign.getStatus() != CampaignStatus.ACTIVE) {
+
+                        throw new InvalidCampaignTransitionException(
+                                        campaign.getStatus(),
+                                        targetStatus);
+                }
+        }
+
+        private void validateCampaignCanFinish(
+                        CampaignProgress progress) {
+
+                if (progress.getTotalPatrols() == 0) {
+
+                        throw new InvalidCampaignTransitionException(
+                                        "Campaign cannot be finished because it has no patrols");
+                }
+
+                if (!progress.isCompleted()) {
+
+                        throw new InvalidCampaignTransitionException(
+                                        "Campaign cannot be finished because its patrol progression is incomplete");
+                }
+        }
 
 }

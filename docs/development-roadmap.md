@@ -204,7 +204,7 @@ Planned for a later release:
 - [x] Campaign Lifecycle Service
 - [x] Finish Campaign Transition
 - [x] Abandon Campaign Transition
-- [ ] Campaign Execution Status Validation
+- [x] Campaign Execution Status Validation
 - [ ] Campaign Lifecycle REST API
 - [x] Campaign Lifecycle Unit Tests
 - [ ] Campaign Lifecycle Integration Tests

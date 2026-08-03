@@ -1,10 +1,7 @@
 package com.jastigi.silentcampaignmanager.service.campaign.simulation.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,8 +15,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.jastigi.silentcampaignmanager.entity.Campaign;
+import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
+import com.jastigi.silentcampaignmanager.exception.InvalidCampaignTransitionException;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
 import com.jastigi.silentcampaignmanager.service.campaign.progress.CampaignProgressService;
@@ -29,6 +28,7 @@ import com.jastigi.silentcampaignmanager.service.campaign.simulation.result.Camp
 import com.jastigi.silentcampaignmanager.service.simulation.SimulationService;
 import com.jastigi.silentcampaignmanager.service.simulation.resolver.MissionOutcome;
 import com.jastigi.silentcampaignmanager.service.simulation.result.ResolvedSimulationResult;
+import com.jastigi.silentcampaignmanager.service.campaign.lifecycle.CampaignLifecycleService;
 
 @ExtendWith(MockitoExtension.class)
 class CampaignSimulationServiceImplTest {
@@ -45,6 +45,9 @@ class CampaignSimulationServiceImplTest {
         @Mock
         private CampaignProgressService campaignProgressService;
 
+        @Mock
+        private CampaignLifecycleService campaignLifecycleService;
+
         private CampaignSimulationService campaignSimulationService;
 
         @BeforeEach
@@ -54,7 +57,8 @@ class CampaignSimulationServiceImplTest {
                                 campaignRepository,
                                 patrolRepository,
                                 simulationService,
-                                campaignProgressService);
+                                campaignProgressService,
+                                campaignLifecycleService);
         }
 
         @Test
@@ -192,6 +196,11 @@ class CampaignSimulationServiceImplTest {
                                 campaignProgressService)
                                 .getProgress(
                                                 campaignId);
+
+                verify(
+                                campaignLifecycleService)
+                                .validateExecutionAllowed(
+                                                campaign);
         }
 
         @Test
@@ -253,6 +262,11 @@ class CampaignSimulationServiceImplTest {
                                 never())
                                 .simulate(
                                                 org.mockito.ArgumentMatchers.anyLong());
+
+                verify(
+                                campaignLifecycleService)
+                                .validateExecutionAllowed(
+                                                campaign);
         }
 
         @Test
@@ -293,6 +307,12 @@ class CampaignSimulationServiceImplTest {
                                 never())
                                 .getProgress(
                                                 org.mockito.ArgumentMatchers.anyLong());
+
+                verify(
+                                campaignLifecycleService,
+                                never())
+                                .validateExecutionAllowed(
+                                                org.mockito.ArgumentMatchers.any());
         }
 
         @Test
@@ -358,6 +378,72 @@ class CampaignSimulationServiceImplTest {
                                 never())
                                 .simulate(
                                                 secondPatrol.getId());
+
+                verify(
+                                campaignProgressService,
+                                never())
+                                .getProgress(
+                                                org.mockito.ArgumentMatchers.anyLong());
+
+                verify(
+                                campaignLifecycleService)
+                                .validateExecutionAllowed(
+                                                campaign);
+        }
+
+        @Test
+        void shouldRejectCampaignExecutionBeforeLoadingPatrols() {
+
+                Long campaignId = 50L;
+
+                Campaign campaign = new Campaign();
+
+                campaign.setId(
+                                campaignId);
+
+                campaign.setName(
+                                "Finished Campaign");
+
+                campaign.setStatus(
+                                CampaignStatus.FINISHED);
+
+                when(
+                                campaignRepository.findById(
+                                                campaignId))
+                                .thenReturn(
+                                                Optional.of(
+                                                                campaign));
+
+                doThrow(
+                                new InvalidCampaignTransitionException(
+                                                "Campaign cannot be simulated because its status is FINISHED"))
+                                .when(
+                                                campaignLifecycleService)
+                                .validateExecutionAllowed(
+                                                campaign);
+
+                assertThrows(
+                                InvalidCampaignTransitionException.class,
+                                () -> campaignSimulationService
+                                                .simulateCampaign(
+                                                                campaignId));
+
+                verify(
+                                campaignLifecycleService)
+                                .validateExecutionAllowed(
+                                                campaign);
+
+                verify(
+                                patrolRepository,
+                                never())
+                                .findByCampaignIdOrderByPatrolDateAscIdAsc(
+                                                org.mockito.ArgumentMatchers.anyLong());
+
+                verify(
+                                simulationService,
+                                never())
+                                .simulate(
+                                                org.mockito.ArgumentMatchers.anyLong());
 
                 verify(
                                 campaignProgressService,

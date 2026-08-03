@@ -323,3 +323,22 @@ Implemented operations:
 finishCampaign(campaignId)
 abandonCampaign(campaignId)
 ```
+
+## Campaign Execution Validation
+
+Campaign execution now validates lifecycle status before loading or
+simulating patrols.
+
+The execution flow is:
+
+```text
+CampaignSimulationService
+        |
+        +--> Load Campaign
+        |
+        +--> CampaignLifecycleService.validateExecutionAllowed
+        |
+        +--> Load Ordered Patrols
+        |
+        +--> Execute Patrol Simulations
+```
