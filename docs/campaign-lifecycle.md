@@ -342,3 +342,12 @@ CampaignSimulationService
         |
         +--> Execute Patrol Simulations
 ```
+
+## Campaign Lifecycle REST API
+
+Campaign lifecycle transitions are available through:
+
+```text
+PATCH /api/v1/campaigns/{id}/finish
+PATCH /api/v1/campaigns/{id}/abandon
+```

@@ -1,5 +1,7 @@
 package com.jastigi.silentcampaignmanager.integration;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -163,6 +165,28 @@ class CampaignSecurityIntegrationTest {
                                                                 "Bearer " + token))
                                 .andExpect(
                                                 status().isNotFound());
+        }
+
+        @Test
+        void shouldRejectCampaignFinishWithoutToken()
+                        throws Exception {
+
+                mockMvc.perform(
+                                patch(
+                                                "/api/v1/campaigns/1/finish"))
+                                .andExpect(
+                                                status().isUnauthorized());
+        }
+
+        @Test
+        void shouldRejectCampaignAbandonWithoutToken()
+                        throws Exception {
+
+                mockMvc.perform(
+                                patch(
+                                                "/api/v1/campaigns/1/abandon"))
+                                .andExpect(
+                                                status().isUnauthorized());
         }
 
 }

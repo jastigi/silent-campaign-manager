@@ -6,19 +6,58 @@
 
 # Silent Campaign Manager
 
-> **Cold War Submarine Operations Simulator**
+> **A modular backend platform for Cold War submarine campaign management and tactical simulation.**
 
-[![Release](https://img.shields.io/badge/release-v0.9.0-blue)](https://github.com/jastigi/silent-campaign-manager/releases)
+[![Release](https://img.shields.io/badge/release-v1.0--in--progress-blue)](https://github.com/jastigi/silent-campaign-manager/releases)
 ![Java](https://img.shields.io/badge/Java-21-blue)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5-6DB33F)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-336791)
 ![Docker](https://img.shields.io/badge/Docker-2496ED)
+![JWT](https://img.shields.io/badge/JWT-Security-orange)
 ![JUnit](https://img.shields.io/badge/JUnit-5-success)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-A backend application built with **Java 21** and **Spring Boot 3.5** for managing and simulating Cold War submarine patrol operations.
+A backend application built with **Java 21** and **Spring Boot 3.5** for managing and simulating Cold War submarine operations.
 
-The project combines a secured REST API, PostgreSQL persistence and an extensible tactical simulation engine capable of resolving submarine patrols through detection, classification, tracking, contact loss, intelligence gathering and mission evaluation.
+Silent Campaign Manager has evolved from a traditional CRUD application into a modular backend platform that combines:
+
+- campaign management;
+- tactical patrol simulation;
+- campaign progression;
+- campaign lifecycle management;
+- operational statistics;
+- JWT-secured REST APIs;
+- PostgreSQL persistence;
+- an extensible tactical simulation engine.
+
+The simulation engine resolves complete submarine patrols through ordered tactical phases including environmental modelling, sonar detection, contact classification, tactical behaviour, tracking, intelligence gathering, mission evaluation and automatic persistence.
+
+## Current Project Status
+
+| Release | Status         |
+| ------- | -------------- |
+| 0.9     | ✅ Completed   |
+| 1.0     | 🚧 In Progress |
+
+Current implementation includes:
+
+- Tactical Simulation Engine
+- Campaign Simulation
+- Campaign Progress
+- Campaign Statistics
+- Campaign Lifecycle
+- Lifecycle REST API
+- JWT Authentication
+- Swagger / OpenAPI
+- Docker Compose
+- PostgreSQL persistence
+- 350+ automated tests
+
+The detailed development roadmap is available in:
+
+```text
+docs/development-roadmap.md
+```
 
 ## Table of Contents
 

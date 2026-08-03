@@ -9,6 +9,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,9 +23,12 @@ import com.jastigi.silentcampaignmanager.dto.CampaignDetailsResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.CampaignStatisticsResponseDTO;
+import com.jastigi.silentcampaignmanager.entity.Campaign;
 import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
+import com.jastigi.silentcampaignmanager.mapper.CampaignMapper;
 import com.jastigi.silentcampaignmanager.mapper.CampaignStatisticsMapper;
 import com.jastigi.silentcampaignmanager.service.CampaignService;
+import com.jastigi.silentcampaignmanager.service.campaign.lifecycle.CampaignLifecycleService;
 import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatistics;
 
 import jakarta.validation.Valid;
@@ -34,9 +38,12 @@ import jakarta.validation.Valid;
 public class CampaignController {
 
     private final CampaignService campaignService;
+    private final CampaignLifecycleService campaignLifecycleService;
 
-    public CampaignController(CampaignService campaignService) {
+    public CampaignController(CampaignService campaignService,
+            CampaignLifecycleService campaignLifecycleService) {
         this.campaignService = campaignService;
+        this.campaignLifecycleService = campaignLifecycleService;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -132,6 +139,30 @@ public class CampaignController {
                         status,
                         name,
                         pageable));
+    }
+
+    @PatchMapping("/{id}/finish")
+    public ResponseEntity<CampaignResponseDTO> finishCampaign(
+            @PathVariable Long id) {
+
+        Campaign campaign = campaignLifecycleService.finishCampaign(
+                id);
+
+        return ResponseEntity.ok(
+                CampaignMapper.toDTO(
+                        campaign));
+    }
+
+    @PatchMapping("/{id}/abandon")
+    public ResponseEntity<CampaignResponseDTO> abandonCampaign(
+            @PathVariable Long id) {
+
+        Campaign campaign = campaignLifecycleService.abandonCampaign(
+                id);
+
+        return ResponseEntity.ok(
+                CampaignMapper.toDTO(
+                        campaign));
     }
 
 }
