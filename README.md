@@ -4,7 +4,7 @@
 
 ![Silent Campaign Manager Banner](docs/images/banner.png)
 
-## Silent Campaign Manager
+# Silent Campaign Manager
 
 > **A modular backend platform for Cold War submarine campaign management and tactical simulation.**
 
@@ -1043,6 +1043,14 @@ All protected endpoints require a valid JWT unless explicitly stated otherwise.
 | POST   | `/api/v1/simulations/patrol/{patrolId}`  | Execute a patrol simulation     |
 | GET    | `/api/v1/simulations/history`            | Simulation history              |
 | GET    | `/api/v1/patrols/{patrolId}/simulations` | Simulation history for a patrol |
+
+---
+
+### Campaign Simulation
+
+| Method | Endpoint                          | Description                                           |
+| ------ | --------------------------------- | ----------------------------------------------------- |
+| POST   | `/api/v1/campaigns/{id}/simulate` | Execute all patrol simulations for an active campaign |
 
 ---
 

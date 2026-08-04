@@ -184,6 +184,9 @@ Planned for a later release:
 - [x] Campaign Simulation Foundation
 - [x] Ordered Patrol Orchestration
 - [x] Campaign Simulation Result
+- [x] Campaign Simulation REST API
+- [x] Campaign Simulation Response DTO
+- [x] Campaign Simulation REST Tests
 - [x] Campaign Progression
 - [x] Derived Campaign Progress
 - [x] Campaign Statistics

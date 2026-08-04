@@ -674,3 +674,23 @@ CampaignStatisticsService
                 |
                 +--> Persisted tactical outcomes and metrics
 ```
+
+Campaign-level simulation can be triggered through:
+
+```text
+POST /api/v1/campaigns/{id}/simulate
+The REST flow is:
+CampaignSimulationController
+        |
+        v
+CampaignSimulationService
+        |
+        v
+CampaignSimulationResult
+        |
+        v
+CampaignSimulationMapper
+        |
+        v
+CampaignSimulationResponseDTO
+```

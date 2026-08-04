@@ -189,4 +189,15 @@ class CampaignSecurityIntegrationTest {
                                                 status().isUnauthorized());
         }
 
+        @Test
+        void shouldRejectCampaignSimulationWithoutToken()
+                        throws Exception {
+
+                mockMvc.perform(
+                                post(
+                                                "/api/v1/campaigns/1/simulate"))
+                                .andExpect(
+                                                status().isUnauthorized());
+        }
+
 }
