@@ -294,6 +294,7 @@ This approach allows each release to remain stable while progressively extending
 - Execution validation before simulation
 - Campaign execution persistence
 - Failed execution audit records
+- Paginated campaign execution history
 
 ---
 
@@ -682,6 +683,23 @@ Simulation history is later reused by campaign services to calculate progression
 
 ---
 
+### Campaign Execution History
+
+Campaign-level execution attempts are available separately through:
+
+```http
+GET /api/v1/campaigns/{campaignId}/executions
+```
+
+This endpoint provides a paginated history of campaign execution attempts,
+including completed, failed and running executions.
+
+Unlike tactical simulation history, campaign execution history records the
+strategic orchestration of an entire campaign rather than the outcome of
+individual patrol simulations.
+
+---
+
 ## Project Structure
 
 The project is organised around independent business domains while keeping the tactical simulation engine isolated from campaign-specific functionality.
@@ -1055,6 +1073,14 @@ All protected endpoints require a valid JWT unless explicitly stated otherwise.
 | Method | Endpoint                          | Description                                           |
 | ------ | --------------------------------- | ----------------------------------------------------- |
 | POST   | `/api/v1/campaigns/{id}/simulate` | Execute all patrol simulations for an active campaign |
+
+---
+
+### Campaign Execution History
+
+| Method | Endpoint                                    | Description                                   |
+| ------ | ------------------------------------------- | --------------------------------------------- |
+| GET    | `/api/v1/campaigns/{campaignId}/executions` | Retrieve paginated campaign execution history |
 
 ---
 

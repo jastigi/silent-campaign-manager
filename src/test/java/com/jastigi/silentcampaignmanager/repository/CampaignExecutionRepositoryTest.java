@@ -9,6 +9,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import com.jastigi.silentcampaignmanager.entity.Campaign;
 import com.jastigi.silentcampaignmanager.entity.CampaignExecution;
@@ -20,172 +23,183 @@ import jakarta.persistence.EntityManager;
 @DataJpaTest
 class CampaignExecutionRepositoryTest {
 
-    @Autowired
-    private CampaignExecutionRepository campaignExecutionRepository;
+        @Autowired
+        private CampaignExecutionRepository campaignExecutionRepository;
 
-    @Autowired
-    private EntityManager entityManager;
+        @Autowired
+        private EntityManager entityManager;
 
-    @Test
-    void shouldPersistCampaignExecution() {
+        @Test
+        void shouldPersistCampaignExecution() {
 
-        Campaign campaign = persistCampaign(
-                "North Atlantic Campaign");
+                Campaign campaign = persistCampaign(
+                                "North Atlantic Campaign");
 
-        CampaignExecution execution = CampaignExecution.builder()
-                .campaign(
-                        campaign)
-                .status(
-                        CampaignExecutionStatus.RUNNING)
-                .totalPatrols(3)
-                .completedPatrols(0)
-                .startedAt(
-                        LocalDateTime.of(
-                                2026,
-                                8,
-                                4,
+                CampaignExecution execution = CampaignExecution.builder()
+                                .campaign(
+                                                campaign)
+                                .status(
+                                                CampaignExecutionStatus.RUNNING)
+                                .totalPatrols(3)
+                                .completedPatrols(0)
+                                .startedAt(
+                                                LocalDateTime.of(
+                                                                2026,
+                                                                8,
+                                                                4,
+                                                                10,
+                                                                0))
+                                .build();
+
+                CampaignExecution saved = campaignExecutionRepository
+                                .saveAndFlush(
+                                                execution);
+
+                assertEquals(
+                                CampaignExecutionStatus.RUNNING,
+                                saved.getStatus());
+
+                assertEquals(
+                                3,
+                                saved.getTotalPatrols());
+
+                assertEquals(
+                                campaign.getId(),
+                                saved.getCampaign()
+                                                .getId());
+        }
+
+        @Test
+        void shouldFindPagedExecutionsByCampaignOrderedByStartDescending() {
+
+                Campaign firstCampaign = persistCampaign(
+                                "First Campaign");
+
+                Campaign secondCampaign = persistCampaign(
+                                "Second Campaign");
+
+                persistExecution(
+                                firstCampaign,
+                                LocalDateTime.of(
+                                                2026,
+                                                8,
+                                                4,
+                                                10,
+                                                0));
+
+                persistExecution(
+                                firstCampaign,
+                                LocalDateTime.of(
+                                                2026,
+                                                8,
+                                                4,
+                                                12,
+                                                0));
+
+                persistExecution(
+                                secondCampaign,
+                                LocalDateTime.of(
+                                                2026,
+                                                8,
+                                                4,
+                                                14,
+                                                0));
+
+                PageRequest pageable = PageRequest.of(
+                                0,
                                 10,
-                                0))
-                .build();
+                                Sort.by(
+                                                Sort.Direction.DESC,
+                                                "startedAt"));
 
-        CampaignExecution saved = campaignExecutionRepository
-                .saveAndFlush(
-                        execution);
+                Page<CampaignExecution> executions = campaignExecutionRepository
+                                .findByCampaignId(
+                                                firstCampaign.getId(),
+                                                pageable);
 
-        assertEquals(
-                CampaignExecutionStatus.RUNNING,
-                saved.getStatus());
+                assertEquals(
+                                2,
+                                executions.getTotalElements());
 
-        assertEquals(
-                3,
-                saved.getTotalPatrols());
+                assertEquals(
+                                LocalDateTime.of(
+                                                2026,
+                                                8,
+                                                4,
+                                                12,
+                                                0),
+                                executions.getContent()
+                                                .get(0)
+                                                .getStartedAt());
 
-        assertEquals(
-                campaign.getId(),
-                saved.getCampaign()
-                        .getId());
-    }
+                assertEquals(
+                                LocalDateTime.of(
+                                                2026,
+                                                8,
+                                                4,
+                                                10,
+                                                0),
+                                executions.getContent()
+                                                .get(1)
+                                                .getStartedAt());
 
-    @Test
-    void shouldFindExecutionsByCampaignOrderedByStartDescending() {
+                assertEquals(
+                                firstCampaign.getId(),
+                                executions.getContent()
+                                                .get(0)
+                                                .getCampaign()
+                                                .getId());
+        }
 
-        Campaign firstCampaign = persistCampaign(
-                "First Campaign");
+        private Campaign persistCampaign(
+                        String name) {
 
-        Campaign secondCampaign = persistCampaign(
-                "Second Campaign");
+                Campaign campaign = new Campaign();
 
-        persistExecution(
-                firstCampaign,
-                LocalDateTime.of(
-                        2026,
-                        8,
-                        4,
-                        10,
-                        0));
+                campaign.setName(
+                                name);
 
-        persistExecution(
-                firstCampaign,
-                LocalDateTime.of(
-                        2026,
-                        8,
-                        4,
-                        12,
-                        0));
+                campaign.setDescription(
+                                "Repository test campaign");
 
-        persistExecution(
-                secondCampaign,
-                LocalDateTime.of(
-                        2026,
-                        8,
-                        4,
-                        14,
-                        0));
+                campaign.setStartDate(
+                                LocalDate.of(
+                                                1985,
+                                                1,
+                                                1));
 
-        List<CampaignExecution> executions = campaignExecutionRepository
-                .findByCampaignIdOrderByStartedAtDesc(
-                        firstCampaign.getId());
+                campaign.setStatus(
+                                CampaignStatus.ACTIVE);
 
-        assertEquals(
-                2,
-                executions.size());
+                entityManager.persist(
+                                campaign);
 
-        assertEquals(
-                LocalDateTime.of(
-                        2026,
-                        8,
-                        4,
-                        12,
-                        0),
-                executions.get(0)
-                        .getStartedAt());
+                entityManager.flush();
 
-        assertEquals(
-                LocalDateTime.of(
-                        2026,
-                        8,
-                        4,
-                        10,
-                        0),
-                executions.get(1)
-                        .getStartedAt());
+                return campaign;
+        }
 
-        assertEquals(
-                firstCampaign.getId(),
-                executions.get(0)
-                        .getCampaign()
-                        .getId());
-    }
+        private void persistExecution(
+                        Campaign campaign,
+                        LocalDateTime startedAt) {
 
-    private Campaign persistCampaign(
-            String name) {
+                CampaignExecution execution = CampaignExecution.builder()
+                                .campaign(
+                                                campaign)
+                                .status(
+                                                CampaignExecutionStatus.COMPLETED)
+                                .totalPatrols(2)
+                                .completedPatrols(2)
+                                .startedAt(
+                                                startedAt)
+                                .completedAt(
+                                                startedAt.plusMinutes(
+                                                                10))
+                                .build();
 
-        Campaign campaign = new Campaign();
-
-        campaign.setName(
-                name);
-
-        campaign.setDescription(
-                "Repository test campaign");
-
-        campaign.setStartDate(
-                LocalDate.of(
-                        1985,
-                        1,
-                        1));
-
-        campaign.setStatus(
-                CampaignStatus.ACTIVE);
-
-        entityManager.persist(
-                campaign);
-
-        entityManager.flush();
-
-        return campaign;
-    }
-
-    private void persistExecution(
-            Campaign campaign,
-            LocalDateTime startedAt) {
-
-        CampaignExecution execution = CampaignExecution.builder()
-                .campaign(
-                        campaign)
-                .status(
-                        CampaignExecutionStatus.COMPLETED)
-                .totalPatrols(2)
-                .completedPatrols(2)
-                .startedAt(
-                        startedAt)
-                .completedAt(
-                        startedAt.plusMinutes(
-                                10))
-                .build();
-
-        campaignExecutionRepository
-                .saveAndFlush(
-                        execution);
-    }
+                campaignExecutionRepository
+                                .saveAndFlush(
+                                                execution);
+        }
 
 }

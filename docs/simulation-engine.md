@@ -713,3 +713,49 @@ RUNNING
       v                   v
 COMPLETED              FAILED
 ```
+
+## Campaign Execution History
+
+Persisted campaign executions can be queried through:
+
+```text
+GET /api/v1/campaigns/{campaignId}/executions
+```
+
+The execution-history flow is:
+
+CampaignExecutionHistoryController
+|
+v
+CampaignExecutionHistoryService
+|
+v
+CampaignExecutionRepository
+|
+v
+CampaignExecutionMapper
+|
+v
+CampaignExecutionResponseDTO
+
+The endpoint supports pagination and defaults to:
+
+startedAt,DESC
+
+Each history item exposes:
+
+execution identifier;
+campaign identifier and name;
+execution status;
+total patrol count;
+completed patrol count;
+start timestamp;
+completion timestamp;
+failure message.
+
+Campaign execution history is independent from tactical simulation
+history.
+
+A campaign with no execution records returns an empty page.
+
+A missing campaign returns HTTP 404.

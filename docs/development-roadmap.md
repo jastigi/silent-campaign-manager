@@ -194,7 +194,9 @@ Planned for a later release:
 - [x] Campaign Execution Persistence
 - [x] Campaign Execution Status
 - [x] Failed Campaign Execution Recording
-- [ ] Campaign Execution History API
+- [x] Campaign Execution History API
+- [x] Paginated Campaign Execution History
+- [x] Campaign Execution History REST Tests
 - [ ] Campaign Timeline
 - [ ] Dynamic Patrol Generation
 - [ ] AI Opponent

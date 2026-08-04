@@ -200,4 +200,15 @@ class CampaignSecurityIntegrationTest {
                                                 status().isUnauthorized());
         }
 
+        @Test
+        void shouldRejectCampaignExecutionHistoryWithoutToken()
+                        throws Exception {
+
+                mockMvc.perform(
+                                get(
+                                                "/api/v1/campaigns/1/executions"))
+                                .andExpect(
+                                                status().isUnauthorized());
+        }
+
 }
