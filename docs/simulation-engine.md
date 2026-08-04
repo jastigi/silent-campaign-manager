@@ -694,3 +694,22 @@ CampaignSimulationMapper
         v
 CampaignSimulationResponseDTO
 ```
+
+## Campaign Execution Persistence
+
+Every campaign simulation attempt creates a persistent
+`CampaignExecution`.
+
+The execution lifecycle is:
+
+```text
+startExecution
+      |
+      v
+RUNNING
+      |
+      +-------------------+
+      |                   |
+      v                   v
+COMPLETED              FAILED
+```

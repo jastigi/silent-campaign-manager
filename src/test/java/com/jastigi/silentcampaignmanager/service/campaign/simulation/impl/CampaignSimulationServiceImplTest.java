@@ -29,6 +29,9 @@ import com.jastigi.silentcampaignmanager.service.simulation.SimulationService;
 import com.jastigi.silentcampaignmanager.service.simulation.resolver.MissionOutcome;
 import com.jastigi.silentcampaignmanager.service.simulation.result.ResolvedSimulationResult;
 import com.jastigi.silentcampaignmanager.service.campaign.lifecycle.CampaignLifecycleService;
+import com.jastigi.silentcampaignmanager.entity.CampaignExecution;
+import com.jastigi.silentcampaignmanager.entity.CampaignExecutionStatus;
+import com.jastigi.silentcampaignmanager.service.campaign.execution.CampaignExecutionService;
 
 @ExtendWith(MockitoExtension.class)
 class CampaignSimulationServiceImplTest {
@@ -48,6 +51,9 @@ class CampaignSimulationServiceImplTest {
         @Mock
         private CampaignLifecycleService campaignLifecycleService;
 
+        @Mock
+        private CampaignExecutionService campaignExecutionService;
+
         private CampaignSimulationService campaignSimulationService;
 
         @BeforeEach
@@ -58,7 +64,8 @@ class CampaignSimulationServiceImplTest {
                                 patrolRepository,
                                 simulationService,
                                 campaignProgressService,
-                                campaignLifecycleService);
+                                campaignLifecycleService,
+                                campaignExecutionService);
         }
 
         @Test
@@ -69,6 +76,10 @@ class CampaignSimulationServiceImplTest {
                 Campaign campaign = new Campaign();
                 CampaignProgress progress = new CampaignProgress(
                                 2,
+                                2);
+
+                CampaignExecution execution = runningExecution(
+                                campaign,
                                 2);
 
                 campaign.setId(
@@ -140,6 +151,13 @@ class CampaignSimulationServiceImplTest {
                                 .thenReturn(
                                                 progress);
 
+                when(
+                                campaignExecutionService.startExecution(
+                                                campaign,
+                                                2))
+                                .thenReturn(
+                                                execution);
+
                 CampaignSimulationResult result = campaignSimulationService
                                 .simulateCampaign(
                                                 campaignId);
@@ -201,6 +219,26 @@ class CampaignSimulationServiceImplTest {
                                 campaignLifecycleService)
                                 .validateExecutionAllowed(
                                                 campaign);
+
+                verify(
+                                campaignExecutionService)
+                                .startExecution(
+                                                campaign,
+                                                2);
+
+                verify(
+                                campaignExecutionService)
+                                .completeExecution(
+                                                execution,
+                                                2);
+
+                verify(
+                                campaignExecutionService,
+                                never())
+                                .failExecution(
+                                                org.mockito.ArgumentMatchers.any(),
+                                                org.mockito.ArgumentMatchers.anyInt(),
+                                                org.mockito.ArgumentMatchers.any());
         }
 
         @Test
@@ -211,6 +249,10 @@ class CampaignSimulationServiceImplTest {
                 Campaign campaign = new Campaign();
                 CampaignProgress progress = new CampaignProgress(
                                 0,
+                                0);
+
+                CampaignExecution execution = runningExecution(
+                                campaign,
                                 0);
 
                 campaign.setId(
@@ -237,6 +279,13 @@ class CampaignSimulationServiceImplTest {
                                                 campaignId))
                                 .thenReturn(
                                                 progress);
+
+                when(
+                                campaignExecutionService.startExecution(
+                                                campaign,
+                                                0))
+                                .thenReturn(
+                                                execution);
 
                 CampaignSimulationResult result = campaignSimulationService
                                 .simulateCampaign(
@@ -267,6 +316,18 @@ class CampaignSimulationServiceImplTest {
                                 campaignLifecycleService)
                                 .validateExecutionAllowed(
                                                 campaign);
+
+                verify(
+                                campaignExecutionService)
+                                .startExecution(
+                                                campaign,
+                                                0);
+
+                verify(
+                                campaignExecutionService)
+                                .completeExecution(
+                                                execution,
+                                                0);
         }
 
         @Test
@@ -321,6 +382,11 @@ class CampaignSimulationServiceImplTest {
                 Long campaignId = 3L;
 
                 Campaign campaign = new Campaign();
+
+                CampaignExecution execution = runningExecution(
+                                campaign,
+                                2);
+
                 campaign.setId(
                                 campaignId);
 
@@ -363,6 +429,13 @@ class CampaignSimulationServiceImplTest {
                                                 new IllegalStateException(
                                                                 "Patrol simulation failed"));
 
+                when(
+                                campaignExecutionService.startExecution(
+                                                campaign,
+                                                2))
+                                .thenReturn(
+                                                execution);
+
                 assertThrows(
                                 IllegalStateException.class,
                                 () -> campaignSimulationService.simulateCampaign(
@@ -389,6 +462,30 @@ class CampaignSimulationServiceImplTest {
                                 campaignLifecycleService)
                                 .validateExecutionAllowed(
                                                 campaign);
+
+                verify(
+                                campaignExecutionService)
+                                .startExecution(
+                                                campaign,
+                                                2);
+
+                verify(
+                                campaignExecutionService)
+                                .failExecution(
+                                                org.mockito.ArgumentMatchers.eq(
+                                                                execution),
+                                                org.mockito.ArgumentMatchers.eq(
+                                                                0),
+                                                org.mockito.ArgumentMatchers
+                                                                .isA(
+                                                                                IllegalStateException.class));
+
+                verify(
+                                campaignExecutionService,
+                                never())
+                                .completeExecution(
+                                                org.mockito.ArgumentMatchers.any(),
+                                                org.mockito.ArgumentMatchers.anyInt());
         }
 
         @Test
@@ -450,6 +547,118 @@ class CampaignSimulationServiceImplTest {
                                 never())
                                 .getProgress(
                                                 org.mockito.ArgumentMatchers.anyLong());
+
+                verify(
+                                campaignExecutionService,
+                                never())
+                                .startExecution(
+                                                org.mockito.ArgumentMatchers.any(),
+                                                org.mockito.ArgumentMatchers.anyInt());
+        }
+
+        @Test
+        void shouldRecordCompletedPatrolCountWhenLaterPatrolFails() {
+
+                Long campaignId = 60L;
+
+                Campaign campaign = new Campaign();
+
+                campaign.setId(
+                                campaignId);
+
+                campaign.setStatus(
+                                CampaignStatus.ACTIVE);
+
+                Patrol firstPatrol = Patrol.builder()
+                                .id(61L)
+                                .build();
+
+                Patrol secondPatrol = Patrol.builder()
+                                .id(62L)
+                                .build();
+
+                ResolvedSimulationResult firstResult = ResolvedSimulationResult.builder()
+                                .missionOutcome(
+                                                MissionOutcome.SUCCESS)
+                                .missionScore(90)
+                                .build();
+
+                CampaignExecution execution = runningExecution(
+                                campaign,
+                                2);
+
+                IllegalStateException failure = new IllegalStateException(
+                                "Second patrol failed");
+
+                when(
+                                campaignRepository.findById(
+                                                campaignId))
+                                .thenReturn(
+                                                Optional.of(
+                                                                campaign));
+
+                when(
+                                patrolRepository
+                                                .findByCampaignIdOrderByPatrolDateAscIdAsc(
+                                                                campaignId))
+                                .thenReturn(
+                                                List.of(
+                                                                firstPatrol,
+                                                                secondPatrol));
+
+                when(
+                                campaignExecutionService.startExecution(
+                                                campaign,
+                                                2))
+                                .thenReturn(
+                                                execution);
+
+                when(
+                                simulationService.simulate(
+                                                firstPatrol.getId()))
+                                .thenReturn(
+                                                firstResult);
+
+                when(
+                                simulationService.simulate(
+                                                secondPatrol.getId()))
+                                .thenThrow(
+                                                failure);
+
+                assertThrows(
+                                IllegalStateException.class,
+                                () -> campaignSimulationService
+                                                .simulateCampaign(
+                                                                campaignId));
+
+                verify(
+                                campaignExecutionService)
+                                .failExecution(
+                                                execution,
+                                                1,
+                                                failure);
+
+                verify(
+                                campaignProgressService,
+                                never())
+                                .getProgress(
+                                                campaignId);
+        }
+
+        private CampaignExecution runningExecution(
+                        Campaign campaign,
+                        int totalPatrols) {
+
+                return CampaignExecution.builder()
+                                .id(100L)
+                                .campaign(
+                                                campaign)
+                                .status(
+                                                CampaignExecutionStatus.RUNNING)
+                                .totalPatrols(
+                                                totalPatrols)
+                                .completedPatrols(0)
+                                .build();
         }
 
 }

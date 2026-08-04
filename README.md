@@ -292,6 +292,8 @@ This approach allows each release to remain stable while progressively extending
 - Aggregated campaign statistics
 - Lifecycle-aware execution
 - Execution validation before simulation
+- Campaign execution persistence
+- Failed execution audit records
 
 ---
 
@@ -325,6 +327,7 @@ This approach allows each release to remain stable while progressively extending
 - Repository pattern
 - Transactional services
 - Simulation history persistence
+- Campaign execution history foundation
 
 ---
 
@@ -704,7 +707,8 @@ src
 │       │   ├── lifecycle
 │       │   ├── progress
 │       │   ├── simulation
-│       │   └── statistics
+│       │   ├── statistics
+│       │   └── execution
 │       │
 │       ├── contact
 │       ├── missions

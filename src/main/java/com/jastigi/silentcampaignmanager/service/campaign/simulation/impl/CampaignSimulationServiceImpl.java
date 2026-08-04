@@ -7,10 +7,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.jastigi.silentcampaignmanager.entity.Campaign;
+import com.jastigi.silentcampaignmanager.entity.CampaignExecution;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
+import com.jastigi.silentcampaignmanager.service.campaign.execution.CampaignExecutionService;
 import com.jastigi.silentcampaignmanager.service.campaign.lifecycle.CampaignLifecycleService;
 import com.jastigi.silentcampaignmanager.service.campaign.progress.CampaignProgressService;
 import com.jastigi.silentcampaignmanager.service.campaign.progress.result.CampaignProgress;
@@ -36,6 +38,8 @@ public class CampaignSimulationServiceImpl
 
         private final CampaignLifecycleService campaignLifecycleService;
 
+        private final CampaignExecutionService campaignExecutionService;
+
         @Override
         public CampaignSimulationResult simulateCampaign(
                         Long campaignId) {
@@ -46,33 +50,58 @@ public class CampaignSimulationServiceImpl
                                                 () -> new CampaignNotFoundException(
                                                                 campaignId));
 
-                campaignLifecycleService.validateExecutionAllowed(
-                                campaign);
+                campaignLifecycleService
+                                .validateExecutionAllowed(
+                                                campaign);
 
                 List<Patrol> patrols = patrolRepository
                                 .findByCampaignIdOrderByPatrolDateAscIdAsc(
                                                 campaignId);
 
+                CampaignExecution execution = campaignExecutionService
+                                .startExecution(
+                                                campaign,
+                                                patrols.size());
+
                 List<ResolvedSimulationResult> patrolResults = new ArrayList<>(
                                 patrols.size());
 
-                for (Patrol patrol : patrols) {
+                try {
 
-                        ResolvedSimulationResult patrolResult = simulationService.simulate(
-                                        patrol.getId());
+                        for (Patrol patrol : patrols) {
 
-                        patrolResults.add(
-                                        patrolResult);
+                                ResolvedSimulationResult patrolResult = simulationService.simulate(
+                                                patrol.getId());
+
+                                patrolResults.add(
+                                                patrolResult);
+                        }
+
+                        CampaignProgress progress = campaignProgressService
+                                        .getProgress(
+                                                        campaignId);
+
+                        campaignExecutionService
+                                        .completeExecution(
+                                                        execution,
+                                                        patrolResults.size());
+
+                        return new CampaignSimulationResult(
+                                        campaign,
+                                        patrolResults,
+                                        progress,
+                                        Instant.now());
+
+                } catch (RuntimeException exception) {
+
+                        campaignExecutionService
+                                        .failExecution(
+                                                        execution,
+                                                        patrolResults.size(),
+                                                        exception);
+
+                        throw exception;
                 }
-
-                CampaignProgress progress = campaignProgressService.getProgress(
-                                campaignId);
-
-                return new CampaignSimulationResult(
-                                campaign,
-                                patrolResults,
-                                progress,
-                                Instant.now());
         }
 
 }

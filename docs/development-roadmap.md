@@ -191,7 +191,10 @@ Planned for a later release:
 - [x] Derived Campaign Progress
 - [x] Campaign Statistics
 - [x] Statistics from Simulation History
-- [ ] Campaign Execution Persistence
+- [x] Campaign Execution Persistence
+- [x] Campaign Execution Status
+- [x] Failed Campaign Execution Recording
+- [ ] Campaign Execution History API
 - [ ] Campaign Timeline
 - [ ] Dynamic Patrol Generation
 - [ ] AI Opponent
