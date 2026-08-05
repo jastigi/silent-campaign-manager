@@ -40,11 +40,12 @@ The simulation engine resolves complete submarine patrols through ordered tactic
 - Java 21 & Spring Boot 3.5
 - Modular tactical simulation engine
 - Campaign lifecycle management
+- Rule-based dynamic patrol generation
 - JWT-secured REST API
 - PostgreSQL persistence
 - OpenAPI / Swagger documentation
 - Docker Compose ready
-- 350+ automated tests
+- 400+ automated tests
 - Architecture Decision Records (ADR)
 
 ---
@@ -68,7 +69,8 @@ Current implementation includes:
 - Swagger / OpenAPI
 - Docker Compose
 - PostgreSQL persistence
-- 350+ automated tests
+- 400+ automated tests
+- Dynamic Patrol Generation
 
 The detailed development roadmap is available in:
 
@@ -188,6 +190,7 @@ Completed milestones:
 - Campaign Lifecycle
 - Campaign Lifecycle REST API
 - Campaign execution validation
+- Dynamic Patrol Generation
 
 Current architecture:
 
@@ -267,6 +270,19 @@ This approach allows each release to remain stable while progressively extending
 
 ---
 
+### Dynamic Patrol Generation
+
+- Automatic patrol generation for active campaigns
+- One patrol per available active submarine
+- Active-submarine filtering
+- Campaign lifecycle validation
+- Duplicate patrol prevention
+- Default deterrence mission assignment
+- Default North Atlantic operational area
+- Automatic patrol persistence
+
+---
+
 ### Tactical Simulation Engine
 
 - Environmental modelling
@@ -341,7 +357,7 @@ This approach allows each release to remain stable while progressively extending
 - Architecture Decision Records (ADR)
 - Release Notes
 - Development Roadmap
-- 350+ automated tests
+- 400+ automated tests
 
 ---
 
@@ -410,6 +426,30 @@ CampaignProgressService
 CampaignStatisticsService
 ```
 
+### Patrol Generation Flow
+
+````text
+CampaignPatrolGenerationController
+                │
+                ▼
+CampaignPatrolGenerationService
+        ┌───────┴────────┐
+        ▼                ▼
+SubmarineRepository  PatrolRepository
+        │
+        ▼
+Active Submarines
+        │
+        ▼
+PatrolGenerator
+        │
+        ▼
+Generated Patrols
+        │
+        ▼
+PatrolRepository.saveAll
+```
+
 This orchestration ensures that campaign progression and statistics are derived from persisted tactical simulation results.
 
 ---
@@ -452,7 +492,7 @@ docs/simulation-engine.md
 docs/campaign-lifecycle.md
 docs/development-roadmap.md
 docs/adr/
-```
+````
 
 ---
 
@@ -737,11 +777,13 @@ src
 │   └── service
 │       ├── auth
 │       ├── campaign
+│       │   ├── execution
 │       │   ├── lifecycle
+│       │   ├── patrol
 │       │   ├── progress
 │       │   ├── simulation
 │       │   ├── statistics
-│       │   └── execution
+│       │   └── timeline
 │       │
 │       ├── contact
 │       ├── missions
@@ -1107,6 +1149,14 @@ All protected endpoints require a valid JWT unless explicitly stated otherwise.
 
 ---
 
+### Dynamic Patrol Generation
+
+| Method | Endpoint                                          | Description                                      |
+| ------ | ------------------------------------------------- | ------------------------------------------------ |
+| POST   | `/api/v1/campaigns/{campaignId}/generate-patrols` | Generate patrols for available active submarines |
+
+---
+
 ### OpenAPI
 
 Interactive API documentation is available at:
@@ -1154,7 +1204,9 @@ The project includes automated tests for:
 - simulation persistence;
 - simulation history;
 - campaign lifecycle REST endpoints;
-- integration scenarios.
+- integration scenarios;
+- dynamic patrol generation;
+- patrol-generation idempotency;
 
 ---
 
@@ -1286,11 +1338,10 @@ Completed:
 - campaign lifecycle;
 - lifecycle REST API;
 - execution validation.
+- dynamic patrol generation;
 
 Currently in progress:
 
-- dynamic campaign events;
-- campaign evolution;
 - operational AI.
 
 Planned:

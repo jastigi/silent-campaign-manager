@@ -413,6 +413,55 @@ class CampaignLifecycleServiceImplTest {
                                                 org.mockito.ArgumentMatchers.any());
         }
 
+        @Test
+        void shouldAllowPatrolGenerationForActiveCampaign() {
+
+                Campaign campaign = campaign(
+                                20L,
+                                CampaignStatus.ACTIVE);
+
+                assertDoesNotThrow(
+                                () -> campaignLifecycleService
+                                                .validatePatrolGenerationAllowed(
+                                                                campaign));
+        }
+
+        @Test
+        void shouldRejectPatrolGenerationForFinishedCampaign() {
+
+                Campaign campaign = campaign(
+                                21L,
+                                CampaignStatus.FINISHED);
+
+                InvalidCampaignTransitionException exception = assertThrows(
+                                InvalidCampaignTransitionException.class,
+                                () -> campaignLifecycleService
+                                                .validatePatrolGenerationAllowed(
+                                                                campaign));
+
+                assertEquals(
+                                "Patrols cannot be generated because campaign status is FINISHED",
+                                exception.getMessage());
+        }
+
+        @Test
+        void shouldRejectPatrolGenerationForAbandonedCampaign() {
+
+                Campaign campaign = campaign(
+                                22L,
+                                CampaignStatus.ABANDONED);
+
+                InvalidCampaignTransitionException exception = assertThrows(
+                                InvalidCampaignTransitionException.class,
+                                () -> campaignLifecycleService
+                                                .validatePatrolGenerationAllowed(
+                                                                campaign));
+
+                assertEquals(
+                                "Patrols cannot be generated because campaign status is ABANDONED",
+                                exception.getMessage());
+        }
+
         private Campaign campaign(
                         Long campaignId,
                         CampaignStatus status) {

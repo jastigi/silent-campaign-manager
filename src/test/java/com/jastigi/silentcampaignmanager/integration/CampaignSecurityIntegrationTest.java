@@ -211,4 +211,31 @@ class CampaignSecurityIntegrationTest {
                                                 status().isUnauthorized());
         }
 
+        @Test
+        void shouldRejectCampaignPatrolGenerationWithoutToken()
+                        throws Exception {
+
+                mockMvc.perform(
+                                post(
+                                                "/api/v1/campaigns/1/generate-patrols"))
+                                .andExpect(
+                                                status().isUnauthorized());
+        }
+
+        @Test
+        void shouldAllowAuthenticatedCampaignPatrolGenerationRequest()
+                        throws Exception {
+
+                String token = getAdminToken();
+
+                mockMvc.perform(
+                                post(
+                                                "/api/v1/campaigns/999999/generate-patrols")
+                                                .header(
+                                                                "Authorization",
+                                                                "Bearer " + token))
+                                .andExpect(
+                                                status().isNotFound());
+        }
+
 }

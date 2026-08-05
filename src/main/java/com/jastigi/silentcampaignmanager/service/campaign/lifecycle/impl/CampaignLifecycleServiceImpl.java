@@ -85,6 +85,24 @@ public class CampaignLifecycleServiceImpl
                 }
         }
 
+        @Override
+        public void validatePatrolGenerationAllowed(
+                        Campaign campaign) {
+
+                if (campaign == null) {
+
+                        throw new IllegalArgumentException(
+                                        "Campaign must not be null");
+                }
+
+                if (campaign.getStatus() != CampaignStatus.ACTIVE) {
+
+                        throw new InvalidCampaignTransitionException(
+                                        "Patrols cannot be generated because campaign status is "
+                                                        + campaign.getStatus());
+                }
+        }
+
         private Campaign findCampaign(
                         Long campaignId) {
 

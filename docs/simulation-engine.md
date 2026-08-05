@@ -774,3 +774,51 @@ into a single chronological event stream.
 Timeline construction is delegated to TimelineAssembler.
 
 No additional persistence is introduced.
+
+## Dynamic Patrol Generation
+
+Active campaigns can generate patrols automatically through:
+
+```text
+POST /api/v1/campaigns/{campaignId}/generate-patrols
+```
+
+The generation flow is:
+
+```text
+CampaignPatrolGenerationController
+        |
+        v
+CampaignPatrolGenerationService
+        |
+        +--> CampaignRepository
+        |
+        +--> CampaignLifecycleService
+        |
+        +--> SubmarineRepository
+        |
+        +--> PatrolRepository
+        |
+        v
+PatrolGenerator
+        |
+        v
+PatrolRepository.saveAll
+```
+
+Release 1.0 uses the following generation rules:
+
+- only `ACTIVE` campaigns may generate patrols;
+- only submarines with status `ACTIVE` are considered;
+- each available submarine receives one patrol;
+- submarines already assigned to the campaign are excluded;
+- repeated generation requests do not create duplicate patrols;
+- the mission type is `DETERRENCE_PATROL`;
+- the patrol date is the campaign start date;
+- the default operational area is `North Atlantic`;
+- the patrol name is derived from the submarine name.
+
+`PatrolGenerator` does not access repositories and does not persist data.
+
+Persistence and lifecycle validation remain responsibilities of the
+campaign patrol-generation service.

@@ -198,7 +198,11 @@ Planned for a later release:
 - [x] Paginated Campaign Execution History
 - [x] Campaign Execution History REST Tests
 - [x] Campaign Timeline
-- [ ] Dynamic Patrol Generation
+- [x] Dynamic Patrol Generation
+- [x] Active Submarine Patrol Generation
+- [x] Duplicate Patrol Prevention
+- [x] Dynamic Patrol Generation REST API
+- [x] Dynamic Patrol Generation Tests
 - [ ] AI Opponent
 
 ---
