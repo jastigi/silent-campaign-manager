@@ -295,6 +295,7 @@ This approach allows each release to remain stable while progressively extending
 - Campaign execution persistence
 - Failed execution audit records
 - Paginated campaign execution history
+- Unified campaign timeline
 
 ---
 
@@ -700,6 +701,20 @@ individual patrol simulations.
 
 ---
 
+### Campaign Timeline
+
+Campaign Timeline combines campaign execution events and tactical
+simulation history into a single chronological view.
+
+The endpoint:
+
+GET /api/v1/campaigns/{campaignId}/timeline
+
+returns an ordered list of strategic and tactical events without
+duplicating persisted data.
+
+---
+
 ## Project Structure
 
 The project is organised around independent business domains while keeping the tactical simulation engine isolated from campaign-specific functionality.
@@ -1081,6 +1096,14 @@ All protected endpoints require a valid JWT unless explicitly stated otherwise.
 | Method | Endpoint                                    | Description                                   |
 | ------ | ------------------------------------------- | --------------------------------------------- |
 | GET    | `/api/v1/campaigns/{campaignId}/executions` | Retrieve paginated campaign execution history |
+
+---
+
+### Campaign Timeline
+
+| Method | Endpoint                                  | Description                              |
+| ------ | ----------------------------------------- | ---------------------------------------- |
+| GET    | `/api/v1/campaigns/{campaignId}/timeline` | Retrieve chronological campaign timeline |
 
 ---
 

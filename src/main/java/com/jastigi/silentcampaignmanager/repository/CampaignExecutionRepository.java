@@ -1,5 +1,7 @@
 package com.jastigi.silentcampaignmanager.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -14,5 +16,9 @@ public interface CampaignExecutionRepository
         Page<CampaignExecution> findByCampaignId(
                         Long campaignId,
                         Pageable pageable);
+
+        @EntityGraph(attributePaths = "campaign")
+        List<CampaignExecution> findByCampaignId(
+                        Long campaignId);
 
 }

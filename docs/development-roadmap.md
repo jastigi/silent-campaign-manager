@@ -197,7 +197,7 @@ Planned for a later release:
 - [x] Campaign Execution History API
 - [x] Paginated Campaign Execution History
 - [x] Campaign Execution History REST Tests
-- [ ] Campaign Timeline
+- [x] Campaign Timeline
 - [ ] Dynamic Patrol Generation
 - [ ] AI Opponent
 

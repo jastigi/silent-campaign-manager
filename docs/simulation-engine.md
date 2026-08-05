@@ -759,3 +759,18 @@ history.
 A campaign with no execution records returns an empty page.
 
 A missing campaign returns HTTP 404.
+
+## Campaign Timeline
+
+Campaign Timeline is a read-only projection.
+
+It combines:
+
+- CampaignExecution
+- SimulationRecord
+
+into a single chronological event stream.
+
+Timeline construction is delegated to TimelineAssembler.
+
+No additional persistence is introduced.

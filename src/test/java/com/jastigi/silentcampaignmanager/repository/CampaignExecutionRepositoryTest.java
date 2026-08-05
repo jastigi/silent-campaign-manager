@@ -151,6 +151,62 @@ class CampaignExecutionRepositoryTest {
                                                 .getId());
         }
 
+        @Test
+        void shouldFindAllExecutionsByCampaign() {
+
+                Campaign firstCampaign = persistCampaign(
+                                "Timeline Campaign");
+
+                Campaign secondCampaign = persistCampaign(
+                                "Other Campaign");
+
+                persistExecution(
+                                firstCampaign,
+                                LocalDateTime.of(
+                                                2026,
+                                                8,
+                                                5,
+                                                10,
+                                                0));
+
+                persistExecution(
+                                firstCampaign,
+                                LocalDateTime.of(
+                                                2026,
+                                                8,
+                                                5,
+                                                11,
+                                                0));
+
+                persistExecution(
+                                secondCampaign,
+                                LocalDateTime.of(
+                                                2026,
+                                                8,
+                                                5,
+                                                12,
+                                                0));
+
+                List<CampaignExecution> executions = campaignExecutionRepository.findByCampaignId(
+                                firstCampaign.getId());
+
+                assertEquals(
+                                2,
+                                executions.size());
+
+                assertEquals(
+                                firstCampaign.getId(),
+                                executions.get(0)
+                                                .getCampaign()
+                                                .getId());
+
+                assertEquals(
+                                firstCampaign.getId(),
+                                executions.get(1)
+                                                .getCampaign()
+                                                .getId());
+        }
+
         private Campaign persistCampaign(
                         String name) {
 
