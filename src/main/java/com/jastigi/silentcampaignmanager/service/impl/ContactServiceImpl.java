@@ -3,6 +3,7 @@ package com.jastigi.silentcampaignmanager.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jastigi.silentcampaignmanager.dto.ContactRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.ContactResponseDTO;
@@ -27,6 +28,7 @@ public class ContactServiceImpl implements ContactService {
         }
 
         @Override
+        @Transactional
         public ContactResponseDTO createContact(
                         Long patrolId,
                         ContactRequestDTO request) {
@@ -45,6 +47,7 @@ public class ContactServiceImpl implements ContactService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public List<ContactResponseDTO> getContactsByPatrol(
                         Long patrolId) {
 
@@ -61,6 +64,7 @@ public class ContactServiceImpl implements ContactService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public ContactResponseDTO getContactById(
                         Long id) {
 
@@ -72,6 +76,7 @@ public class ContactServiceImpl implements ContactService {
         }
 
         @Override
+        @Transactional
         public ContactResponseDTO updateContact(
                         Long id,
                         ContactRequestDTO request) {
@@ -107,6 +112,7 @@ public class ContactServiceImpl implements ContactService {
         }
 
         @Override
+        @Transactional
         public void deleteContact(
                         Long id) {
 

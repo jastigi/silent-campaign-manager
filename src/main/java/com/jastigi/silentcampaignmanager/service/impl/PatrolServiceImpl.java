@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jastigi.silentcampaignmanager.dto.ContactResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.PatrolReportDTO;
@@ -65,6 +66,7 @@ public class PatrolServiceImpl implements PatrolService {
         }
 
         @Override
+        @Transactional
         public PatrolResponseDTO createPatrol(
                         Long campaignId,
                         PatrolRequestDTO request) {
@@ -90,6 +92,7 @@ public class PatrolServiceImpl implements PatrolService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public List<PatrolResponseDTO> getPatrolsByCampaign(
                         Long campaignId) {
 
@@ -101,6 +104,7 @@ public class PatrolServiceImpl implements PatrolService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public PatrolResponseDTO getPatrolById(
                         Long id) {
 
@@ -111,6 +115,7 @@ public class PatrolServiceImpl implements PatrolService {
         }
 
         @Override
+        @Transactional
         public PatrolResponseDTO updatePatrol(
                         Long id,
                         PatrolRequestDTO request) {
@@ -138,6 +143,7 @@ public class PatrolServiceImpl implements PatrolService {
         }
 
         @Override
+        @Transactional
         public void deletePatrol(Long id) {
 
                 Patrol patrol = patrolRepository.findById(id)
@@ -147,6 +153,7 @@ public class PatrolServiceImpl implements PatrolService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public PatrolReportDTO generatePatrolReport(
                         Long patrolId) {
 
@@ -171,6 +178,7 @@ public class PatrolServiceImpl implements PatrolService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public List<ContactResponseDTO> getContacts(Long patrolId) {
 
                 Patrol patrol = patrolRepository.findById(patrolId)
@@ -184,6 +192,7 @@ public class PatrolServiceImpl implements PatrolService {
         }
 
         @Override
+        @Transactional
         public PatrolResponseDTO closePatrol(Long patrolId) {
 
                 Patrol patrol = patrolRepository.findById(patrolId)
@@ -201,6 +210,7 @@ public class PatrolServiceImpl implements PatrolService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public MissionEvaluationResult getMissionEvaluation(Long patrolId) {
 
                 Patrol patrol = patrolRepository.findById(patrolId)
@@ -210,6 +220,7 @@ public class PatrolServiceImpl implements PatrolService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public Page<PatrolResponseDTO> getPatrols(
                         Long campaignId,
                         Pageable pageable) {
@@ -221,6 +232,7 @@ public class PatrolServiceImpl implements PatrolService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public Page<PatrolResponseDTO> searchPatrols(
                         Long campaignId,
                         PatrolResult result,

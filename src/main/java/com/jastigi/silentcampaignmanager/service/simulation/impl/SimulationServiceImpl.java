@@ -1,6 +1,7 @@
 package com.jastigi.silentcampaignmanager.service.simulation.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.exception.PatrolNotFoundException;
@@ -29,6 +30,7 @@ public class SimulationServiceImpl
         private final SimulationPersistenceService simulationPersistenceService;
 
         @Override
+        @Transactional
         public ResolvedSimulationResult simulate(
                         Long patrolId) {
 
