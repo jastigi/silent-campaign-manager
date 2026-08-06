@@ -41,6 +41,7 @@ The simulation engine resolves complete submarine patrols through ordered tactic
 - Modular tactical simulation engine
 - Campaign lifecycle management
 - Rule-based dynamic patrol generation
+- Rule-based tactical opponent AI
 - JWT-secured REST API
 - PostgreSQL persistence
 - OpenAPI / Swagger documentation
@@ -71,6 +72,7 @@ Current implementation includes:
 - PostgreSQL persistence
 - 400+ automated tests
 - Dynamic Patrol Generation
+- Rule-based Opponent AI
 
 The detailed development roadmap is available in:
 
@@ -191,6 +193,7 @@ Completed milestones:
 - Campaign Lifecycle REST API
 - Campaign execution validation
 - Dynamic Patrol Generation
+- Rule-based Opponent AI
 
 Current architecture:
 
@@ -217,8 +220,6 @@ Remaining planned milestones include:
 
 - Dynamic campaign events
 - Strategic campaign evolution
-- Operational AI
-- Strategic AI
 - Doctrine modelling
 
 Release documentation:
@@ -296,6 +297,23 @@ This approach allows each release to remain stable while progressively extending
 - Mission evaluation
 - Mission scoring
 - Automatic simulation persistence
+- Rule-based opponent decisions
+- Threat-aware tactical behaviour
+- Confidence-based contact response
+- Deterministic enemy interception rules
+
+---
+
+### AI Opponent
+
+- Deterministic rule-based opponent decisions
+- Direct use of detected contact threat level
+- Classification-confidence evaluation
+- Contact-type-aware responses
+- `IGNORE`, `MONITOR`, `INVESTIGATE` and `INTERCEPT` decisions
+- Automatic adaptation to tactical contact behaviour
+- Integration with the existing contact-behaviour phase
+- Reproducible simulation outcomes
 
 ---
 
@@ -449,6 +467,33 @@ Generated Patrols
         ▼
 PatrolRepository.saveAll
 ```
+
+### Opponent Decision Flow
+
+```text
+DetectedContact
+      │
+      ▼
+OpponentDecisionEngine
+      │
+      ▼
+OpponentDecisionRules
+      │
+      ▼
+OpponentDecision
+      │
+      ▼
+OpponentDecisionBehaviourMapper
+      │
+      ▼
+ContactBehaviourResolver
+      │
+      ▼
+ContactBehaviourPhase
+```
+
+The opponent decision engine is deterministic and independent from
+repositories, persistence and campaign orchestration.
 
 This orchestration ensures that campaign progression and statistics are derived from persisted tactical simulation results.
 
@@ -703,6 +748,41 @@ Persisted simulation records become the source of truth for:
 
 ---
 
+### Rule-Based Opponent AI
+
+Detected contacts are evaluated by a deterministic opponent decision
+engine.
+
+The decision considers:
+
+- contact threat level;
+- contact type;
+- classification confidence.
+
+Available decisions are:
+
+```text
+IGNORE
+MONITOR
+INVESTIGATE
+INTERCEPT
+```
+
+These decisions are mapped to the existing tactical behaviours:
+
+| Opponent decision | Tactical behaviour |
+| --- | --- |
+| `IGNORE` | `UNAWARE` |
+| `MONITOR` | `SHADOWING` |
+| `INVESTIGATE` | `EVASIVE` |
+| `INTERCEPT` | `AGGRESSIVE` |
+
+This preserves the existing simulation pipeline while replacing the
+previous random contact-behaviour resolution with reproducible,
+rule-based decisions.
+
+---
+
 ### Simulation History
 
 Completed simulations are persisted automatically and can be queried through the REST API.
@@ -798,6 +878,7 @@ src
 │           ├── generator
 │           ├── history
 │           ├── modifier
+│           ├── opponent
 │           ├── persistence
 │           ├── phase
 │           ├── resolver
@@ -1207,6 +1288,9 @@ The project includes automated tests for:
 - integration scenarios;
 - dynamic patrol generation;
 - patrol-generation idempotency;
+- opponent decision rules;
+- opponent decision mapping;
+- tactical opponent pipeline integration;
 
 ---
 
@@ -1337,12 +1421,9 @@ Completed:
 - campaign statistics;
 - campaign lifecycle;
 - lifecycle REST API;
-- execution validation.
+- execution validation;
 - dynamic patrol generation;
-
-Currently in progress:
-
-- operational AI.
+- rule-based AI opponent;
 
 Planned:
 

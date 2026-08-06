@@ -2,10 +2,11 @@ package com.jastigi.silentcampaignmanager.service.simulation.resolver.impl;
 
 import org.springframework.stereotype.Component;
 
-import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
-import com.jastigi.silentcampaignmanager.service.simulation.calculator.SimulationRandomService;
 import com.jastigi.silentcampaignmanager.service.simulation.model.ContactBehaviour;
 import com.jastigi.silentcampaignmanager.service.simulation.model.DetectedContact;
+import com.jastigi.silentcampaignmanager.service.simulation.opponent.OpponentDecisionEngine;
+import com.jastigi.silentcampaignmanager.service.simulation.opponent.mapper.OpponentDecisionBehaviourMapper;
+import com.jastigi.silentcampaignmanager.service.simulation.opponent.model.OpponentDecision;
 import com.jastigi.silentcampaignmanager.service.simulation.resolver.ContactBehaviourResolver;
 
 import lombok.RequiredArgsConstructor;
@@ -15,39 +16,28 @@ import lombok.RequiredArgsConstructor;
 public class ContactBehaviourResolverImpl
         implements ContactBehaviourResolver {
 
-    private final SimulationRandomService randomService;
+    private final OpponentDecisionEngine
+            opponentDecisionEngine;
+
+    private final OpponentDecisionBehaviourMapper
+            opponentDecisionBehaviourMapper;
 
     @Override
     public ContactBehaviour resolve(
             DetectedContact contact) {
 
-        if (contact == null
-                || contact.getThreatLevel() == null) {
+        if (contact == null) {
 
             return ContactBehaviour.UNAWARE;
         }
 
-        ThreatLevel threatLevel = contact.getThreatLevel();
+        OpponentDecision decision =
+                opponentDecisionEngine.decide(
+                        contact);
 
-        return switch (threatLevel) {
-
-            case LOW ->
-                randomService.probability(70)
-                        ? ContactBehaviour.UNAWARE
-                        : ContactBehaviour.EVASIVE;
-
-            case MEDIUM ->
-                randomService.probability(60)
-                        ? ContactBehaviour.EVASIVE
-                        : ContactBehaviour.SHADOWING;
-
-            case HIGH ->
-                randomService.probability(55)
-                        ? ContactBehaviour.SHADOWING
-                        : ContactBehaviour.AGGRESSIVE;
-
-            case CRITICAL ->
-                ContactBehaviour.AGGRESSIVE;
-        };
+        return opponentDecisionBehaviourMapper
+                .toContactBehaviour(
+                        decision);
     }
+
 }

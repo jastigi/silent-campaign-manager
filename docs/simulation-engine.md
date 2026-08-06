@@ -822,3 +822,69 @@ Release 1.0 uses the following generation rules:
 
 Persistence and lifecycle validation remain responsibilities of the
 campaign patrol-generation service.
+
+## Rule-Based Opponent AI
+
+Release 1.0 replaces random contact-behaviour resolution with a
+deterministic rule-based opponent decision engine.
+
+The decision flow is:
+
+```text
+DetectedContact
+        |
+        v
+OpponentDecisionEngine
+        |
+        v
+OpponentDecisionRules
+        |
+        v
+OpponentDecision
+        |
+        v
+OpponentDecisionBehaviourMapper
+        |
+        v
+ContactBehaviour
+```
+
+The decision rules use the existing detected-contact data:
+
+- `ContactType`;
+- `ThreatLevel`;
+- `confidenceLevel`.
+
+No duplicate threat or confidence model is introduced.
+
+Supported decisions are:
+
+```text
+IGNORE
+MONITOR
+INVESTIGATE
+INTERCEPT
+```
+
+The tactical mapping is:
+
+| Decision | Contact behaviour |
+| --- | --- |
+| `IGNORE` | `UNAWARE` |
+| `MONITOR` | `SHADOWING` |
+| `INVESTIGATE` | `EVASIVE` |
+| `INTERCEPT` | `AGGRESSIVE` |
+
+The same contact always produces the same opponent decision.
+
+The AI component:
+
+- does not access repositories;
+- does not persist state;
+- does not depend on campaign services;
+- does not introduce random behaviour;
+- preserves the existing `ContactBehaviourResolver` contract;
+- integrates with the existing `ContactBehaviourPhase`.
+
+This design allows future versions to replace the rule implementation
+without modifying the simulation pipeline.

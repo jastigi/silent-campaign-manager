@@ -203,7 +203,11 @@ Planned for a later release:
 - [x] Duplicate Patrol Prevention
 - [x] Dynamic Patrol Generation REST API
 - [x] Dynamic Patrol Generation Tests
-- [ ] AI Opponent
+- [x] AI Opponent
+- [x] Deterministic Opponent Decision Rules
+- [x] Threat-Aware Contact Behaviour
+- [x] Opponent Decision Behaviour Mapping
+- [x] Opponent Pipeline Integration Tests
 
 ---
 
