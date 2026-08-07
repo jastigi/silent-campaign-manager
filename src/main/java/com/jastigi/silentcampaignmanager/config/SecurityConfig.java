@@ -3,45 +3,66 @@ package com.jastigi.silentcampaignmanager.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 import com.jastigi.silentcampaignmanager.security.JwtAuthenticationFilter;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
+
+        private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+        public SecurityConfig(
+                        JwtAuthenticationFilter jwtAuthenticationFilter) {
+
+                this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        }
 
         @Bean
         SecurityFilterChain securityFilterChain(
-                        HttpSecurity http) throws Exception {
+                        HttpSecurity http)
+                        throws Exception {
 
                 http
-                                .csrf(csrf -> csrf.disable())
-                                .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers(
-                                                                "/swagger-ui/**",
-                                                                "/v3/api-docs/**",
-                                                                "/api/v1/auth/**")
-                                                .permitAll()
-                                                .anyRequest()
-                                                .authenticated())
+                                .csrf(
+                                                csrf -> csrf.disable())
+                                .sessionManagement(
+                                                session -> session.sessionCreationPolicy(
+                                                                SessionCreationPolicy.STATELESS))
+                                .exceptionHandling(
+                                                exceptions -> exceptions.authenticationEntryPoint(
+                                                                (request,
+                                                                                response,
+                                                                                authException) -> response.sendError(
+                                                                                                HttpServletResponse.SC_UNAUTHORIZED,
+                                                                                                "Unauthorized")))
+                                .authorizeHttpRequests(
+                                                auth -> auth
+                                                                .requestMatchers(
+                                                                                "/swagger-ui/**",
+                                                                                "/v3/api-docs/**",
+                                                                                "/api/v1/auth/**")
+                                                                .permitAll()
+                                                                .anyRequest()
+                                                                .authenticated())
                                 .addFilterBefore(
                                                 jwtAuthenticationFilter,
-                                                UsernamePasswordAuthenticationFilter.class)
-                                .httpBasic(Customizer.withDefaults());
+                                                UsernamePasswordAuthenticationFilter.class);
 
                 return http.build();
         }
 
         @Bean
         public PasswordEncoder passwordEncoder() {
+
                 return new BCryptPasswordEncoder();
         }
 
@@ -51,14 +72,6 @@ public class SecurityConfig {
                         throws Exception {
 
                 return config.getAuthenticationManager();
-        }
-
-        private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-        public SecurityConfig(
-                        JwtAuthenticationFilter jwtAuthenticationFilter) {
-
-                this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         }
 
 }
