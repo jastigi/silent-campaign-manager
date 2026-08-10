@@ -227,35 +227,59 @@ Planned for a later release:
 
 ---
 
-## Combat
+## Release 1.0 Completion
 
-- [ ] Weapon Launch
-- [ ] Torpedo Resolution
-- [ ] Damage System
+Release 1.0 functional scope is complete.
+
+Implemented areas include:
+
+- campaign simulation orchestration;
+- campaign lifecycle management;
+- campaign progression and statistics;
+- campaign execution persistence and history;
+- campaign timeline generation;
+- dynamic patrol generation;
+- deterministic rule-based opponent AI;
+- JWT-secured REST API;
+- Swagger/OpenAPI documentation;
+- Docker deployment;
+- PostgreSQL persistence;
+- automated unit, repository, controller and integration testing.
+
+No additional functional milestones remain for Release 1.0.
 
 ---
 
-## Logistics
+# Future Releases
 
-- [ ] Fuel Consumption
-- [ ] Crew Fatigue
-- [ ] Maintenance
+## Planned Evolution
 
----
+Potential future areas include:
 
-## Statistics
+### Combat
 
-- [ ] Campaign Statistics
-- [ ] Fleet Statistics
-- [ ] Historical Reports
+- Weapon launch
+- Torpedo resolution
+- Damage system
 
----
+### Logistics
 
-## User Experience
+- Fuel consumption
+- Crew fatigue
+- Maintenance
 
-- [ ] Swagger Examples
-- [ ] Import / Export
-- [ ] Final Documentation
+### Statistics and Reporting
+
+- Fleet statistics
+- Historical reports
+
+### User Experience
+
+- Extended Swagger examples
+- Import / Export
+- Frontend integration
+
+The exact scope and release assignment of these features will be defined after the stable `v1.0.0` release.
 
 ---
 

@@ -8,7 +8,7 @@
 
 > **A modular backend platform for Cold War submarine campaign management and tactical simulation.**
 
-[![Release](https://img.shields.io/badge/release-v1.0--in--progress-blue)](https://github.com/jastigi/silent-campaign-manager/releases)
+[![Release](https://img.shields.io/badge/release-v1.0.0--RC1-orange)](https://github.com/jastigi/silent-campaign-manager/releases)
 ![Java](https://img.shields.io/badge/Java-21-blue)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5-6DB33F)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-336791)
@@ -53,10 +53,11 @@ The simulation engine resolves complete submarine patrols through ordered tactic
 
 ## Current Project Status
 
-| Release | Status         |
-| ------- | -------------- |
-| 0.9     | ✅ Completed   |
-| 1.0     | 🚧 In Progress |
+| Release | Status               |
+| ------- | -------------------- |
+| 0.9     | ✅ Completed         |
+| 1.0 RC1 | ✅ Release Candidate |
+| 1.0     | ⏳ Pending Release   |
 
 Current implementation includes:
 
@@ -92,6 +93,7 @@ docs/development-roadmap.md
 - [Technology Stack](#technology-stack)
 - [Simulation Engine](#simulation-engine)
 - [Project Structure](#project-structure)
+- [Quick Start](#quick-start)
 - [Getting Started](#getting-started)
 - [Authentication](#authentication)
 - [API Documentation](#api-documentation)
@@ -144,7 +146,11 @@ The architecture is designed to remain testable and extensible as new tactical m
 
 Silent Campaign Manager follows an incremental release strategy where each version delivers a complete architectural milestone.
 
-The project is currently progressing through **Release 1.0**, which builds on the tactical simulation engine introduced in Release 0.9.
+The project has reached **Release 1.0.0-RC1**, completing the functional scope planned for Release 1.0.
+
+Release Candidate validation has confirmed the complete backend workflow, including build, automated tests, Docker deployment, PostgreSQL persistence, Swagger/OpenAPI, JWT authentication, campaign orchestration and tactical simulation.
+
+The final `v1.0.0` release is pending final documentation and release preparation.
 
 ---
 
@@ -182,7 +188,7 @@ docs/release-notes/0.9.md
 
 **Status**
 
-🚧 In Progress
+✅ Release Candidate
 
 Completed milestones:
 
@@ -191,9 +197,12 @@ Completed milestones:
 - Campaign Statistics
 - Campaign Lifecycle
 - Campaign Lifecycle REST API
-- Campaign execution validation
+- Campaign Execution Validation
+- Campaign Execution Persistence
+- Campaign Execution History
+- Campaign Timeline
 - Dynamic Patrol Generation
-- Rule-based Opponent AI
+- Rule-Based Opponent AI
 
 Current architecture:
 
@@ -216,11 +225,9 @@ Campaign Progress
 Campaign Statistics
 ```
 
-Remaining planned milestones include:
+The functional scope of Release 1.0 is complete.
 
-- Dynamic campaign events
-- Strategic campaign evolution
-- Doctrine modelling
+Further campaign evolution, advanced opponent behaviour and additional strategic mechanics are reserved for future releases.
 
 Release documentation:
 
@@ -771,11 +778,11 @@ INTERCEPT
 These decisions are mapped to the existing tactical behaviours:
 
 | Opponent decision | Tactical behaviour |
-| --- | --- |
-| `IGNORE` | `UNAWARE` |
-| `MONITOR` | `SHADOWING` |
-| `INVESTIGATE` | `EVASIVE` |
-| `INTERCEPT` | `AGGRESSIVE` |
+| ----------------- | ------------------ |
+| `IGNORE`          | `UNAWARE`          |
+| `MONITOR`         | `SHADOWING`        |
+| `INVESTIGATE`     | `EVASIVE`          |
+| `INTERCEPT`       | `AGGRESSIVE`       |
 
 This preserves the existing simulation pipeline while replacing the
 previous random contact-behaviour resolution with reproducible,
@@ -951,6 +958,44 @@ Coverage currently includes:
 - integration tests.
 
 This structure allows each business domain to evolve independently while maintaining a consistent testing strategy.
+
+---
+
+## Quick Start
+
+The fastest way to run Silent Campaign Manager is with Docker Compose.
+
+```bash
+git clone https://github.com/jastigi/silent-campaign-manager.git
+cd silent-campaign-manager
+./mvnw clean package
+docker compose up -d --build
+```
+
+On Windows PowerShell:
+
+```powershell
+git clone https://github.com/jastigi/silent-campaign-manager.git
+cd silent-campaign-manager
+.\mvnw.cmd clean package
+docker compose up -d --build
+```
+
+Once the application is running, open Swagger UI:
+
+```text
+http://localhost:8080/swagger-ui/index.html
+```
+
+Use the authentication endpoint to obtain a JWT:
+
+```http
+POST /api/v1/auth/login
+```
+
+Then use **Authorize** in Swagger UI to authenticate protected API requests.
+
+For complete installation, configuration and execution instructions, see [Getting Started](#getting-started).
 
 ---
 
