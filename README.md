@@ -8,7 +8,7 @@
 
 > **A modular backend platform for Cold War submarine campaign management and tactical simulation.**
 
-[![Release](https://img.shields.io/badge/release-v1.0.0--RC1-orange)](https://github.com/jastigi/silent-campaign-manager/releases)
+[![Release](https://img.shields.io/badge/release-v1.0.0-green)](https://github.com/jastigi/silent-campaign-manager/releases)
 ![Java](https://img.shields.io/badge/Java-21-blue)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5-6DB33F)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-336791)
@@ -53,11 +53,10 @@ The simulation engine resolves complete submarine patrols through ordered tactic
 
 ## Current Project Status
 
-| Release | Status               |
-| ------- | -------------------- |
-| 0.9     | ✅ Completed         |
-| 1.0 RC1 | ✅ Release Candidate |
-| 1.0     | ⏳ Pending Release   |
+| Release | Status       |
+| ------- | ------------ |
+| 0.9     | ✅ Completed |
+| 1.0     | ✅ Released  |
 
 Current implementation includes:
 
@@ -146,11 +145,11 @@ The architecture is designed to remain testable and extensible as new tactical m
 
 Silent Campaign Manager follows an incremental release strategy where each version delivers a complete architectural milestone.
 
-The project has reached **Release 1.0.0-RC1**, completing the functional scope planned for Release 1.0.
+The project has reached **Release 1.0.0**, completing the first stable release of the Silent Campaign Manager backend platform.
 
-Release Candidate validation has confirmed the complete backend workflow, including build, automated tests, Docker deployment, PostgreSQL persistence, Swagger/OpenAPI, JWT authentication, campaign orchestration and tactical simulation.
+Release 1.0 has been fully validated across the complete application workflow, including build, automated tests, executable JAR packaging, Docker deployment, PostgreSQL persistence, Swagger/OpenAPI, stateless JWT authentication, campaign orchestration and tactical simulation.
 
-The final `v1.0.0` release is pending final documentation and release preparation.
+The backend is now considered stable for Release 1.0. Future development will build on this foundation without expanding the functional scope of the 1.0 release.
 
 ---
 
@@ -188,7 +187,7 @@ docs/release-notes/0.9.md
 
 **Status**
 
-✅ Release Candidate
+✅ Released
 
 Completed milestones:
 
@@ -1457,25 +1456,24 @@ Highlights:
 
 **Status**
 
-🚧 In Progress
+✅ Released
 
-Completed:
+Highlights:
 
 - campaign simulation;
 - campaign progression;
 - campaign statistics;
 - campaign lifecycle;
 - lifecycle REST API;
-- execution validation;
+- campaign execution persistence and history;
+- campaign timeline;
 - dynamic patrol generation;
-- rule-based AI opponent;
+- duplicate patrol prevention;
+- deterministic rule-based AI opponent.
 
-Planned:
+Release 1.0 completes the planned backend foundation for campaign-level orchestration.
 
-- strategic AI;
-- doctrine modelling;
-- tactical combat;
-- weapon engagement.
+Further strategic AI, doctrine modelling, tactical combat and weapon engagement are reserved for future releases.
 
 The complete development roadmap is maintained in:
 
