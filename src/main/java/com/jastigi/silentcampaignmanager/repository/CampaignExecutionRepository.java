@@ -21,4 +21,7 @@ public interface CampaignExecutionRepository
         List<CampaignExecution> findByCampaignId(
                         Long campaignId);
 
+        boolean existsByCampaignId(
+                        Long campaignId);
+
 }

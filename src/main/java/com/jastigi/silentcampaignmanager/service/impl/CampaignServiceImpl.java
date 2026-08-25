@@ -17,8 +17,11 @@ import com.jastigi.silentcampaignmanager.dto.PatrolSummaryDTO;
 import com.jastigi.silentcampaignmanager.entity.Campaign;
 import com.jastigi.silentcampaignmanager.entity.CampaignStatus;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
+import com.jastigi.silentcampaignmanager.exception.CampaignOperationNotAllowedException;
 import com.jastigi.silentcampaignmanager.mapper.CampaignMapper;
+import com.jastigi.silentcampaignmanager.repository.CampaignExecutionRepository;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
+import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
 import com.jastigi.silentcampaignmanager.service.CampaignService;
 import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatistics;
 import com.jastigi.silentcampaignmanager.service.campaign.statistics.CampaignStatisticsService;
@@ -29,11 +32,19 @@ public class CampaignServiceImpl implements CampaignService {
 
         private final CampaignRepository campaignRepository;
         private final CampaignStatisticsService campaignStatisticsService;
+        private final PatrolRepository patrolRepository;
+        private final CampaignExecutionRepository campaignExecutionRepository;
 
-        public CampaignServiceImpl(CampaignRepository campaignRepository,
-                        CampaignStatisticsService campaignStatisticsService) {
+        public CampaignServiceImpl(
+                        CampaignRepository campaignRepository,
+                        CampaignStatisticsService campaignStatisticsService,
+                        PatrolRepository patrolRepository,
+                        CampaignExecutionRepository campaignExecutionRepository) {
+
                 this.campaignRepository = campaignRepository;
                 this.campaignStatisticsService = campaignStatisticsService;
+                this.patrolRepository = patrolRepository;
+                this.campaignExecutionRepository = campaignExecutionRepository;
         }
 
         @Override
@@ -125,6 +136,7 @@ public class CampaignServiceImpl implements CampaignService {
         }
 
         @Override
+        @Transactional
         public CampaignResponseDTO updateCampaign(
                         Long id,
                         CampaignRequestDTO request) {
@@ -132,23 +144,64 @@ public class CampaignServiceImpl implements CampaignService {
                 Campaign campaign = campaignRepository.findById(id)
                                 .orElseThrow(() -> new CampaignNotFoundException(id));
 
-                campaign.setName(request.getName());
-                campaign.setDescription(request.getDescription());
-                campaign.setStartDate(request.getStartDate());
-                campaign.setStatus(request.getStatus());
+                if (campaign.getStatus() != CampaignStatus.ACTIVE) {
 
-                Campaign updatedCampaign = campaignRepository.save(campaign);
+                        throw new CampaignOperationNotAllowedException(
+                                        "Only active campaigns can be edited");
+                }
 
-                return CampaignMapper.toDTO(updatedCampaign);
+                campaign.setName(
+                                request.getName());
+
+                campaign.setDescription(
+                                request.getDescription());
+
+                campaign.setStartDate(
+                                request.getStartDate());
+
+                Campaign updatedCampaign =
+                                campaignRepository.save(campaign);
+
+                return CampaignMapper.toDTO(
+                                updatedCampaign);
         }
 
         @Override
-        public void deleteCampaign(Long id) {
+        @Transactional
+        public void deleteCampaign(
+                        Long id) {
 
-                Campaign campaign = campaignRepository.findById(id)
-                                .orElseThrow(() -> new CampaignNotFoundException(id));
+                Campaign campaign =
+                                campaignRepository.findById(id)
+                                                .orElseThrow(
+                                                                () -> new CampaignNotFoundException(id));
 
-                campaignRepository.delete(campaign);
+                if (campaign.getStatus() != CampaignStatus.ACTIVE) {
+
+                        throw new CampaignOperationNotAllowedException(
+                                        "Only active campaigns can be deleted");
+                }
+
+                long patrolCount =
+                                patrolRepository.countByCampaignId(id);
+
+                if (patrolCount > 0) {
+
+                        throw new CampaignOperationNotAllowedException(
+                                        "Campaigns with patrols cannot be deleted");
+                }
+
+                boolean hasExecutions =
+                                campaignExecutionRepository.existsByCampaignId(id);
+
+                if (hasExecutions) {
+
+                        throw new CampaignOperationNotAllowedException(
+                                        "Campaigns with execution history cannot be deleted");
+                }
+
+                campaignRepository.delete(
+                                campaign);
         }
 
         @Override
