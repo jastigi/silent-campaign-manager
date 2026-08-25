@@ -1220,6 +1220,22 @@ All protected endpoints require a valid JWT unless explicitly stated otherwise.
 
 ---
 
+### Campaign Modification Rules
+
+Campaign modification follows lifecycle-aware business rules.
+
+- Only campaigns with status `ACTIVE` can be edited.
+- Campaign status cannot be changed through `PUT /api/v1/campaigns/{id}`.
+- Lifecycle transitions must use the dedicated endpoints:
+  - `PATCH /api/v1/campaigns/{id}/finish`
+  - `PATCH /api/v1/campaigns/{id}/abandon`
+- `FINISHED` and `ABANDONED` campaigns are treated as historical records and are read-only.
+- A campaign can only be deleted while `ACTIVE` and before operational activity has been recorded.
+- Campaigns with patrols or campaign execution history cannot be deleted.
+- Invalid edit or delete operations return `409 Conflict`.
+
+---
+
 ### Campaign Analytics
 
 | Method | Endpoint                            | Description         |
