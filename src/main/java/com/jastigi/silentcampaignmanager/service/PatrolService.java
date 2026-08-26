@@ -25,17 +25,22 @@ public interface PatrolService {
                         Long id);
 
         PatrolResponseDTO updatePatrol(
+                        Long campaignId,
                         Long id,
                         PatrolRequestDTO request);
 
-        void deletePatrol(Long id);
+        void deletePatrol(
+                        Long campaignId,
+                        Long id);
 
         PatrolReportDTO generatePatrolReport(
                         Long patrolId);
 
         List<ContactResponseDTO> getContacts(Long patrolId);
 
-        PatrolResponseDTO closePatrol(Long patrolId);
+        PatrolResponseDTO closePatrol(
+                        Long campaignId,
+                        Long id);
 
         MissionEvaluationResult getMissionEvaluation(Long patrolId);
 

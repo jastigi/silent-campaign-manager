@@ -216,13 +216,18 @@ class PatrolServiceImplTest {
     @Test
     void shouldUpdatePatrolSuccessfully() {
 
+        Long campaignId = 1L;
+
         Patrol existingPatrol = new Patrol();
         existingPatrol.setId(1L);
         existingPatrol.setPatrolName("Old Name");
         existingPatrol.setPatrolDate(LocalDate.of(2026, 1, 1));
         existingPatrol.setArea("Old Area");
-        existingPatrol.setResult(PatrolResult.FAILURE);
         existingPatrol.setMissionType(MissionType.DETERRENCE_PATROL);
+
+        Campaign campaign = new Campaign();
+        campaign.setId(campaignId);
+        existingPatrol.setCampaign(campaign);
 
         PatrolRequestDTO request = new PatrolRequestDTO();
         request.setPatrolName("Updated Name");
@@ -234,64 +239,68 @@ class PatrolServiceImplTest {
         Submarine submarine = new Submarine();
         submarine.setId(1L);
 
+        when(patrolRepository.findByIdAndCampaignId(1L, campaignId))
+                .thenReturn(Optional.of(existingPatrol));
         when(submarineRepository.findById(1L))
                 .thenReturn(Optional.of(submarine));
-        when(patrolRepository.findById(1L))
-                .thenReturn(Optional.of(existingPatrol));
         when(patrolRepository.save(any(Patrol.class)))
                 .thenAnswer(invocation ->
                         invocation.getArgument(0));
 
         PatrolResponseDTO result = patrolService
-                .updatePatrol(1L, request);
+                .updatePatrol(campaignId, 1L, request);
 
         assertEquals("Updated Name", result.getPatrolName());
         assertEquals(
                 LocalDate.of(2026, 6, 15),
                 result.getPatrolDate());
-        assertEquals(PatrolResult.FAILURE, result.getResult());
 
-        verify(patrolRepository).findById(1L);
+        verify(patrolRepository).findByIdAndCampaignId(1L, campaignId);
         verify(patrolRepository).save(any(Patrol.class));
     }
 
     @Test
     void shouldThrowExceptionWhenUpdatingNonExistentPatrol() {
 
+        Long campaignId = 1L;
         PatrolRequestDTO request = new PatrolRequestDTO();
 
-        when(patrolRepository.findById(999L))
+        when(patrolRepository.findByIdAndCampaignId(999L, campaignId))
                 .thenReturn(Optional.empty());
 
         assertThrows(
                 PatrolNotFoundException.class,
-                () -> patrolService.updatePatrol(999L, request));
+                () -> patrolService.updatePatrol(campaignId, 999L, request));
     }
 
     @Test
     void shouldDeletePatrolSuccessfully() {
 
+        Long campaignId = 1L;
+
         Patrol patrol = new Patrol();
         patrol.setId(1L);
 
-        when(patrolRepository.findById(1L))
+        when(patrolRepository.findByIdAndCampaignId(1L, campaignId))
                 .thenReturn(Optional.of(patrol));
 
-        patrolService.deletePatrol(1L);
+        patrolService.deletePatrol(campaignId, 1L);
 
-        verify(patrolRepository).findById(1L);
+        verify(patrolRepository).findByIdAndCampaignId(1L, campaignId);
         verify(patrolRepository).delete(patrol);
     }
 
     @Test
     void shouldThrowExceptionWhenDeletingNonExistentPatrol() {
 
-        when(patrolRepository.findById(999L))
+        Long campaignId = 1L;
+
+        when(patrolRepository.findByIdAndCampaignId(999L, campaignId))
                 .thenReturn(Optional.empty());
 
         assertThrows(
                 PatrolNotFoundException.class,
-                () -> patrolService.deletePatrol(999L));
+                () -> patrolService.deletePatrol(campaignId, 999L));
     }
 
     @Test

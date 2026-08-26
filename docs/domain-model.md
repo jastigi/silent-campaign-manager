@@ -59,6 +59,20 @@ Mission risk and scoring data are supporting operational metrics. They do not in
 
 This ensures that campaign views, patrol reports and mission evaluations use the persisted patrol outcome as the authoritative final result.
 
+#### Patrol Lifecycle Constraints
+
+While `result` is `null`, the patrol is considered pending and may be updated, deleted or closed.
+
+Once a final `PatrolResult` has been persisted, the patrol is considered closed. Closed patrols are immutable through the patrol management API:
+
+- update operations are rejected;
+- delete operations are rejected;
+- repeated close operations are rejected.
+
+These invalid lifecycle operations return HTTP `409 Conflict`.
+
+Campaign-scoped mutation operations validate both the campaign identifier and patrol identifier, preventing a patrol from being modified through a different campaign context.
+
 ### Campaign Lifecycle Constraints
 
 Campaigns are mutable only while their status is `ACTIVE`.

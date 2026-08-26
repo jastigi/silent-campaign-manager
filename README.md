@@ -1250,13 +1250,28 @@ Campaign modification follows lifecycle-aware business rules.
 
 ### Patrols
 
-| Method | Endpoint               | Description        |
-| ------ | ---------------------- | ------------------ |
-| POST   | `/api/v1/patrols`      | Create a patrol    |
-| GET    | `/api/v1/patrols`      | List patrols       |
-| GET    | `/api/v1/patrols/{id}` | Get patrol details |
-| PUT    | `/api/v1/patrols/{id}` | Update a patrol    |
-| DELETE | `/api/v1/patrols/{id}` | Delete a patrol    |
+| Method | Endpoint                                                   | Description                    |
+|--------|------------------------------------------------------------|--------------------------------|
+| GET    | `/api/v1/patrols/{id}`                                    | Get patrol details             |
+| POST   | `/api/v1/campaigns/{campaignId}/patrols`                   | Create a patrol                |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols`                   | List patrols for a campaign    |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/paged`             | Paginated campaign patrols     |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/search`            | Search campaign patrols        |
+| PUT    | `/api/v1/campaigns/{campaignId}/patrols/{id}`              | Update a pending patrol        |
+| DELETE | `/api/v1/campaigns/{campaignId}/patrols/{id}`              | Delete a pending patrol        |
+| PATCH  | `/api/v1/campaigns/{campaignId}/patrols/{id}/close`        | Close and evaluate a patrol    |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/{id}/report`       | Get patrol report              |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/{id}/contacts`     | Get patrol contacts            |
+| GET    | `/api/v1/campaigns/{campaignId}/patrols/{id}/evaluation`   | Get mission evaluation         |
+
+Patrol lifecycle rules:
+
+- New patrols are created with no final result and remain pending.
+- Patrol results cannot be supplied or changed through general create or update operations.
+- Pending patrols may be updated, deleted or closed.
+- Closed patrols are immutable: update, delete and repeated close operations are rejected with HTTP `409 Conflict`.
+- Update, delete and close operations validate both the campaign identifier and patrol identifier.
+- Closing a patrol evaluates the mission and persists the final `SUCCESS`, `PARTIAL_SUCCESS` or `FAILURE` result.
 
 ---
 

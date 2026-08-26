@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.jastigi.silentcampaignmanager.dto.ContactResponseDTO;
 import com.jastigi.silentcampaignmanager.dto.MissionEvaluationResponseDTO;
@@ -77,10 +79,38 @@ public class PatrolController {
 
         @PatchMapping("/{id}/close")
         public ResponseEntity<PatrolResponseDTO> closePatrol(
+                        @PathVariable Long campaignId,
                         @PathVariable Long id) {
 
                 return ResponseEntity.ok(
-                                patrolService.closePatrol(id));
+                                patrolService.closePatrol(
+                                                campaignId,
+                                                id));
+        }
+
+        @PutMapping("/{id}")
+        public ResponseEntity<PatrolResponseDTO> updatePatrol(
+                        @PathVariable Long campaignId,
+                        @PathVariable Long id,
+                        @Valid @RequestBody PatrolRequestDTO request) {
+
+                return ResponseEntity.ok(
+                                patrolService.updatePatrol(
+                                                campaignId,
+                                                id,
+                                                request));
+        }
+
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> deletePatrol(
+                        @PathVariable Long campaignId,
+                        @PathVariable Long id) {
+
+                patrolService.deletePatrol(
+                                campaignId,
+                                id);
+
+                return ResponseEntity.noContent().build();
         }
 
         @GetMapping("/{id}/evaluation")

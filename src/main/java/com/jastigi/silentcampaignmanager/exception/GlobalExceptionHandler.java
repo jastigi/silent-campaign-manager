@@ -230,4 +230,22 @@ public class GlobalExceptionHandler {
                                                 error);
         }
 
+        @ExceptionHandler(PatrolOperationNotAllowedException.class)
+        public ResponseEntity<ErrorResponse> handlePatrolOperationNotAllowed(
+                        PatrolOperationNotAllowedException ex,
+                        HttpServletRequest request) {
+
+                ErrorResponse error = new ErrorResponse();
+
+                error.setTimestamp(LocalDateTime.now());
+                error.setStatus(HttpStatus.CONFLICT.value());
+                error.setError("Conflict");
+                error.setMessage(ex.getMessage());
+                error.setPath(request.getRequestURI());
+
+                return ResponseEntity
+                                .status(HttpStatus.CONFLICT)
+                                .body(error);
+        }
+
 }

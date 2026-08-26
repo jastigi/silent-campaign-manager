@@ -1,6 +1,7 @@
 package com.jastigi.silentcampaignmanager.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,5 +27,9 @@ public interface PatrolRepository extends JpaRepository<Patrol, Long> {
                         Long campaignId,
                         PatrolResult result,
                         Pageable pageable);
+
+        Optional<Patrol> findByIdAndCampaignId(
+                        Long id,
+                        Long campaignId);
 
 }

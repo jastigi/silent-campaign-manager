@@ -19,6 +19,7 @@ import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.entity.Submarine;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.exception.PatrolNotFoundException;
+import com.jastigi.silentcampaignmanager.exception.PatrolOperationNotAllowedException;
 import com.jastigi.silentcampaignmanager.exception.SubmarineNotFoundException;
 import com.jastigi.silentcampaignmanager.mapper.ContactMapper;
 import com.jastigi.silentcampaignmanager.mapper.PatrolMapper;
@@ -117,36 +118,70 @@ public class PatrolServiceImpl implements PatrolService {
         @Override
         @Transactional
         public PatrolResponseDTO updatePatrol(
+                        Long campaignId,
                         Long id,
                         PatrolRequestDTO request) {
 
-                Patrol patrol = patrolRepository.findById(id)
-                                .orElseThrow(() -> new PatrolNotFoundException(id));
+                Patrol patrol = patrolRepository
+                                .findByIdAndCampaignId(
+                                                id,
+                                                campaignId)
+                                .orElseThrow(
+                                                () -> new PatrolNotFoundException(id));
 
-                patrol.setPatrolName(request.getPatrolName());
-                patrol.setPatrolDate(request.getPatrolDate());
-                patrol.setArea(request.getArea());
-                patrol.setMissionType(request.getMissionType());
+                if (patrol.getResult() != null) {
+                        throw new PatrolOperationNotAllowedException(
+                                        "Closed patrols cannot be updated");
+                }
+
+                patrol.setPatrolName(
+                                request.getPatrolName());
+
+                patrol.setPatrolDate(
+                                request.getPatrolDate());
+
+                patrol.setArea(
+                                request.getArea());
+
+                patrol.setMissionType(
+                                request.getMissionType());
 
                 if (request.getSubmarineId() != null) {
-                        Submarine submarine = submarineRepository.findById(
-                                        request.getSubmarineId())
-                                        .orElseThrow(() -> new SubmarineNotFoundException(
-                                                        request.getSubmarineId()));
+
+                        Submarine submarine =
+                                        submarineRepository.findById(
+                                                        request.getSubmarineId())
+                                                        .orElseThrow(
+                                                                        () -> new SubmarineNotFoundException(
+                                                                                        request.getSubmarineId()));
+
                         patrol.setSubmarine(submarine);
                 }
 
-                Patrol updatedPatrol = patrolRepository.save(patrol);
+                Patrol updatedPatrol =
+                                patrolRepository.save(patrol);
 
-                return PatrolMapper.toDTO(updatedPatrol);
+                return PatrolMapper.toDTO(
+                                updatedPatrol);
         }
 
         @Override
         @Transactional
-        public void deletePatrol(Long id) {
+        public void deletePatrol(
+                        Long campaignId,
+                        Long id) {
 
-                Patrol patrol = patrolRepository.findById(id)
-                                .orElseThrow(() -> new PatrolNotFoundException(id));
+                Patrol patrol = patrolRepository
+                                .findByIdAndCampaignId(
+                                                id,
+                                                campaignId)
+                                .orElseThrow(
+                                                () -> new PatrolNotFoundException(id));
+
+                if (patrol.getResult() != null) {
+                        throw new PatrolOperationNotAllowedException(
+                                        "Closed patrols cannot be deleted");
+                }
 
                 patrolRepository.delete(patrol);
         }
@@ -192,20 +227,34 @@ public class PatrolServiceImpl implements PatrolService {
 
         @Override
         @Transactional
-        public PatrolResponseDTO closePatrol(Long patrolId) {
+        public PatrolResponseDTO closePatrol(
+                        Long campaignId,
+                        Long id) {
 
-                Patrol patrol = patrolRepository.findById(patrolId)
-                                .orElseThrow(() -> new PatrolNotFoundException(patrolId));
+                Patrol patrol = patrolRepository
+                                .findByIdAndCampaignId(
+                                                id,
+                                                campaignId)
+                                .orElseThrow(
+                                                () -> new PatrolNotFoundException(id));
 
-                MissionEvaluationResult evaluation = missionScoringService.scoreMission(patrol);
+                if (patrol.getResult() != null) {
+                        throw new PatrolOperationNotAllowedException(
+                                        "Patrol is already closed");
+                }
 
-                PatrolResult result = missionEvaluationService.evaluate(patrol);
+                missionScoringService.scoreMission(patrol);
+
+                PatrolResult result =
+                                missionEvaluationService.evaluate(patrol);
 
                 patrol.setResult(result);
 
-                Patrol updatedPatrol = patrolRepository.save(patrol);
+                Patrol updatedPatrol =
+                                patrolRepository.save(patrol);
 
-                return PatrolMapper.toDTO(updatedPatrol);
+                return PatrolMapper.toDTO(
+                                updatedPatrol);
         }
 
         @Override
