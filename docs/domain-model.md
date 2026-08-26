@@ -26,6 +26,39 @@ Mission evaluation services analyze patrol outcomes using specialized business r
 
 Campaign statistics aggregate operational information across all patrols.
 
+### Patrol Lifecycle
+
+A patrol does not receive a final result when it is created.
+
+```text
+CREATE PATROL
+     │
+     ▼
+ result = null
+     │
+     ▼
+   PENDING
+     │
+     ▼
+PATCH /api/v1/campaigns/{campaignId}/patrols/{id}/close
+     │
+     ▼
+Mission Evaluation
+     │
+     ├── SUCCESS
+     ├── PARTIAL_SUCCESS
+     └── FAILURE
+
+PatrolResult represents the persisted final outcome of a completed patrol.
+
+The result is therefore not part of the general patrol creation or update contract. Clients may update general patrol information without altering its operational outcome.
+
+The dedicated close operation evaluates the mission using the mission evaluation domain services and persists the resulting PatrolResult.
+
+Mission risk and scoring data are supporting operational metrics. They do not independently redefine a persisted patrol result.
+
+This ensures that campaign views, patrol reports and mission evaluations use the persisted patrol outcome as the authoritative final result.
+
 ### Campaign Lifecycle Constraints
 
 Campaigns are mutable only while their status is `ACTIVE`.

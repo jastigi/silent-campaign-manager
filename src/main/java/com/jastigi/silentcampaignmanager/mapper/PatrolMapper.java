@@ -14,7 +14,6 @@ public class PatrolMapper {
         patrol.setPatrolName(dto.getPatrolName());
         patrol.setPatrolDate(dto.getPatrolDate());
         patrol.setArea(dto.getArea());
-        patrol.setResult(dto.getResult());
         patrol.setMissionType(dto.getMissionType());
 
         return patrol;

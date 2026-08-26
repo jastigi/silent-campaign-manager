@@ -9,6 +9,7 @@ import com.jastigi.silentcampaignmanager.entity.Contact;
 import com.jastigi.silentcampaignmanager.entity.ContactType;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolEvent;
+import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.entity.ThreatLevel;
 import com.jastigi.silentcampaignmanager.service.scoring.RiskScoreCalculator;
 import com.jastigi.silentcampaignmanager.entity.MissionStatus;
@@ -52,7 +53,8 @@ public class PatrolReportGenerator {
                                 report, contacts, events);
 
                 calculateMissionStatus(
-                                report);
+                                report,
+                                patrol);
 
                 return report;
         }
@@ -83,9 +85,6 @@ public class PatrolReportGenerator {
                                 patrol.getSubmarine()
                                                 .getSubmarineClass()
                                                 .name());
-
-                report.setMissionStatus(
-                                MissionStatus.SUCCESS);
 
         }
 
@@ -207,29 +206,40 @@ public class PatrolReportGenerator {
         }
 
         private void calculateMissionStatus(
-                        PatrolReportDTO report) {
+                        PatrolReportDTO report,
+                        Patrol patrol) {
 
-                if (report.getRiskScore() >= 40) {
+                PatrolResult result =
+                        patrol.getResult();
 
+                if (result == null) {
+
+                        /*
+                         * The patrol has not been closed yet.
+                         * Mission status must not invent
+                         * a final result from tactical risk.
+                         */
                         report.setMissionStatus(
-                                        MissionStatus.FAILED);
+                                        null);
 
+                        return;
                 }
 
-                else if (report.getRiskScore() >= 20) {
+                MissionStatus missionStatus =
+                        switch (result) {
 
-                        report.setMissionStatus(
-                                        MissionStatus.PARTIAL_SUCCESS);
+                                case SUCCESS ->
+                                        MissionStatus.SUCCESS;
 
-                }
+                                case PARTIAL_SUCCESS ->
+                                        MissionStatus.PARTIAL_SUCCESS;
 
-                else {
+                                case FAILURE ->
+                                        MissionStatus.FAILED;
+                        };
 
-                        report.setMissionStatus(
-                                        MissionStatus.SUCCESS);
-
-                }
-
+                report.setMissionStatus(
+                                missionStatus);
         }
 
 }

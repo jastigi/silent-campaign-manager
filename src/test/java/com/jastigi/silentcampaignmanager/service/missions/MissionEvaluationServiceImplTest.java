@@ -2,6 +2,7 @@ package com.jastigi.silentcampaignmanager.service.missions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,8 @@ import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.service.mission.impl.MissionEvaluationServiceImpl;
 import com.jastigi.silentcampaignmanager.service.mission.model.MissionEvaluationResult;
+import com.jastigi.silentcampaignmanager.service.mission.strategy.MissionStrategy;
+import com.jastigi.silentcampaignmanager.service.mission.strategy.MissionStrategyResolver;
 import com.jastigi.silentcampaignmanager.service.simulation.calculator.MissionRiskCalculator;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,6 +25,12 @@ class MissionEvaluationServiceImplTest {
         @Mock
         private MissionRiskCalculator missionRiskCalculator;
 
+        @Mock
+        private MissionStrategyResolver missionStrategyResolver;
+
+        @Mock
+        private MissionStrategy missionStrategy;
+
         @InjectMocks
         private MissionEvaluationServiceImpl missionEvaluationService;
 
@@ -29,6 +38,12 @@ class MissionEvaluationServiceImplTest {
         void shouldReturnSuccessfulDetailedEvaluationWhenRiskIsLow() {
 
                 Patrol patrol = new Patrol();
+
+                when(missionStrategyResolver.resolve(any()))
+                                .thenReturn(missionStrategy);
+
+                when(missionStrategy.evaluate(patrol))
+                                .thenReturn(PatrolResult.SUCCESS);
 
                 when(missionRiskCalculator.calculateRisk(patrol))
                                 .thenReturn(10);
@@ -46,6 +61,12 @@ class MissionEvaluationServiceImplTest {
         void shouldReturnFailureDetailedEvaluationWhenRiskIsHigh() {
 
                 Patrol patrol = new Patrol();
+
+                when(missionStrategyResolver.resolve(any()))
+                                .thenReturn(missionStrategy);
+
+                when(missionStrategy.evaluate(patrol))
+                                .thenReturn(PatrolResult.FAILURE);
 
                 when(missionRiskCalculator.calculateRisk(patrol))
                                 .thenReturn(150);

@@ -140,6 +140,8 @@ class PatrolReportGeneratorTest {
 
         Patrol patrol = createBasicPatrol();
 
+        patrol.setResult(PatrolResult.FAILURE);
+
         when(riskScoreCalculator.calculate(
                 any(), any()))
                 .thenReturn(45);
@@ -156,6 +158,8 @@ class PatrolReportGeneratorTest {
 
         Patrol patrol = createBasicPatrol();
 
+        patrol.setResult(PatrolResult.PARTIAL_SUCCESS);
+
         when(riskScoreCalculator.calculate(
                 any(), any()))
                 .thenReturn(25);
@@ -171,6 +175,8 @@ class PatrolReportGeneratorTest {
     void shouldHandleEmptyContactsAndEvents() {
 
         Patrol patrol = createBasicPatrol();
+
+        patrol.setResult(PatrolResult.SUCCESS);
 
         when(riskScoreCalculator.calculate(
                 any(), any()))

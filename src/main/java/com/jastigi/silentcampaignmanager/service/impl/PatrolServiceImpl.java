@@ -126,7 +126,6 @@ public class PatrolServiceImpl implements PatrolService {
                 patrol.setPatrolName(request.getPatrolName());
                 patrol.setPatrolDate(request.getPatrolDate());
                 patrol.setArea(request.getArea());
-                patrol.setResult(request.getResult());
                 patrol.setMissionType(request.getMissionType());
 
                 if (request.getSubmarineId() != null) {

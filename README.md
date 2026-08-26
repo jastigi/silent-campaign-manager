@@ -268,12 +268,16 @@ This approach allows each release to remain stable while progressively extending
 
 ### Patrol Management
 
-- Patrol creation and assignment
+- Patrol creation and submarine assignment
 - Patrol scheduling
 - Mission type management
 - Operational area definition
 - Patrol history
 - Ordered campaign execution
+- New patrols are created with no final result and therefore remain pending
+- Patrol results are not supplied or modified through general create/update requests
+- Patrol completion is an explicit business operation through `PATCH /api/v1/campaigns/{campaignId}/patrols/{id}/close`
+- Closing a patrol evaluates the mission and persists the final `SUCCESS`, `PARTIAL_SUCCESS` or `FAILURE` result
 
 ---
 

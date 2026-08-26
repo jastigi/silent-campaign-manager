@@ -72,7 +72,6 @@ class PatrolServiceImplTest {
         request.setPatrolName("North Atlantic Transit");
         request.setPatrolDate(LocalDate.of(2026, 6, 12));
         request.setArea("North Atlantic");
-        request.setResult(PatrolResult.SUCCESS);
         request.setSubmarineId(1L);
         request.setMissionType(MissionType.DETERRENCE_PATROL);
 
@@ -94,7 +93,6 @@ class PatrolServiceImplTest {
         savedPatrol.setPatrolName(request.getPatrolName());
         savedPatrol.setPatrolDate(request.getPatrolDate());
         savedPatrol.setArea(request.getArea());
-        savedPatrol.setResult(request.getResult());
         savedPatrol.setMissionType(request.getMissionType());
         savedPatrol.setCampaign(campaign);
         savedPatrol.setSubmarine(submarine);
@@ -111,7 +109,7 @@ class PatrolServiceImplTest {
 
         assertEquals(1L, result.getId());
         assertEquals("North Atlantic Transit", result.getPatrolName());
-        assertEquals(PatrolResult.SUCCESS, result.getResult());
+        assertNull(result.getResult());
         assertEquals(campaignId, result.getCampaignId());
         assertEquals(1L, result.getSubmarineId());
         assertEquals("USS Dallas", result.getSubmarineName());
@@ -230,17 +228,8 @@ class PatrolServiceImplTest {
         request.setPatrolName("Updated Name");
         request.setPatrolDate(LocalDate.of(2026, 6, 15));
         request.setArea("Updated Area");
-        request.setResult(PatrolResult.SUCCESS);
         request.setSubmarineId(1L);
         request.setMissionType(MissionType.DETERRENCE_PATROL);
-
-        Patrol updatedPatrol = new Patrol();
-        updatedPatrol.setId(1L);
-        updatedPatrol.setPatrolName(request.getPatrolName());
-        updatedPatrol.setPatrolDate(request.getPatrolDate());
-        updatedPatrol.setArea(request.getArea());
-        updatedPatrol.setResult(request.getResult());
-        updatedPatrol.setMissionType(existingPatrol.getMissionType());
 
         Submarine submarine = new Submarine();
         submarine.setId(1L);
@@ -250,7 +239,8 @@ class PatrolServiceImplTest {
         when(patrolRepository.findById(1L))
                 .thenReturn(Optional.of(existingPatrol));
         when(patrolRepository.save(any(Patrol.class)))
-                .thenReturn(updatedPatrol);
+                .thenAnswer(invocation ->
+                        invocation.getArgument(0));
 
         PatrolResponseDTO result = patrolService
                 .updatePatrol(1L, request);
@@ -259,7 +249,7 @@ class PatrolServiceImplTest {
         assertEquals(
                 LocalDate.of(2026, 6, 15),
                 result.getPatrolDate());
-        assertEquals(PatrolResult.SUCCESS, result.getResult());
+        assertEquals(PatrolResult.FAILURE, result.getResult());
 
         verify(patrolRepository).findById(1L);
         verify(patrolRepository).save(any(Patrol.class));

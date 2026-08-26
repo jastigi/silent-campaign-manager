@@ -34,9 +34,16 @@ public class MissionScoringServiceImpl implements MissionScoringService {
         int score = calculateScore(result, risk);
 
         return MissionEvaluationResult.builder()
-                .success(result == PatrolResult.SUCCESS)
-                .score(score)
-                .summary(buildSummary(result, score, risk))
+                .success(
+                        result == PatrolResult.SUCCESS)
+                .patrolResult(
+                        result)
+                .score(
+                        score)
+                .summary(buildSummary(
+                        result,
+                        score,
+                        risk))
                 .build();
 
     }

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import com.jastigi.silentcampaignmanager.entity.Patrol;
 import com.jastigi.silentcampaignmanager.entity.PatrolResult;
 import com.jastigi.silentcampaignmanager.service.mission.MissionEvaluationService;
-import com.jastigi.silentcampaignmanager.service.mission.constants.MissionRiskThresholds;
 import com.jastigi.silentcampaignmanager.service.mission.model.MissionEvaluationResult;
 import com.jastigi.silentcampaignmanager.service.mission.strategy.MissionStrategy;
 import com.jastigi.silentcampaignmanager.service.mission.strategy.MissionStrategyResolver;
@@ -39,27 +38,26 @@ public class MissionEvaluationServiceImpl implements MissionEvaluationService {
     }
 
     @Override
-    public MissionEvaluationResult evaluateDetailed(Patrol patrol) {
+    public MissionEvaluationResult evaluateDetailed(
+            Patrol patrol) {
 
-        int risk = missionRiskCalculator.calculateRisk(patrol);
+        PatrolResult result =
+                evaluate(patrol);
 
-        PatrolResult result;
-
-        if (risk <= MissionRiskThresholds.LOW) {
-            result = PatrolResult.SUCCESS;
-
-        } else if (risk <= MissionRiskThresholds.MEDIUM) {
-            result = PatrolResult.PARTIAL_SUCCESS;
-
-        } else {
-            result = PatrolResult.FAILURE;
-        }
+        int risk =
+                missionRiskCalculator.calculateRisk(
+                        patrol);
 
         return MissionEvaluationResult.builder()
-                .success(result == PatrolResult.SUCCESS)
-                .patrolResult(result)
-                .score(risk)
-                .summary("Mission evaluated with risk score: " + risk)
+                .success(
+                        result == PatrolResult.SUCCESS)
+                .patrolResult(
+                        result)
+                .score(
+                        risk)
+                .summary(
+                        "Mission evaluated with risk score: "
+                                + risk)
                 .build();
     }
 
