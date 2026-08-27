@@ -2,6 +2,7 @@ package com.jastigi.silentcampaignmanager.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,11 +27,13 @@ import com.jastigi.silentcampaignmanager.entity.SubmarineStatus;
 import com.jastigi.silentcampaignmanager.entity.SubmarineType;
 import com.jastigi.silentcampaignmanager.exception.CampaignNotFoundException;
 import com.jastigi.silentcampaignmanager.exception.PatrolNotFoundException;
+import com.jastigi.silentcampaignmanager.exception.PatrolOperationNotAllowedException;
 import com.jastigi.silentcampaignmanager.exception.SubmarineNotFoundException;
 import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.repository.ContactRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolEventRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
+import com.jastigi.silentcampaignmanager.repository.SimulationRecordRepository;
 import com.jastigi.silentcampaignmanager.repository.SubmarineRepository;
 import com.jastigi.silentcampaignmanager.service.impl.PatrolServiceImpl;
 import com.jastigi.silentcampaignmanager.service.report.PatrolReportGenerator;
@@ -59,6 +62,9 @@ class PatrolServiceImplTest {
 
     @Mock
     private PatrolReportGenerator patrolReportGenerator;
+
+    @Mock
+    private SimulationRecordRepository simulationRecordRepository;
 
     @InjectMocks
     private PatrolServiceImpl patrolService;
@@ -284,6 +290,9 @@ class PatrolServiceImplTest {
         when(patrolRepository.findByIdAndCampaignId(1L, campaignId))
                 .thenReturn(Optional.of(patrol));
 
+        when(simulationRecordRepository.existsByPatrolId(1L))
+                .thenReturn(false);
+
         patrolService.deletePatrol(campaignId, 1L);
 
         verify(patrolRepository).findByIdAndCampaignId(1L, campaignId);
@@ -301,6 +310,30 @@ class PatrolServiceImplTest {
         assertThrows(
                 PatrolNotFoundException.class,
                 () -> patrolService.deletePatrol(campaignId, 999L));
+    }
+
+    @Test
+    void shouldRejectDeleteWhenPatrolHasSimulationHistory() {
+
+        Campaign campaign = new Campaign();
+        campaign.setId(5L);
+
+        Patrol patrol = new Patrol();
+        patrol.setId(13L);
+        patrol.setCampaign(campaign);
+        patrol.setResult(null);
+
+        when(patrolRepository.findByIdAndCampaignId(13L, 5L))
+                .thenReturn(Optional.of(patrol));
+
+        when(simulationRecordRepository.existsByPatrolId(13L))
+                .thenReturn(true);
+
+        assertThrows(
+                PatrolOperationNotAllowedException.class,
+                () -> patrolService.deletePatrol(5L, 13L));
+
+        verify(patrolRepository, never()).delete(any(Patrol.class));
     }
 
     @Test

@@ -24,6 +24,8 @@ public interface SimulationRecordRepository
                         Long patrolId,
                         Pageable pageable);
 
+        boolean existsByPatrolId(Long patrolId);
+
         List<SimulationRecord> findByPatrolCampaignId(
                         Long campaignId);
 

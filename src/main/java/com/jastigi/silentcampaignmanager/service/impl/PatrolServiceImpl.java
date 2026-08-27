@@ -27,6 +27,7 @@ import com.jastigi.silentcampaignmanager.repository.CampaignRepository;
 import com.jastigi.silentcampaignmanager.repository.ContactRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolEventRepository;
 import com.jastigi.silentcampaignmanager.repository.PatrolRepository;
+import com.jastigi.silentcampaignmanager.repository.SimulationRecordRepository;
 import com.jastigi.silentcampaignmanager.repository.SubmarineRepository;
 import com.jastigi.silentcampaignmanager.service.PatrolService;
 import com.jastigi.silentcampaignmanager.service.mission.MissionEvaluationService;
@@ -45,6 +46,7 @@ public class PatrolServiceImpl implements PatrolService {
         private final PatrolReportGenerator patrolReportGenerator;
         private final MissionEvaluationService missionEvaluationService;
         private final MissionScoringService missionScoringService;
+        private final SimulationRecordRepository simulationRecordRepository;
 
         public PatrolServiceImpl(
                         PatrolRepository patrolRepository,
@@ -54,7 +56,8 @@ public class PatrolServiceImpl implements PatrolService {
                         PatrolEventRepository patrolEventRepository,
                         PatrolReportGenerator patrolReportGenerator,
                         MissionEvaluationService missionEvaluationService,
-                        MissionScoringService missionScoringService) {
+                        MissionScoringService missionScoringService,
+                        SimulationRecordRepository simulationRecordRepository) {
 
                 this.patrolRepository = patrolRepository;
                 this.campaignRepository = campaignRepository;
@@ -64,6 +67,7 @@ public class PatrolServiceImpl implements PatrolService {
                 this.patrolReportGenerator = patrolReportGenerator;
                 this.missionEvaluationService = missionEvaluationService;
                 this.missionScoringService = missionScoringService;
+                this.simulationRecordRepository = simulationRecordRepository;
         }
 
         @Override
@@ -181,6 +185,11 @@ public class PatrolServiceImpl implements PatrolService {
                 if (patrol.getResult() != null) {
                         throw new PatrolOperationNotAllowedException(
                                         "Closed patrols cannot be deleted");
+                }
+
+                if (simulationRecordRepository.existsByPatrolId(id)) {
+                        throw new PatrolOperationNotAllowedException(
+                                        "Patrols with simulation history cannot be deleted");
                 }
 
                 patrolRepository.delete(patrol);
