@@ -15,6 +15,7 @@ import com.jastigi.silentcampaignmanager.dto.SubmarineRequestDTO;
 import com.jastigi.silentcampaignmanager.dto.SubmarineResponseDTO;
 import com.jastigi.silentcampaignmanager.entity.Submarine;
 import com.jastigi.silentcampaignmanager.entity.SubmarineClass;
+import com.jastigi.silentcampaignmanager.entity.SubmarineRole;
 import com.jastigi.silentcampaignmanager.entity.SubmarineStatus;
 import com.jastigi.silentcampaignmanager.entity.SubmarineType;
 import com.jastigi.silentcampaignmanager.exception.SubmarineNotFoundException;
@@ -157,6 +158,7 @@ class SubmarineServiceImplTest {
         request.setSubmarineClass(SubmarineClass.LOS_ANGELES);
         request.setNation("USA");
         request.setStatus(SubmarineStatus.ACTIVE);
+        request.setSubmarineRole(SubmarineRole.SSN);
 
         Submarine updatedSubmarine = new Submarine();
         updatedSubmarine.setId(1L);
@@ -165,6 +167,7 @@ class SubmarineServiceImplTest {
         updatedSubmarine.setSubmarineClass(request.getSubmarineClass());
         updatedSubmarine.setNation(request.getNation());
         updatedSubmarine.setStatus(request.getStatus());
+        updatedSubmarine.setSubmarineRole(request.getSubmarineRole());
 
         when(submarineRepository.findById(1L))
                 .thenReturn(Optional.of(existingSubmarine));
@@ -180,6 +183,9 @@ class SubmarineServiceImplTest {
                 result.getSubmarineClass());
         assertEquals("USA", result.getNation());
         assertEquals(SubmarineStatus.ACTIVE, result.getStatus());
+        assertEquals(
+                request.getSubmarineRole(),
+                result.getSubmarineRole());
 
         verify(submarineRepository).findById(1L);
         verify(submarineRepository).save(any(Submarine.class));

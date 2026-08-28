@@ -66,6 +66,7 @@ public class SubmarineServiceImpl implements SubmarineService {
         submarine.setSubmarineClass(request.getSubmarineClass());
         submarine.setNation(request.getNation());
         submarine.setStatus(request.getStatus());
+        submarine.setSubmarineRole(request.getSubmarineRole());
 
         Submarine updated = submarineRepository.save(submarine);
 
